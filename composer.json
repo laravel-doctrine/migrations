@@ -1,0 +1,40 @@
+{
+  "name": "laravel-doctrine/migrations",
+  "description": "Doctrine Migrations for Laravel",
+  "license": "MIT",
+  "keywords": [
+    "doctrine",
+    "laravel",
+    "orm",
+    "data mapper",
+    "database",
+    "migrations"
+  ],
+  "authors": [
+    {
+      "name": "Patrick Brouwers",
+      "email": "patrick@maatwebsite.nl"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.0",
+    "doctrine/migrations": "~1.0.0",
+    "illuminate/contracts": "~5.1",
+    "illuminate/support": "~5.1",
+    "laravel-doctrine/orm": "dev-develop"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0",
+    "mockery/mockery": "~0.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "LaravelDoctrine\\Migrations\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "classmap": [
+      "tests"
+    ]
+  }
+}
