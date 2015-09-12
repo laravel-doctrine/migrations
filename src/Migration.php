@@ -15,7 +15,7 @@ class Migration
     protected $migration;
 
     /**
-     * @var int
+     * @var string|null
      */
     protected $version;
 
@@ -42,7 +42,7 @@ class Migration
     /**
      * @param Configuration $configuration
      *
-     * @return Migration
+     * @return DBALMigration
      */
     protected function makeMigration(Configuration $configuration)
     {
@@ -76,13 +76,13 @@ class Migration
 
     /**
      * @param Configuration $configuration
-     * @param               $versionAlias
+     * @param string        $versionAlias
      */
     protected function setVersion(Configuration $configuration, $versionAlias)
     {
         $version = $configuration->resolveVersionAlias($versionAlias);
 
-        if (!$version) {
+        if ($version === null || $version === false) {
             if ($versionAlias == 'prev') {
                 throw new MigrationVersionException('Already at first version');
             }
@@ -97,7 +97,7 @@ class Migration
     }
 
     /**
-     * @return int
+     * @return string|null
      */
     public function getVersion()
     {
