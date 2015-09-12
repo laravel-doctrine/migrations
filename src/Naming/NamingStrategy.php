@@ -2,6 +2,8 @@
 
 namespace LaravelDoctrine\Migrations\Naming;
 
+use Doctrine\DBAL\Migrations\Finder\MigrationFinderInterface;
+
 interface NamingStrategy
 {
     /**
@@ -17,4 +19,9 @@ interface NamingStrategy
      * @return string
      */
     public function getClassName($input);
+
+    /**
+     * @return MigrationFinderInterface
+     */
+    public function getFinder();
 }

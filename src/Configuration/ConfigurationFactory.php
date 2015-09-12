@@ -44,13 +44,15 @@ class ConfigurationFactory
         $configuration->setMigrationsNamespace($this->config->get('migrations.namespace', 'Database\\Migrations'));
         $configuration->setMigrationsTableName($this->config->get('migrations.table', 'migrations'));
 
-        $directory = $this->config->get('migrations.directory', database_path('migrations'));
-        $configuration->setMigrationsDirectory($directory);
-        $configuration->registerMigrationsFromDirectory($directory);
-
         $configuration->setNamingStrategy($this->container->make(
             $this->config->get('migrations.naming_strategy', LaravelNamingStrategy::class)
         ));
+
+        $configuration->setMigrationFinder($configuration->getNamingStrategy()->getFinder());
+
+        $directory = $this->config->get('migrations.directory', database_path('migrations'));
+        $configuration->setMigrationsDirectory($directory);
+        $configuration->registerMigrationsFromDirectory($directory);
 
         return $configuration;
     }

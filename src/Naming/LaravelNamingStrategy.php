@@ -2,7 +2,9 @@
 
 namespace LaravelDoctrine\Migrations\Naming;
 
+use Doctrine\DBAL\Migrations\Finder\MigrationFinderInterface;
 use Illuminate\Support\Str;
+use LaravelDoctrine\Migrations\Finders\LaravelNamedMigrationsFinder;
 
 class LaravelNamingStrategy implements NamingStrategy
 {
@@ -26,7 +28,7 @@ class LaravelNamingStrategy implements NamingStrategy
      */
     public function getFilename($input)
     {
-        return date('Y_m_d_His') . '_' . $this->str->snake($input, '_');
+        return date('YmdHis') . '_' . $this->str->snake($input, '_');
     }
 
     /**
@@ -37,5 +39,13 @@ class LaravelNamingStrategy implements NamingStrategy
     public function getClassName($input)
     {
         return studly_case($input);
+    }
+
+    /**
+     * @return MigrationFinderInterface
+     */
+    public function getFinder()
+    {
+        return new LaravelNamedMigrationsFinder;
     }
 }

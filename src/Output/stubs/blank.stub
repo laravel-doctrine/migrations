@@ -3,7 +3,7 @@
 namespace <namespace>;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
-use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Schema as Schema;
 
 class <class> extends AbstractMigration
 {

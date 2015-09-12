@@ -2,6 +2,9 @@
 
 namespace LaravelDoctrine\Migrations\Naming;
 
+use Doctrine\DBAL\Migrations\Finder\MigrationFinderInterface;
+use Doctrine\DBAL\Migrations\Finder\RecursiveRegexFinder;
+
 class DefaultNamingStrategy implements NamingStrategy
 {
     /**
@@ -22,5 +25,13 @@ class DefaultNamingStrategy implements NamingStrategy
     public function getClassName($input)
     {
         return 'Version' . date('YmdHis');
+    }
+
+    /**
+     * @return MigrationFinderInterface
+     */
+    public function getFinder()
+    {
+        return new RecursiveRegexFinder;
     }
 }

@@ -5,6 +5,7 @@ namespace LaravelDoctrine\Migrations;
 use Illuminate\Support\ServiceProvider;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
 use LaravelDoctrine\Migrations\Console\GenerateCommand;
+use LaravelDoctrine\Migrations\Console\MigrateCommand;
 
 class MigrationsServiceProvider extends ServiceProvider
 {
@@ -35,7 +36,8 @@ class MigrationsServiceProvider extends ServiceProvider
         $this->mergeConfig();
 
         $this->commands([
-            GenerateCommand::class
+            GenerateCommand::class,
+            MigrateCommand::class
         ]);
     }
 
