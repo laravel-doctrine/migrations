@@ -13,7 +13,8 @@ class GenerateCommand extends Command
      * @var string
      */
     protected $signature = 'doctrine:migrations:generate {name}
-    {--connection= : For a specific connection }';
+    {--create= : The table to be created.}
+    {--table= : The table to migrate.}';
 
     /**
      * @var string
@@ -28,12 +29,12 @@ class GenerateCommand extends Command
      */
     public function fire(ConfigurationProvider $provider, MigrationFileGenerator $generator)
     {
-        $name = $this->option('connection') ?: null;
-
-        $configuration = $provider->getForConnection($name);
+        $configuration = $provider->getForConnection();
 
         $filename = $generator->generate(
             $this->argument('name'),
+            $this->option('create'),
+            $this->option('table'),
             $configuration
         );
 

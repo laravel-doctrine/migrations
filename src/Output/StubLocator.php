@@ -16,7 +16,7 @@ class StubLocator
      */
     public function locate($stub)
     {
-        $this->location = __DIR__ . DIRECTORY_SEPARATOR . $stub;
+        $this->location = $stub;
 
         return $this;
     }

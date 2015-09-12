@@ -4,6 +4,8 @@ namespace <namespace>;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema as Schema;
+use LaravelDoctrine\Migrations\Schema\Table;
+use LaravelDoctrine\Migrations\Schema\Builder;
 
 class <class> extends AbstractMigration
 {
@@ -12,7 +14,10 @@ class <class> extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        //
+        (new Builder($schema))->create('<table>', function (Table $table) {
+            $table->increments('id');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -20,6 +25,6 @@ class <class> extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        //
+        (new Builder($schema))->drop('<table>');
     }
 }

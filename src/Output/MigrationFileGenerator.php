@@ -7,18 +7,12 @@ use LaravelDoctrine\Migrations\Configuration\Configuration;
 class MigrationFileGenerator
 {
     /**
-     * @var string
-     */
-    protected $stub = 'stubs/blank.stub';
-
-    /**
      * @var array
      */
     protected $variables = [
         '<namespace>',
         '<class>',
-        '<up>',
-        '<down>'
+        '<table>'
     ];
 
     /**
@@ -50,17 +44,22 @@ class MigrationFileGenerator
 
     /**
      * @param string        $name
+     * @param bool|string   $create
+     * @param bool|string   $update
      * @param Configuration $configuration
      *
      * @return string
      */
-    public function generate($name, Configuration $configuration)
+    public function generate($name, $create = false, $update = false, Configuration $configuration)
     {
-        $contents = $this->locator->locate($this->stub)->get();
+        $stub = $this->getStub($create, $update);
+
+        $contents = $this->locator->locate($stub)->get();
 
         $contents = $this->replacer->replace($contents, $this->variables, [
             $configuration->getMigrationsNamespace(),
-            $configuration->getNamingStrategy()->getClassName($name)
+            $configuration->getNamingStrategy()->getClassName($name),
+            $this->getTableName($create, $update)
         ]);
 
         $filename = $configuration->getNamingStrategy()->getFilename($name);
@@ -72,5 +71,42 @@ class MigrationFileGenerator
         );
 
         return $filename;
+    }
+
+    /**
+     * @param bool|string $create
+     * @param bool|string $update
+     *
+     * @return string
+     */
+    protected function getStub($create, $update)
+    {
+        $stub = 'blank';
+        if ($create) {
+            $stub = 'create';
+        }
+
+        if ($update) {
+            $stub = 'update';
+        }
+
+        return __DIR__ . DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR . $stub . '.stub';
+    }
+
+    /**
+     * @param bool|string $create
+     * @param bool|string $update
+     *
+     * @return null
+     */
+    protected function getTableName($create, $update)
+    {
+        if ($create) {
+            return $create;
+        }
+
+        if ($update) {
+            return $update;
+        }
     }
 }
