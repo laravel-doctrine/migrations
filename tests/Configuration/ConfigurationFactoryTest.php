@@ -53,31 +53,31 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
         $this->connection->shouldReceive('getConfiguration')->andReturn($this->configuration);
 
         $this->config->shouldReceive('get')->once()
-                     ->with('migrations.name', 'Doctrine Migrations')
-                     ->andReturn('Doctrine Migrations');
+                        ->with('migrations.name', 'Doctrine Migrations')
+                        ->andReturn('Doctrine Migrations');
         $this->config->shouldReceive('get')->once()
-                     ->with('migrations.namespace', 'Database\\Migrations')
-                     ->andReturn('Database\\Migrations');
+                        ->with('migrations.namespace', 'Database\\Migrations')
+                        ->andReturn('Database\\Migrations');
         $this->config->shouldReceive('get')->once()
-                     ->with('migrations.table', 'migrations')
-                     ->andReturn('migrations');
+                        ->with('migrations.table', 'migrations')
+                        ->andReturn('migrations');
 
         $this->config->shouldReceive('get')->once()
-                     ->with('migrations.schema.filter', '/^(?).*$/')
-                     ->andReturn('migrations');
+                        ->with('migrations.schema.filter', '/^(?).*$/')
+                        ->andReturn('migrations');
         $this->configuration->shouldReceive('setFilterSchemaAssetsExpression')
                             ->with('/^(?).*$/')->once();
 
         $this->config->shouldReceive('get')->once()
-                     ->with('migrations.naming_strategy', DefaultNamingStrategy::class)
-                     ->andReturn(DefaultNamingStrategy::class);
+                        ->with('migrations.naming_strategy', DefaultNamingStrategy::class)
+                        ->andReturn(DefaultNamingStrategy::class);
         $this->container->shouldReceive('make')->with(DefaultNamingStrategy::class)
                         ->once()
                         ->andReturn(new DefaultNamingStrategy());
 
         $this->config->shouldReceive('get')->once()
-                     ->with('migrations.directory', database_path('migrations'))
-                     ->andReturn(database_path('migrations'));
+                        ->with('migrations.directory', database_path('migrations'))
+                        ->andReturn(database_path('migrations'));
 
         $configuration = $this->factory->make($this->connection);
 
@@ -95,6 +95,9 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
     }
 }
 
+/**
+ * @param string $path
+ */
 function database_path($path)
 {
     return __DIR__ . '/../stubs/' . $path;

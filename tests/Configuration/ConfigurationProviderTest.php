@@ -43,12 +43,12 @@ class ConfigurationProviderTest extends PHPUnit_Framework_TestCase
     public function test_can_get_configuration_for_default_connection()
     {
         $this->registry->shouldReceive('getConnection')
-                       ->with(null)
-                       ->andReturn($this->connection);
+                        ->with(null)
+                        ->andReturn($this->connection);
 
         $this->factory->shouldReceive('make')
-                      ->with($this->connection)
-                      ->andReturn('configuration');
+                        ->with($this->connection)
+                        ->andReturn('configuration');
 
         $this->assertEquals('configuration', $this->provider->getForConnection());
     }
@@ -56,12 +56,12 @@ class ConfigurationProviderTest extends PHPUnit_Framework_TestCase
     public function test_can_get_configuration_for_specific_connection()
     {
         $this->registry->shouldReceive('getConnection')
-                       ->with('connection')
-                       ->andReturn($this->connection);
+                        ->with('connection')
+                        ->andReturn($this->connection);
 
         $this->factory->shouldReceive('make')
-                      ->with($this->connection)
-                      ->andReturn('configuration');
+                        ->with($this->connection)
+                        ->andReturn('configuration');
 
         $this->assertEquals('configuration', $this->provider->getForConnection('connection'));
     }
