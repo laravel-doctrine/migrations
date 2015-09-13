@@ -22,8 +22,6 @@ class ConfigurationFactory
     /**
      * @param Repository $config
      * @param Container  $container
-     *
-     * @internal param NamingStrategy $namingStrategy
      */
     public function __construct(Repository $config, Container $container)
     {
@@ -40,7 +38,7 @@ class ConfigurationFactory
     {
         $configuration = new Configuration($connection);
 
-        $configuration->setName($this->config->get('migrations.name', 'DoctrineMigrations'));
+        $configuration->setName($this->config->get('migrations.name', 'Doctrine Migrations'));
         $configuration->setMigrationsNamespace($this->config->get('migrations.namespace', 'Database\\Migrations'));
         $configuration->setMigrationsTableName($this->config->get('migrations.table', 'migrations'));
 
