@@ -5,7 +5,7 @@ namespace LaravelDoctrine\Migrations\Configuration;
 use Doctrine\DBAL\Connection;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
-use LaravelDoctrine\Migrations\Naming\LaravelNamingStrategy;
+use LaravelDoctrine\Migrations\Naming\DefaultNamingStrategy;
 
 class ConfigurationFactory
 {
@@ -44,8 +44,12 @@ class ConfigurationFactory
         $configuration->setMigrationsNamespace($this->config->get('migrations.namespace', 'Database\\Migrations'));
         $configuration->setMigrationsTableName($this->config->get('migrations.table', 'migrations'));
 
+        $configuration->getConnection()->getConfiguration()->setFilterSchemaAssetsExpression(
+            $this->config->get('migrations.schema.filter', '/^(?).*$/')
+        );
+
         $configuration->setNamingStrategy($this->container->make(
-            $this->config->get('migrations.naming_strategy', LaravelNamingStrategy::class)
+            $this->config->get('migrations.naming_strategy', DefaultNamingStrategy::class)
         ));
 
         $configuration->setMigrationFinder($configuration->getNamingStrategy()->getFinder());

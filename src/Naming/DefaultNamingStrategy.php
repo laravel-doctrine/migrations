@@ -8,21 +8,17 @@ use Doctrine\DBAL\Migrations\Finder\RecursiveRegexFinder;
 class DefaultNamingStrategy implements NamingStrategy
 {
     /**
-     * @param string $input
-     *
      * @return string
      */
-    public function getFilename($input)
+    public function getFilename()
     {
         return 'Version' . date('YmdHis');
     }
 
     /**
-     * @param string $input
-     *
      * @return string
      */
-    public function getClassName($input)
+    public function getClassName()
     {
         return 'Version' . date('YmdHis');
     }

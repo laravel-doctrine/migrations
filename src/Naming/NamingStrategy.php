@@ -7,18 +7,14 @@ use Doctrine\DBAL\Migrations\Finder\MigrationFinderInterface;
 interface NamingStrategy
 {
     /**
-     * @param string $input
-     *
      * @return string
      */
-    public function getFilename($input);
+    public function getFilename();
 
     /**
-     * @param string $input
-     *
      * @return string
      */
-    public function getClassName($input);
+    public function getClassName();
 
     /**
      * @return MigrationFinderInterface
