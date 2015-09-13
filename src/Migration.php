@@ -32,11 +32,11 @@ class Migration
      */
     public function __construct(Configuration $configuration, $version = 'latest')
     {
+        $this->configuration = $configuration;
         $this->makeMigration($configuration);
         $this->setVersion($configuration, $version);
 
         $this->checkIfNotExecutedUnavailableMigrations($configuration);
-        $this->configuration = $configuration;
     }
 
     /**
