@@ -30,7 +30,7 @@ class Table
      * Specify the primary key(s) for the table.
      *
      * @param string $columns
-     * @param string       $name
+     * @param string $name
      *
      * @return Blueprint
      */

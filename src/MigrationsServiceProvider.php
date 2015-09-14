@@ -7,6 +7,7 @@ use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
 use LaravelDoctrine\Migrations\Console\DiffCommand;
 use LaravelDoctrine\Migrations\Console\GenerateCommand;
 use LaravelDoctrine\Migrations\Console\MigrateCommand;
+use LaravelDoctrine\Migrations\Console\StatusCommand;
 
 class MigrationsServiceProvider extends ServiceProvider
 {
@@ -39,7 +40,8 @@ class MigrationsServiceProvider extends ServiceProvider
         $this->commands([
             GenerateCommand::class,
             MigrateCommand::class,
-            DiffCommand::class
+            DiffCommand::class,
+            StatusCommand::class
         ]);
     }
 
