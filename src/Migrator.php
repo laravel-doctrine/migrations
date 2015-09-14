@@ -37,7 +37,9 @@ class Migrator
     {
         $version->execute($direction, $dryRun, $timeQueries);
 
-        $this->note($version->getVersion(), $version, $timeQueries);
+        $verb = $direction === 'down' ? 'Rolled back' : 'Migrated';
+
+        $this->note($version->getVersion(), $version, $timeQueries, $verb);
     }
 
     /**
@@ -64,7 +66,9 @@ class Migrator
 
         $version->writeSqlFile($path, $direction);
 
-        $this->note($version->getVersion(), $version, false);
+        $verb = $direction === 'down' ? 'Rolled back' : 'Migrated';
+
+        $this->note($version->getVersion(), $version, false, $verb);
     }
 
     /**
@@ -89,7 +93,7 @@ class Migrator
         foreach ($sql as $versionName => $sql) {
             $this->note(
                 $versionName,
-                $migration->getVersion(),
+                $migration->getConfiguration()->getVersion($versionName),
                 $timeQueries
             );
         }
@@ -99,10 +103,11 @@ class Migrator
      * @param         $versionName
      * @param Version $version
      * @param bool    $timeQueries
+     * @param string  $verb
      */
-    protected function note($versionName, Version $version, $timeQueries = false)
+    protected function note($versionName, Version $version, $timeQueries = false, $verb = 'Migrated')
     {
-        $msg = "<info>Migrated:</info> $versionName";
+        $msg = "<info>{$verb}:</info> $versionName";
 
         if ($timeQueries) {
             $msg .= " ({$version->getTime()}s)";

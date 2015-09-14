@@ -1,5 +1,6 @@
 <?php
 
+use Doctrine\DBAL\Migrations\Version;
 use LaravelDoctrine\Migrations\Configuration\Configuration;
 use LaravelDoctrine\Migrations\Migration;
 use LaravelDoctrine\Migrations\Migrator;
@@ -34,6 +35,8 @@ class MigratorTest extends PHPUnit_Framework_TestCase
     public function test_migrate()
     {
         $this->migration->shouldReceive('getMigration')->andReturn($this->dbalMig);
+        $this->migration->shouldReceive('getConfiguration')->andReturn($this->configuration);
+        $this->configuration->shouldReceive('getVersion')->andReturn(m::mock(Version::class));
         $this->migration->shouldReceive('getVersion')->andReturn('version1');
         $this->dbalMig->shouldReceive('migrate')->with('version1', false, false)->andReturn([
             'version1' => 'SQL'
