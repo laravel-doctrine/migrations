@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
 use LaravelDoctrine\Migrations\Console\DiffCommand;
 use LaravelDoctrine\Migrations\Console\GenerateCommand;
+use LaravelDoctrine\Migrations\Console\LatestCommand;
 use LaravelDoctrine\Migrations\Console\MigrateCommand;
 use LaravelDoctrine\Migrations\Console\StatusCommand;
 use LaravelDoctrine\Migrations\Console\VersionCommand;
@@ -43,7 +44,8 @@ class MigrationsServiceProvider extends ServiceProvider
             MigrateCommand::class,
             DiffCommand::class,
             StatusCommand::class,
-            VersionCommand::class
+            VersionCommand::class,
+            LatestCommand::class
         ]);
     }
 
