@@ -5,6 +5,7 @@ namespace LaravelDoctrine\Migrations;
 use Illuminate\Support\ServiceProvider;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
 use LaravelDoctrine\Migrations\Console\DiffCommand;
+use LaravelDoctrine\Migrations\Console\ExecuteCommand;
 use LaravelDoctrine\Migrations\Console\GenerateCommand;
 use LaravelDoctrine\Migrations\Console\LatestCommand;
 use LaravelDoctrine\Migrations\Console\MigrateCommand;
@@ -40,12 +41,13 @@ class MigrationsServiceProvider extends ServiceProvider
         $this->mergeConfig();
 
         $this->commands([
-            GenerateCommand::class,
-            MigrateCommand::class,
             DiffCommand::class,
+            LatestCommand::class,
             StatusCommand::class,
+            MigrateCommand::class,
+            ExecuteCommand::class,
             VersionCommand::class,
-            LatestCommand::class
+            GenerateCommand::class
         ]);
     }
 

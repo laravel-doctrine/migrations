@@ -112,14 +112,16 @@ class VersionCommand extends Command
         if ($this->markMigrated && $this->configuration->hasVersionMigrated($version)) {
             $marked = true;
             if (!$all) {
-                throw new InvalidArgumentException(sprintf('The version "%s" already exists in the version table.', $version));
+                throw new InvalidArgumentException(sprintf('The version "%s" already exists in the version table.',
+                    $version));
             }
         }
 
         if (!$this->markMigrated && !$this->configuration->hasVersionMigrated($version)) {
             $marked = false;
             if (!$all) {
-                throw new InvalidArgumentException(sprintf('The version "%s" does not exists in the version table.', $version));
+                throw new InvalidArgumentException(sprintf('The version "%s" does not exists in the version table.',
+                    $version));
             }
         }
 
@@ -127,10 +129,10 @@ class VersionCommand extends Command
             $filename = $this->configuration->getNamingStrategy()->getFilename($versionName);
             if ($this->markMigrated) {
                 $version->markMigrated();
-                $this->info('<info>Migrated:</info> ' . $filename);
+                $this->info('<info>Added version to table:</info> ' . $filename);
             } else {
                 $version->markNotMigrated();
-                $this->info('<info>Rolled back:</info> ' . $filename);
+                $this->info('<info>Removed version from table:</info> ' . $filename);
             }
         }
     }

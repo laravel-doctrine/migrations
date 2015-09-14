@@ -2,6 +2,8 @@
 
 namespace LaravelDoctrine\Migrations;
 
+use Doctrine\DBAL\Migrations\Version;
+
 class Migrator
 {
     /**
@@ -26,6 +28,19 @@ class Migrator
     }
 
     /**
+     * @param Version    $version
+     * @param            $direction
+     * @param bool|false $dryRun
+     * @param bool|false $timeQueries
+     */
+    public function execute(Version $version, $direction, $dryRun = false, $timeQueries = false)
+    {
+        $version->execute($direction, $dryRun, $timeQueries);
+
+        $this->note($version->getVersion(), $version, $timeQueries);
+    }
+
+    /**
      * @param Migration   $migration
      * @param string|bool $path
      */
@@ -36,6 +51,20 @@ class Migrator
         $sql = $migration->getMigration()->writeSqlFile($path, $migration->getVersion());
 
         $this->writeNotes($migration, false, $sql);
+    }
+
+    /**
+     * @param Version $version
+     * @param         $direction
+     * @param         $path
+     */
+    public function executeToFile(Version $version, $direction, $path)
+    {
+        $path = is_bool($path) ? getcwd() : $path;
+
+        $version->writeSqlFile($path, $direction);
+
+        $this->note($version->getVersion(), $version, false);
     }
 
     /**
@@ -57,15 +86,28 @@ class Migrator
             $this->notes[] = '<info>Nothing to migrate.</info>';
         }
 
-        foreach ($sql as $version => $sql) {
-            $msg = "<info>Migrated:</info> $version";
-
-            if ($timeQueries) {
-                $versionInstance = $migration->getConfiguration()->getVersion($version);
-                $msg .= " ({$versionInstance->getTime()}s)";
-            }
-
-            $this->notes[] = $msg;
+        foreach ($sql as $versionName => $sql) {
+            $this->note(
+                $versionName,
+                $migration->getVersion(),
+                $timeQueries
+            );
         }
+    }
+
+    /**
+     * @param         $versionName
+     * @param Version $version
+     * @param bool    $timeQueries
+     */
+    protected function note($versionName, Version $version, $timeQueries = false)
+    {
+        $msg = "<info>Migrated:</info> $versionName";
+
+        if ($timeQueries) {
+            $msg .= " ({$version->getTime()}s)";
+        }
+
+        $this->notes[] = $msg;
     }
 }

@@ -18,7 +18,7 @@ class LatestCommand extends Command
      * @var string
      */
     protected $description = 'Outputs the latest version number';
-    
+
     /**
      * Execute the console command.
      *
