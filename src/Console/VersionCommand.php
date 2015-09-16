@@ -6,6 +6,7 @@ use Doctrine\DBAL\Migrations\MigrationException;
 use Illuminate\Console\Command;
 use InvalidArgumentException;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
+use LaravelDoctrine\Migrations\Configuration\Configuration;
 
 class VersionCommand extends Command
 {
