@@ -12,7 +12,9 @@ class MigrationFileGenerator
     protected $variables = [
         '<namespace>',
         '<class>',
-        '<table>'
+        '<table>',
+        '<up>',
+        '<down>'
     ];
 
     /**
@@ -43,26 +45,34 @@ class MigrationFileGenerator
     }
 
     /**
-     * @param string        $name
-     * @param bool|string   $create
-     * @param bool|string   $update
      * @param Configuration $configuration
+     * @param bool          $create
+     * @param bool          $update
+     * @param null          $up
+     * @param null          $down
      *
      * @return string
      */
-    public function generate($name, $create = false, $update = false, Configuration $configuration)
-    {
+    public function generate(
+        Configuration $configuration,
+        $create = false,
+        $update = false,
+        $up = null,
+        $down = null
+    ) {
         $stub = $this->getStub($create, $update);
 
         $contents = $this->locator->locate($stub)->get();
 
         $contents = $this->replacer->replace($contents, $this->variables, [
             $configuration->getMigrationsNamespace(),
-            $configuration->getNamingStrategy()->getClassName($name),
-            $this->getTableName($create, $update)
+            $configuration->getNamingStrategy()->getClassName(),
+            $this->getTableName($create, $update),
+            $up ? $this->tabbedNewLine($up) : null,
+            $down ? $this->tabbedNewLine($down) : null
         ]);
 
-        $filename = $configuration->getNamingStrategy()->getFilename($name);
+        $filename = $configuration->getNamingStrategy()->getFilename();
 
         $this->writer->write(
             $contents,
@@ -108,5 +118,15 @@ class MigrationFileGenerator
         if ($update) {
             return $update;
         }
+    }
+
+    /**
+     * @param $sql
+     *
+     * @return string
+     */
+    protected function tabbedNewLine($sql)
+    {
+        return implode("\n        ", explode("\n", $sql));
     }
 }

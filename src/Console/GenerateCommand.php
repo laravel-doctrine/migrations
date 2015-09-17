@@ -12,7 +12,7 @@ class GenerateCommand extends Command
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'doctrine:migrations:generate {name}
+    protected $signature = 'doctrine:migrations:generate
     {--create= : The table to be created.}
     {--table= : The table to migrate.}';
 
@@ -32,10 +32,9 @@ class GenerateCommand extends Command
         $configuration = $provider->getForConnection();
 
         $filename = $generator->generate(
-            $this->argument('name'),
+            $configuration,
             $this->option('create'),
-            $this->option('table'),
-            $configuration
+            $this->option('table')
         );
 
         $this->line(sprintf('<info>Created Migration:</info> %s', $filename));

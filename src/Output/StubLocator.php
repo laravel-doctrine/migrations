@@ -26,6 +26,14 @@ class StubLocator
      */
     public function get()
     {
-        return file_get_contents($this->location);
+        return file_get_contents($this->getLocation());
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->location;
     }
 }

@@ -4,8 +4,16 @@ namespace LaravelDoctrine\Migrations;
 
 use Illuminate\Support\ServiceProvider;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
+use LaravelDoctrine\Migrations\Console\DiffCommand;
+use LaravelDoctrine\Migrations\Console\ExecuteCommand;
 use LaravelDoctrine\Migrations\Console\GenerateCommand;
+use LaravelDoctrine\Migrations\Console\LatestCommand;
 use LaravelDoctrine\Migrations\Console\MigrateCommand;
+use LaravelDoctrine\Migrations\Console\RefreshCommand;
+use LaravelDoctrine\Migrations\Console\ResetCommand;
+use LaravelDoctrine\Migrations\Console\RollbackCommand;
+use LaravelDoctrine\Migrations\Console\StatusCommand;
+use LaravelDoctrine\Migrations\Console\VersionCommand;
 
 class MigrationsServiceProvider extends ServiceProvider
 {
@@ -36,8 +44,16 @@ class MigrationsServiceProvider extends ServiceProvider
         $this->mergeConfig();
 
         $this->commands([
-            GenerateCommand::class,
-            MigrateCommand::class
+            DiffCommand::class,
+            ResetCommand::class,
+            LatestCommand::class,
+            StatusCommand::class,
+            MigrateCommand::class,
+            ExecuteCommand::class,
+            VersionCommand::class,
+            RefreshCommand::class,
+            RollbackCommand::class,
+            GenerateCommand::class
         ]);
     }
 
