@@ -50,7 +50,7 @@ class ConfigurationFactory
             $this->config->get('migrations.naming_strategy', DefaultNamingStrategy::class)
         ));
 
-        $configuration->setMigrationFinder($configuration->getNamingStrategy()->getFinder());
+        $configuration->setMigrationsFinder($configuration->getNamingStrategy()->getFinder());
 
         $directory = $this->config->get('migrations.directory', database_path('migrations'));
         $configuration->setMigrationsDirectory($directory);
