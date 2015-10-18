@@ -14,7 +14,8 @@ class RollbackCommand extends Command
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'doctrine:migrations:rollback [version=]
+    protected $signature = 'doctrine:migrations:rollback
+    {--migration-version= : For a specific migration version.}
     {--connection= : For a specific connection.}';
 
     /**
@@ -33,10 +34,11 @@ class RollbackCommand extends Command
             $this->option('connection')
         );
 
-        $version = $this->argument('version') ?: $configuration->getCurrentVersion();
+        $version = $this->option('migration-version') ?: $configuration->getCurrentVersion();
 
         if ($version == 0) {
-            return $this->error('No migrations to be rollbacked');
+            $this->error('No migrations to be rollbacked');
+            return;
         }
 
         $this->call('doctrine:migrations:execute', [
