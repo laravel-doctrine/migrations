@@ -38,6 +38,7 @@ class RollbackCommand extends Command
 
         if ($version == 0) {
             $this->error('No migrations to be rollbacked');
+
             return;
         }
 
