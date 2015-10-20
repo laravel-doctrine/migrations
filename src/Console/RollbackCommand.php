@@ -14,7 +14,7 @@ class RollbackCommand extends Command
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'doctrine:migrations:rollback [version=]
+    protected $signature = 'doctrine:migrations:rollback {version?}
     {--connection= : For a specific connection.}';
 
     /**
