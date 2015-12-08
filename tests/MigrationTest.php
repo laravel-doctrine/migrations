@@ -58,6 +58,8 @@ class MigrationTest extends PHPUnit_Framework_TestCase
             $this->configuration,
             'latest'
         );
+
+        $migration->checkIfNotExecutedUnavailableMigrations();
     }
 
     public function test_throw_exception_when_no_version()
