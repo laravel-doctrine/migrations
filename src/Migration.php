@@ -35,8 +35,6 @@ class Migration
         $this->configuration = $configuration;
         $this->makeMigration($configuration);
         $this->setVersion($configuration, $version);
-
-        $this->checkIfNotExecutedUnavailableMigrations($configuration);
     }
 
     /**
@@ -47,23 +45,6 @@ class Migration
     protected function makeMigration(Configuration $configuration)
     {
         return $this->migration = new DBALMigration($configuration);
-    }
-
-    /**
-     * @param Configuration $configuration
-     *
-     * @throws ExecutedUnavailableMigrationsException
-     */
-    protected function checkIfNotExecutedUnavailableMigrations(Configuration $configuration)
-    {
-        $executedUnavailableMigrations = array_diff(
-            $configuration->getMigratedVersions(),
-            $configuration->getAvailableVersions()
-        );
-
-        if (count($executedUnavailableMigrations) > 0) {
-            throw new ExecutedUnavailableMigrationsException($executedUnavailableMigrations);
-        }
     }
 
     /**
@@ -94,6 +75,23 @@ class Migration
         }
 
         $this->version = $version;
+    }
+
+    /**
+     * @throws ExecutedUnavailableMigrationsException
+     */
+    public function checkIfNotExecutedUnavailableMigrations()
+    {
+        $configuration = $this->configuration;
+
+        $executedUnavailableMigrations = array_diff(
+            $configuration->getMigratedVersions(),
+            $configuration->getAvailableVersions()
+        );
+
+        if (count($executedUnavailableMigrations) > 0) {
+            throw new ExecutedUnavailableMigrationsException($executedUnavailableMigrations);
+        }
     }
 
     /**

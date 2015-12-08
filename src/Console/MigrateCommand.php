@@ -56,10 +56,14 @@ class MigrateCommand extends Command
                 $configuration,
                 $this->argument('version')
             );
-        } catch (ExecutedUnavailableMigrationsException $e) {
-            $this->handleExecutedUnavailableMigrationsException($e, $configuration);
         } catch (MigrationVersionException $e) {
             $this->error($e->getMessage());
+        }
+
+        try {
+            $migration->checkIfNotExecutedUnavailableMigrations();
+        } catch (ExecutedUnavailableMigrationsException $e) {
+            $this->handleExecutedUnavailableMigrationsException($e, $configuration);
         }
 
         if ($path = $this->option('write-sql')) {
