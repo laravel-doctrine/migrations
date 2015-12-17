@@ -6,9 +6,19 @@ php:
   - 7.0
   - hhvm
 
+matrix:
+  include:
+    - php: 5.5
+      env: deps=low
+
+env:
+  global:
+    - deps=no
+
 before_script:
   - travis_retry composer self-update
-  - travis_retry composer install --prefer-source --no-interaction
+  - if [ "$deps" = "no" ]; then travis_retry composer install --prefer-source --no-interaction; fi;
+  - if [ "$deps" = "low" ]; then travis_retry composer --prefer-source --prefer-lowest --prefer-stable update; fi;
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
