@@ -1,6 +1,6 @@
 # Laravel Doctrine Migrations
 
-<img src="https://cloud.githubusercontent.com/assets/7728097/9831721/1ec0fdbc-5962-11e5-8c80-6f03f8275fbd.jpg"/>
+<img src="https://cloud.githubusercontent.com/assets/7728097/12727192/10d2b2ca-c91c-11e5-9c06-13a2ea4ed364.jpg"/>
 
 [![GitHub release](https://img.shields.io/github/release/laravel-doctrine/migrations.svg?style=flat-square)](https://packagist.org/packages/laravel-doctrine/migrations)
 [![Travis](https://img.shields.io/travis/laravel-doctrine/migrations.svg?style=flat-square)](https://travis-ci.org/laravel-doctrine/migrations)
