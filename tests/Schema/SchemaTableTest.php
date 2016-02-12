@@ -273,7 +273,7 @@ class SchemaTableTest extends PHPUnit_Framework_TestCase
     public function test_binary()
     {
         $column = m::mock(Column::class);
-        $this->dbal->shouldReceive('addColumn')->with('column', 'binary')->andReturn($column);
+        $this->dbal->shouldReceive('addColumn')->with('column', 'binary', ['length' => 255])->andReturn($column);
         $column->shouldReceive('setNotnull')->with(false)->once();
         $this->table->binary('column');
     }

@@ -423,9 +423,9 @@ class Table
      *
      * @return \Doctrine\DBAL\Schema\Column
      */
-    public function binary($column)
+    public function binary($column, $length = 255)
     {
-        return $this->table->addColumn($column, Type::BINARY)->setNotnull(false);
+        return $this->table->addColumn($column, Type::BINARY, compact('length'))->setNotnull(false);
     }
 
     /**
