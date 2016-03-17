@@ -26,7 +26,7 @@ class SchemaTableTest extends PHPUnit_Framework_TestCase
     {
         $this->dbal->shouldReceive('addColumn')->with('guid', 'guid');
 
-        $this->table->string('guid');
+        $this->table->guid('guid');
     }
 
     public function test_primary()
