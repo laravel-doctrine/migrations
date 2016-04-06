@@ -27,6 +27,19 @@ class Table
     }
 
     /**
+     * Create a new guid column on the table.
+     *
+     * @param string $column
+     * @param int    $length
+     *
+     * @return \Doctrine\DBAL\Schema\Column
+     */
+    public function guid($column)
+    {
+        return $this->table->addColumn($column, Type::GUID);
+    }
+
+    /**
      * Specify the primary key(s) for the table.
      *
      * @param string $columns
