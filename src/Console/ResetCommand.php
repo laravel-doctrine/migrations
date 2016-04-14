@@ -98,22 +98,22 @@ class ResetCommand extends Command
     {
         return [
             'mssql' => [
-                'needsTableIsolation' => true,
+                'needsTableIsolation'   => true,
                 'enable'                => 'ALTER TABLE %s NOCHECK CONSTRAINT ALL',
                 'disable'               => 'ALTER TABLE %s CHECK CONSTRAINT ALL',
             ],
             'mysql' => [
-                'needsTableIsolation' => false,
+                'needsTableIsolation'   => false,
                 'enable'                => 'SET FOREIGN_KEY_CHECKS = 1',
                 'disable'               => 'SET FOREIGN_KEY_CHECKS = 0',
             ],
             'postgresql' => [
-                'needsTableIsolation' => true,
+                'needsTableIsolation'   => true,
                 'enable'                => 'ALTER TABLE %s ENABLE TRIGGER ALL',
                 'disable'               => 'ALTER TABLE %s DISABLE TRIGGER ALL',
             ],
             'sqlite' => [
-                'needsTableIsolation' => false,
+                'needsTableIsolation'   => false,
                 'enable'                => 'PRAGMA foreign_keys = ON',
                 'disable'               => 'PRAGMA foreign_keys = OFF',
             ],
