@@ -63,7 +63,7 @@ class ResetCommand extends Command
     private function throwExceptionIfPlatformIsNotSupported()
     {
         $platformName = $this->connection->getDatabasePlatform()->getName();
-        
+
         if (!array_key_exists($platformName, $this->getCardinalityCheckInstructions())) {
             throw new Exception(sprintf('The platform %s is not supported', $platformName));
         }
@@ -96,27 +96,27 @@ class ResetCommand extends Command
      */
     private function getCardinalityCheckInstructions()
     {
-        return array(
-            'mssql' => array(
+        return [
+            'mssql' => [
                 'needsTableIsolation' => true,
-                'enable' => 'ALTER TABLE %s NOCHECK CONSTRAINT ALL',
-                'disable' => 'ALTER TABLE %s CHECK CONSTRAINT ALL',
-            ),
-            'mysql' => array(
+                'enable'    => 'ALTER TABLE %s NOCHECK CONSTRAINT ALL',
+                'disable'   => 'ALTER TABLE %s CHECK CONSTRAINT ALL',
+            ],
+            'mysql' => [
                 'needsTableIsolation' => false,
-                'enable' => 'SET FOREIGN_KEY_CHECKS = 1',
-                'disable' => 'SET FOREIGN_KEY_CHECKS = 0',
-            ),
-            'postgresql' => array(
+                'enable'    => 'SET FOREIGN_KEY_CHECKS = 1',
+                'disable'   => 'SET FOREIGN_KEY_CHECKS = 0',
+            ],
+            'postgresql' => [
                 'needsTableIsolation' => true,
-                'enable' => 'ALTER TABLE %s ENABLE TRIGGER ALL',
-                'disable' => 'ALTER TABLE %s DISABLE TRIGGER ALL',
-            ),
-            'sqlite' => array(
+                'enable'    => 'ALTER TABLE %s ENABLE TRIGGER ALL',
+                'disable'   => 'ALTER TABLE %s DISABLE TRIGGER ALL',
+            ],
+            'sqlite' => [
                 'needsTableIsolation' => false,
-                'enable' => 'PRAGMA foreign_keys = ON',
-                'disable' => 'PRAGMA foreign_keys = OFF',
-            ),
-        );
+                'enable'    => 'PRAGMA foreign_keys = ON',
+                'disable'   => 'PRAGMA foreign_keys = OFF',
+            ],
+        ];
     }
 }
