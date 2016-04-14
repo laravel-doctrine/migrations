@@ -2,6 +2,8 @@
 
 namespace LaravelDoctrine\Migrations\Console;
 
+use Doctrine\DBAL\Connection;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
@@ -23,6 +25,11 @@ class ResetCommand extends Command
     protected $description = 'Reset all migrations';
 
     /**
+     * @var Connection
+     */
+    private $connection;
+
+    /**
      * Execute the console command.
      *
      * @param ConfigurationProvider $provider
@@ -32,18 +39,84 @@ class ResetCommand extends Command
         $configuration = $provider->getForConnection(
             $this->option('connection')
         );
+        $this->connection = $configuration->getConnection();
 
-        $connection = $configuration->getConnection();
-        $schema     = $connection->getSchemaManager();
-
-        $connection->query(sprintf('SET FOREIGN_KEY_CHECKS = 0;'));
-
-        $tables = $schema->listTableNames();
-        foreach ($tables as $table) {
-            $schema->dropTable($table);
-        }
-        $connection->query(sprintf('SET FOREIGN_KEY_CHECKS = 1;'));
+        $this->safelyDropTables();
 
         $this->info('Database was reset');
+    }
+
+    private function safelyDropTables()
+    {
+        $this->throwExceptionIfPlatformIsNotSupported();
+
+        $schema = $this->connection->getSchemaManager();
+        $tables = $schema->listTableNames();
+        foreach ($tables as $table) {
+            $this->safelyDropTable($table);
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function throwExceptionIfPlatformIsNotSupported()
+    {
+        $platformName = $this->connection->getDatabasePlatform()->getName();
+        
+        if (!array_key_exists($platformName, $this->getCardinalityCheckInstructions())) {
+            throw new Exception(sprintf('The platform %s is not supported', $platformName));
+        }
+    }
+
+    /**
+     * @param string $table
+     */
+    private function safelyDropTable($table)
+    {
+        $platformName = $this->connection->getDatabasePlatform()->getName();
+        $instructions = $this->getCardinalityCheckInstructions()[$platformName];
+
+        $queryDisablingCardinalityChecks = $instructions['needsTableIsolation'] ?
+                                                sprintf($instructions['disable'], $table) :
+                                                $instructions['disable'];
+        $this->connection->query($queryDisablingCardinalityChecks);
+
+        $schema = $this->connection->getSchemaManager();
+        $schema->dropTable($table);
+
+        $queryEnablingCardinalityChecks = $instructions['needsTableIsolation'] ?
+                                                sprintf($instructions['enable'], $table) :
+                                                $instructions['enable'];
+        $this->connection->query($queryEnablingCardinalityChecks);
+    }
+
+    /**
+     * @return array
+     */
+    private function getCardinalityCheckInstructions()
+    {
+        return array(
+            'mssql' => array(
+                'needsTableIsolation' => true,
+                'enable' => 'ALTER TABLE %s NOCHECK CONSTRAINT ALL',
+                'disable' => 'ALTER TABLE %s CHECK CONSTRAINT ALL',
+            ),
+            'mysql' => array(
+                'needsTableIsolation' => false,
+                'enable' => 'SET FOREIGN_KEY_CHECKS = 1',
+                'disable' => 'SET FOREIGN_KEY_CHECKS = 0',
+            ),
+            'postgresql' => array(
+                'needsTableIsolation' => true,
+                'enable' => 'ALTER TABLE %s ENABLE TRIGGER ALL',
+                'disable' => 'ALTER TABLE %s DISABLE TRIGGER ALL',
+            ),
+            'sqlite' => array(
+                'needsTableIsolation' => false,
+                'enable' => 'PRAGMA foreign_keys = ON',
+                'disable' => 'PRAGMA foreign_keys = OFF',
+            ),
+        );
     }
 }
