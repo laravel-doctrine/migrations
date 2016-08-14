@@ -47,7 +47,7 @@ class ConfigurationProviderTest extends PHPUnit_Framework_TestCase
                         ->andReturn($this->connection);
 
         $this->factory->shouldReceive('make')
-                        ->with($this->connection)
+                        ->with($this->connection, null)
                         ->andReturn('configuration');
 
         $this->assertEquals('configuration', $this->provider->getForConnection());
@@ -60,7 +60,7 @@ class ConfigurationProviderTest extends PHPUnit_Framework_TestCase
                         ->andReturn($this->connection);
 
         $this->factory->shouldReceive('make')
-                        ->with($this->connection)
+                        ->with($this->connection, 'connection')
                         ->andReturn('configuration');
 
         $this->assertEquals('configuration', $this->provider->getForConnection('connection'));

@@ -52,34 +52,106 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
     {
         $this->connection->shouldReceive('getConfiguration')->andReturn($this->configuration);
 
-        $this->config->shouldReceive('get')->once()
-                        ->with('migrations.name', 'Doctrine Migrations')
-                        ->andReturn('Doctrine Migrations');
-        $this->config->shouldReceive('get')->once()
-                        ->with('migrations.namespace', 'Database\\Migrations')
-                        ->andReturn('Database\\Migrations');
-        $this->config->shouldReceive('get')->once()
-                        ->with('migrations.table', 'migrations')
-                        ->andReturn('migrations');
+        $this->config->shouldReceive('get')
+            ->once()
+            ->with('migrations.default', [])
+            ->andReturn([
+                'name' => 'Doctrine Migrations',
+                'namespace' => 'Database\\Migrations',
+                'table' => 'migrations',
+                'schema.filter' => '/^(?).*$/',
+                'directory' => database_path('migrations'),
+                'naming_strategy' => DefaultNamingStrategy::class,
+            ])
+        ;
 
-        $this->config->shouldReceive('get')->once()
-                        ->with('migrations.schema.filter', '/^(?).*$/')
-                        ->andReturn('migrations');
-        $this->configuration->shouldReceive('setFilterSchemaAssetsExpression')
-                            ->with('/^(?).*$/')->once();
+        $this->configuration->shouldReceive('setFilterSchemaAssetsExpression')->with('/^(?).*$/')->once();
 
-        $this->config->shouldReceive('get')->once()
-                        ->with('migrations.naming_strategy', DefaultNamingStrategy::class)
-                        ->andReturn(DefaultNamingStrategy::class);
-        $this->container->shouldReceive('make')->with(DefaultNamingStrategy::class)
-                        ->once()
-                        ->andReturn(new DefaultNamingStrategy());
-
-        $this->config->shouldReceive('get')->once()
-                        ->with('migrations.directory', database_path('migrations'))
-                        ->andReturn(database_path('migrations'));
+        $this->container->shouldReceive('make')
+            ->with(DefaultNamingStrategy::class)
+            ->once()
+            ->andReturn(new DefaultNamingStrategy())
+        ;
 
         $configuration = $this->factory->make($this->connection);
+
+        $this->assertInstanceOf(Configuration::class, $configuration);
+        $this->assertEquals('Doctrine Migrations', $configuration->getName());
+        $this->assertEquals('Database\\Migrations', $configuration->getMigrationsNamespace());
+        $this->assertEquals('migrations', $configuration->getMigrationsTableName());
+        $this->assertInstanceOf(DefaultNamingStrategy::class, $configuration->getNamingStrategy());
+        $this->assertEquals(database_path('migrations'), $configuration->getMigrationsDirectory());
+    }
+
+    public function test_can_make_configuration_for_custom_entity_manager()
+    {
+        $this->connection->shouldReceive('getConfiguration')->andReturn($this->configuration);
+
+        $this->config->shouldReceive('has')
+            ->once()
+            ->with('migrations.custom_entity_manager')
+            ->andReturn(true)
+        ;
+        $this->config->shouldReceive('get')
+            ->once()
+            ->with('migrations.custom_entity_manager', [])
+            ->andReturn([
+                'name' => 'Migrations',
+                'namespace' => 'Database\\Migrations\\Custom',
+                'table' => 'migrations',
+                'schema.filter' => '/^(?).*$/',
+                'directory' => database_path('migrations/custom'),
+                'naming_strategy' => DefaultNamingStrategy::class,
+            ])
+        ;
+
+        $this->configuration->shouldReceive('setFilterSchemaAssetsExpression')->with('/^(?).*$/')->once();
+        $this->container->shouldReceive('make')
+            ->with(DefaultNamingStrategy::class)
+            ->once()
+            ->andReturn(new DefaultNamingStrategy())
+        ;
+
+        $configuration = $this->factory->make($this->connection, 'custom_entity_manager');
+
+        $this->assertInstanceOf(Configuration::class, $configuration);
+        $this->assertEquals('Migrations', $configuration->getName());
+        $this->assertEquals('Database\\Migrations\\Custom', $configuration->getMigrationsNamespace());
+        $this->assertEquals('migrations', $configuration->getMigrationsTableName());
+        $this->assertInstanceOf(DefaultNamingStrategy::class, $configuration->getNamingStrategy());
+        $this->assertEquals(database_path('migrations/custom'), $configuration->getMigrationsDirectory());
+    }
+
+    public function test_returns_default_configuration_if_not_defined()
+    {
+        $this->connection->shouldReceive('getConfiguration')->andReturn($this->configuration);
+
+        $this->config->shouldReceive('has')
+            ->once()
+            ->with('migrations.custom_entity_manager')
+            ->andReturn(false)
+        ;
+        $this->config->shouldReceive('get')
+            ->once()
+            ->with('migrations.default', [])
+            ->andReturn([
+                'name' => 'Doctrine Migrations',
+                'namespace' => 'Database\\Migrations',
+                'table' => 'migrations',
+                'schema.filter' => '/^(?).*$/',
+                'directory' => database_path('migrations'),
+                'naming_strategy' => DefaultNamingStrategy::class,
+            ])
+        ;
+
+        $this->configuration->shouldReceive('setFilterSchemaAssetsExpression')->with('/^(?).*$/')->once();
+        $this->container->shouldReceive('make')
+            ->with(DefaultNamingStrategy::class)
+            ->once()
+            ->andReturn(new DefaultNamingStrategy())
+        ;
+
+        $configuration = $this->factory->make($this->connection, 'custom_entity_manager');
 
         $this->assertInstanceOf(Configuration::class, $configuration);
         $this->assertEquals('Doctrine Migrations', $configuration->getName());
