@@ -37,9 +37,9 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->container = m::mock(Container::class);
-        $this->config = m::mock(Repository::class);
-        $this->connection = m::mock(Connection::class);
+        $this->container     = m::mock(Container::class);
+        $this->config        = m::mock(Repository::class);
+        $this->connection    = m::mock(Connection::class);
         $this->configuration = m::mock(\Doctrine\DBAL\Configuration::class);
 
         $this->factory = new ConfigurationFactory(
@@ -56,11 +56,11 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
             ->once()
             ->with('migrations.default', [])
             ->andReturn([
-                'name' => 'Doctrine Migrations',
-                'namespace' => 'Database\\Migrations',
-                'table' => 'migrations',
-                'schema.filter' => '/^(?).*$/',
-                'directory' => database_path('migrations'),
+                'name'            => 'Doctrine Migrations',
+                'namespace'       => 'Database\\Migrations',
+                'table'           => 'migrations',
+                'schema.filter'   => '/^(?).*$/',
+                'directory'       => database_path('migrations'),
                 'naming_strategy' => DefaultNamingStrategy::class,
             ])
         ;
@@ -96,11 +96,11 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
             ->once()
             ->with('migrations.custom_entity_manager', [])
             ->andReturn([
-                'name' => 'Migrations',
-                'namespace' => 'Database\\Migrations\\Custom',
-                'table' => 'migrations',
-                'schema.filter' => '/^(?).*$/',
-                'directory' => database_path('migrations/custom'),
+                'name'            => 'Migrations',
+                'namespace'       => 'Database\\Migrations\\Custom',
+                'table'           => 'migrations',
+                'schema.filter'   => '/^(?).*$/',
+                'directory'       => database_path('migrations/custom'),
                 'naming_strategy' => DefaultNamingStrategy::class,
             ])
         ;
@@ -135,11 +135,11 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
             ->once()
             ->with('migrations.default', [])
             ->andReturn([
-                'name' => 'Doctrine Migrations',
-                'namespace' => 'Database\\Migrations',
-                'table' => 'migrations',
-                'schema.filter' => '/^(?).*$/',
-                'directory' => database_path('migrations'),
+                'name'            => 'Doctrine Migrations',
+                'namespace'       => 'Database\\Migrations',
+                'table'           => 'migrations',
+                'schema.filter'   => '/^(?).*$/',
+                'directory'       => database_path('migrations'),
                 'naming_strategy' => DefaultNamingStrategy::class,
             ])
         ;
