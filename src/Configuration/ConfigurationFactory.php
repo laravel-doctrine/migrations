@@ -26,7 +26,7 @@ class ConfigurationFactory
      */
     public function __construct(Repository $config, Container $container)
     {
-        $this->config    = $config;
+        $this->config = $config;
         $this->container = $container;
     }
 

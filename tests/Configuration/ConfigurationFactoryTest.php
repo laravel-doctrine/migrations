@@ -37,9 +37,9 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->container     = m::mock(Container::class);
-        $this->config        = m::mock(Repository::class);
-        $this->connection    = m::mock(Connection::class);
+        $this->container = m::mock(Container::class);
+        $this->config = m::mock(Repository::class);
+        $this->connection = m::mock(Connection::class);
         $this->configuration = m::mock(\Doctrine\DBAL\Configuration::class);
 
         $this->factory = new ConfigurationFactory(
