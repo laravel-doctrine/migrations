@@ -5,6 +5,7 @@ namespace LaravelDoctrine\Migrations\Configuration;
 use Doctrine\DBAL\Connection;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Collection;
 use LaravelDoctrine\Migrations\Naming\DefaultNamingStrategy;
 
 class ConfigurationFactory
@@ -38,9 +39,9 @@ class ConfigurationFactory
     public function make(Connection $connection, $name = null)
     {
         if ($name && $this->config->has('migrations.' . $name)) {
-            $config = collect($this->config->get('migrations.' . $name, []));
+            $config = new Collection($this->config->get('migrations.' . $name, []));
         } else {
-            $config = collect($this->config->get('migrations.default', []));
+            $config = new Collection($this->config->get('migrations.default', []));
         }
 
         $configuration = new Configuration($connection);
