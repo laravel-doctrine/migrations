@@ -30,8 +30,8 @@ class ConfigurationProviderTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->registry   = m::mock(ManagerRegistry::class);
-        $this->factory    = m::mock(ConfigurationFactory::class);
+        $this->registry = m::mock(ManagerRegistry::class);
+        $this->factory = m::mock(ConfigurationFactory::class);
         $this->connection = m::mock(Connection::class);
 
         $this->provider = new ConfigurationProvider(
