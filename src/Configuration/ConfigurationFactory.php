@@ -5,6 +5,7 @@ namespace LaravelDoctrine\Migrations\Configuration;
 use Doctrine\DBAL\Connection;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Collection;
 use LaravelDoctrine\Migrations\Naming\DefaultNamingStrategy;
 
 class ConfigurationFactory
@@ -31,28 +32,34 @@ class ConfigurationFactory
 
     /**
      * @param Connection $connection
+     * @param string     $name
      *
      * @return Configuration
      */
-    public function make(Connection $connection)
+    public function make(Connection $connection, $name = null)
     {
-        $configuration = new Configuration($connection);
+        if ($name && $this->config->has('migrations.' . $name)) {
+            $config = new Collection($this->config->get('migrations.' . $name, []));
+        } else {
+            $config = new Collection($this->config->get('migrations.default', []));
+        }
 
-        $configuration->setName($this->config->get('migrations.name', 'Doctrine Migrations'));
-        $configuration->setMigrationsNamespace($this->config->get('migrations.namespace', 'Database\\Migrations'));
-        $configuration->setMigrationsTableName($this->config->get('migrations.table', 'migrations'));
+        $configuration = new Configuration($connection);
+        $configuration->setName($config->get('name', 'Doctrine Migrations'));
+        $configuration->setMigrationsNamespace($config->get('namespace', 'Database\\Migrations'));
+        $configuration->setMigrationsTableName($config->get('table', 'migrations'));
 
         $configuration->getConnection()->getConfiguration()->setFilterSchemaAssetsExpression(
-            $this->config->get('migrations.schema.filter', '/^(?).*$/')
+            $config->get('schema.filter', '/^(?).*$/')
         );
 
         $configuration->setNamingStrategy($this->container->make(
-            $this->config->get('migrations.naming_strategy', DefaultNamingStrategy::class)
+            $config->get('naming_strategy', DefaultNamingStrategy::class)
         ));
 
         $configuration->setMigrationsFinder($configuration->getNamingStrategy()->getFinder());
 
-        $directory = $this->config->get('migrations.directory', database_path('migrations'));
+        $directory = $config->get('directory', database_path('migrations'));
         $configuration->setMigrationsDirectory($directory);
         $configuration->registerMigrationsFromDirectory($directory);
 

@@ -35,6 +35,6 @@ class ConfigurationProvider
     {
         $connection = $this->registry->getConnection($name);
 
-        return $this->factory->make($connection);
+        return $this->factory->make($connection, $name);
     }
 }
