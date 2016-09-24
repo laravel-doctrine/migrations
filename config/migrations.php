@@ -56,7 +56,7 @@ return [
         |
         */
         'schema'    => [
-            'filter' => '/^(?).*$/'
+            'filter' => '/^(?!password_resets|failed_jobs).*$/'
         ]
     ],
 ];
