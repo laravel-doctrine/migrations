@@ -59,13 +59,13 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
                 'name'            => 'Doctrine Migrations',
                 'namespace'       => 'Database\\Migrations',
                 'table'           => 'migrations',
-                'schema.filter'   => '/^(?).*$/',
+                'schema'          => ['filter' => '/^(?).*$/'],
                 'directory'       => database_path('migrations'),
                 'naming_strategy' => DefaultNamingStrategy::class,
             ])
         ;
 
-        $this->configuration->shouldReceive('setFilterSchemaAssetsExpression')->with('/^(?).*$/')->once();
+        $this->configuration->shouldReceive('setFilterSchemaAssetsExpression')->with(m::mustBe('/^(?).*$/'))->once();
 
         $this->container->shouldReceive('make')
             ->with(DefaultNamingStrategy::class)
@@ -99,13 +99,16 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
                 'name'            => 'Migrations',
                 'namespace'       => 'Database\\Migrations\\Custom',
                 'table'           => 'migrations',
-                'schema.filter'   => '/^(?).*$/',
+                'schema'          => ['filter' => '/^(?!^(custom)$).*$/'],
                 'directory'       => database_path('migrations/custom'),
                 'naming_strategy' => DefaultNamingStrategy::class,
             ])
         ;
 
-        $this->configuration->shouldReceive('setFilterSchemaAssetsExpression')->with('/^(?).*$/')->once();
+        $this->configuration->shouldReceive('setFilterSchemaAssetsExpression')
+            ->with(m::mustBe('/^(?!^(custom)$).*$/'))
+            ->once()
+        ;
         $this->container->shouldReceive('make')
             ->with(DefaultNamingStrategy::class)
             ->once()
@@ -138,13 +141,13 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
                 'name'            => 'Doctrine Migrations',
                 'namespace'       => 'Database\\Migrations',
                 'table'           => 'migrations',
-                'schema.filter'   => '/^(?).*$/',
+                'schema'          => ['filter' => '/^(?).*$/'],
                 'directory'       => database_path('migrations'),
                 'naming_strategy' => DefaultNamingStrategy::class,
             ])
         ;
 
-        $this->configuration->shouldReceive('setFilterSchemaAssetsExpression')->with('/^(?).*$/')->once();
+        $this->configuration->shouldReceive('setFilterSchemaAssetsExpression')->with(m::mustBe('/^(?).*$/'))->once();
         $this->container->shouldReceive('make')
             ->with(DefaultNamingStrategy::class)
             ->once()
