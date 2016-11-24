@@ -3,15 +3,15 @@
 namespace LaravelDoctrine\Migrations\Configuration;
 
 use Doctrine\DBAL\Connection;
-use Illuminate\Contracts\Config\Repository;
+use Illuminate\Config\Repository;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Support\Collection;
 use LaravelDoctrine\Migrations\Naming\DefaultNamingStrategy;
 
 class ConfigurationFactory
 {
     /**
-     * @var Repository
+     * @var ConfigRepository
      */
     protected $config;
 
@@ -21,10 +21,10 @@ class ConfigurationFactory
     protected $container;
 
     /**
-     * @param Repository $config
+     * @param ConfigRepository $config
      * @param Container  $container
      */
-    public function __construct(Repository $config, Container $container)
+    public function __construct(ConfigRepository $config, Container $container)
     {
         $this->config    = $config;
         $this->container = $container;
@@ -39,9 +39,9 @@ class ConfigurationFactory
     public function make(Connection $connection, $name = null)
     {
         if ($name && $this->config->has('migrations.' . $name)) {
-            $config = new Collection($this->config->get('migrations.' . $name, []));
+            $config = new Repository($this->config->get('migrations.' . $name, []));
         } else {
-            $config = new Collection($this->config->get('migrations.default', []));
+            $config = new Repository($this->config->get('migrations.default', []));
         }
 
         $configuration = new Configuration($connection);
