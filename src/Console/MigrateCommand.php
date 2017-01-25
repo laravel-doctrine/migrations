@@ -23,7 +23,7 @@ class MigrateCommand extends Command
     {version=latest : The version number (YYYYMMDDHHMMSS) or alias (first, prev, next, latest) to migrate to.}
     {--connection= : For a specific connection }
     {--write-sql= : The path to output the migration SQL file instead of executing it. }
-    {--dry-run= : Execute the migration as a dry run. }
+    {--dry-run : Execute the migration as a dry run. }
     {--query-time= : Time all the queries individually. }
     {--force : Force the operation to run when in production. }';
 
