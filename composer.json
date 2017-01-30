@@ -22,7 +22,7 @@
     "illuminate/config": "~5.1",
     "illuminate/contracts": "~5.1",
     "illuminate/console": "~5.1",
-    "laravel-doctrine/orm": "1.0.*|1.1.*|1.2.*"
+    "laravel-doctrine/orm": "~1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.0",
