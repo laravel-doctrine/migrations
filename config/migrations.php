@@ -31,7 +31,7 @@ return [
         |--------------------------------------------------------------------------
         |
         | This directory is where all migrations will be stored for this entity
-        | manager. User different directories for each entity manager.
+        | manager. Use different directories for each entity manager.
         |
         */
         'directory' => database_path('migrations'),
