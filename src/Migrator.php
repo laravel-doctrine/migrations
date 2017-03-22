@@ -50,7 +50,8 @@ class Migrator
     {
         $path = is_bool($path) ? getcwd() : $path;
 
-        $sql = $migration->getMigration()->writeSqlFile($path, $migration->getVersion());
+        $sql = $migration->getMigration()->getSql($migration->getVersion());
+        $migration->getMigration()->writeSqlFile($path, $migration->getVersion());
 
         $this->writeNotes($migration, false, $sql);
     }
