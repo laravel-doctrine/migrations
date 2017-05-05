@@ -62,6 +62,10 @@ class MigrationsServiceProvider extends ServiceProvider
      */
     protected function mergeConfig()
     {
+        if ($this->isLumen()) {
+            $this->app->configure('migrations');
+        }
+           
         $this->mergeConfigFrom(
             $this->getConfigPath(), 'migrations'
         );
