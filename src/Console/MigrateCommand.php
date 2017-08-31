@@ -41,7 +41,7 @@ class MigrateCommand extends Command
      * @throws \Doctrine\DBAL\Migrations\MigrationException
      * @return int
      */
-    public function fire(ConfigurationProvider $provider, Migrator $migrator)
+    public function handle(ConfigurationProvider $provider, Migrator $migrator)
     {
         if (!$this->confirmToProceed()) {
             return;

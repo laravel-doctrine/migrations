@@ -33,7 +33,7 @@ class DiffCommand extends Command
      * @param SqlBuilder             $builder
      * @param MigrationFileGenerator $generator
      */
-    public function fire(
+    public function handle(
         ConfigurationProvider $provider,
         ManagerRegistry $registry,
         SqlBuilder $builder,

@@ -24,7 +24,7 @@ class LatestCommand extends Command
      *
      * @param ConfigurationProvider $provider
      */
-    public function fire(ConfigurationProvider $provider)
+    public function handle(ConfigurationProvider $provider)
     {
         $configuration = $provider->getForConnection(
             $this->option('connection')

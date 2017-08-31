@@ -24,7 +24,7 @@ class RefreshCommand extends Command
     /**
      * Execute the console command.
      */
-    public function fire()
+    public function handle()
     {
         $this->call('doctrine:migrations:reset', [
             '--connection' => $this->option('connection')
