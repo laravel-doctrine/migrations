@@ -28,7 +28,7 @@ class GenerateCommand extends Command
      * @param ConfigurationProvider  $provider
      * @param MigrationFileGenerator $generator
      */
-    public function fire(ConfigurationProvider $provider, MigrationFileGenerator $generator)
+    public function handle(ConfigurationProvider $provider, MigrationFileGenerator $generator)
     {
         $configuration = $provider->getForConnection($this->option('connection'));
 

@@ -34,7 +34,7 @@ class ExecuteCommand extends Command
      * @param ConfigurationProvider $provider
      * @param Migrator              $migrator
      */
-    public function fire(ConfigurationProvider $provider, Migrator $migrator)
+    public function handle(ConfigurationProvider $provider, Migrator $migrator)
     {
         if (!$this->confirmToProceed()) {
             return;
