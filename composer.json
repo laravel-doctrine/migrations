@@ -37,5 +37,12 @@
     "classmap": [
       "tests"
     ]
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "LaravelDoctrine\\Migrations\\MigrationsServiceProvider"
+      ]
+    }
   }
 }
