@@ -28,11 +28,9 @@ class MigrationsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (!$this->isLumen()) {
-            $this->publishes([
-                $this->getConfigPath() => config_path('migrations.php'),
-            ], 'config');
-        }
+        $this->publishes([
+            $this->getConfigPath() => config_path('migrations.php'),
+        ], 'config');
     }
 
     /**
@@ -65,7 +63,7 @@ class MigrationsServiceProvider extends ServiceProvider
         if ($this->isLumen()) {
             $this->app->configure('migrations');
         }
-           
+
         $this->mergeConfigFrom(
             $this->getConfigPath(), 'migrations'
         );
