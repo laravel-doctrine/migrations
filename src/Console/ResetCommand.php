@@ -36,6 +36,10 @@ class ResetCommand extends Command
      */
     public function handle(ConfigurationProvider $provider)
     {
+        if (!$this->confirmToProceed()) {
+            return;
+        }
+        
         $configuration = $provider->getForConnection(
             $this->option('connection')
         );
