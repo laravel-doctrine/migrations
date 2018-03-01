@@ -21,7 +21,8 @@ class ExecuteCommand extends Command
     {--dry-run : Execute the migration as a dry run. }
     {--up : Execute the migration up. }
     {--down : Execute the migration down. }
-    {--query-time : Time all the queries individually.}';
+    {--query-time : Time all the queries individually.}
+    {--force : Force the operation to run when in production. }';
 
     /**
      * @var string
