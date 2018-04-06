@@ -89,10 +89,11 @@ class ResetCommand extends Command
         $schema = $this->connection->getSchemaManager();
         $schema->dropTable($table);
 
-        $queryEnablingCardinalityChecks = $instructions['needsTableIsolation'] ?
-                                                sprintf($instructions['enable'], $table) :
-                                                $instructions['enable'];
-        $this->connection->query($queryEnablingCardinalityChecks);
+        // When table is already dropped we cannot enable any cardinality checks on it
+        // See https://github.com/laravel-doctrine/migrations/issues/50
+        if (!$instructions['needsTableIsolation']) {
+            $this->connection->query($instructions['enable']);
+        }
     }
 
     /**
@@ -103,7 +104,6 @@ class ResetCommand extends Command
         return [
             'mssql' => [
                 'needsTableIsolation'   => true,
-                'enable'                => 'ALTER TABLE %s NOCHECK CONSTRAINT ALL',
                 'disable'               => 'ALTER TABLE %s CHECK CONSTRAINT ALL',
             ],
             'mysql' => [
@@ -113,7 +113,6 @@ class ResetCommand extends Command
             ],
             'postgresql' => [
                 'needsTableIsolation'   => true,
-                'enable'                => 'ALTER TABLE %s ENABLE TRIGGER ALL',
                 'disable'               => 'ALTER TABLE %s DISABLE TRIGGER ALL',
             ],
             'sqlite' => [
