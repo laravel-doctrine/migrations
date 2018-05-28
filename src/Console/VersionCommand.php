@@ -14,7 +14,7 @@ class VersionCommand extends Command
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'doctrine:migrations:version {version}
+    protected $signature = 'doctrine:migrations:version {version?}
     {--connection= : For a specific connection.}
     {--add : Add the specified version }
     {--delete : Delete the specified version.}
