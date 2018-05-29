@@ -54,11 +54,15 @@ class VersionCommand extends Command
 
         $this->markMigrated = (boolean) $this->option('add');
 
-        $question = 'WARNING! You are about to add, delete or synchronize migration versions from the version table that could result in data lost. Are you sure you wish to continue? (y/n)';
-        if ($this->confirm($question)) {
-            $this->markVersions();
+        if ($this->input->isInteractive()) {
+            $question = 'WARNING! You are about to add, delete or synchronize migration versions from the version table that could result in data lost. Are you sure you wish to continue? (y/n)';
+            if ($this->confirm($question)) {
+                $this->markVersions();
+            } else {
+                $this->error('Migration cancelled!');
+            }
         } else {
-            $this->error('Migration cancelled!');
+            $this->markVersions();
         }
     }
 
