@@ -13,9 +13,12 @@ trait DatabaseMigrations
      */
     public function runDatabaseMigrations()
     {
-        $this->artisan('doctrine:migrations:migrate');
+        $this->artisan('doctrine:migrations:refresh');
 
-        $this->app[Kernel::class]->setArtisan(null);
+        $kernel = $this->app[Kernel::class];
+        if (\method_exists($kernel, 'setArtisan')) {
+            $kernel->setArtisan(null);
+        }
 
         $this->beforeApplicationDestroyed(function () {
             $this->artisan('doctrine:migrations:rollback');
