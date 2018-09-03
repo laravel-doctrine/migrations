@@ -17,8 +17,8 @@
     }
   ],
   "require": {
-    "php": ">=5.5.9",
-    "doctrine/migrations": "~1.1",
+    "php": "^7.1",
+    "doctrine/migrations": "~1.8",
     "illuminate/config": "~5.1",
     "illuminate/contracts": "~5.1",
     "illuminate/console": "~5.1",
