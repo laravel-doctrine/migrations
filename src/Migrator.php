@@ -15,9 +15,12 @@ class Migrator
      * @param Migration  $migration
      * @param bool|false $dryRun
      * @param bool|false $timeQueries
+     * @param bool|false $allowNoMigration
      */
-    public function migrate(Migration $migration, $dryRun = false, $timeQueries = false)
+    public function migrate(Migration $migration, $dryRun = false, $timeQueries = false, bool $allowNoMigration = false)
     {
+        $migration->getMigration()->setNoMigrationException($allowNoMigration);
+
         $sql = $migration->getMigration()->migrate(
             $migration->getVersion(),
             $dryRun,
