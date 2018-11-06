@@ -25,7 +25,8 @@ class MigrateCommand extends Command
     {--write-sql= : The path to output the migration SQL file instead of executing it. }
     {--dry-run : Execute the migration as a dry run. }
     {--query-time : Time all the queries individually. }
-    {--force : Force the operation to run when in production. }';
+    {--force : Force the operation to run when in production. }
+    {--allow-no-migration : Doesn\'t throw an exception if no migration is available. }';
 
     /**
      * @var string
@@ -72,7 +73,8 @@ class MigrateCommand extends Command
             $migrator->migrate(
                 $migration,
                 $this->option('dry-run') ? true : false,
-                $this->option('query-time') ? true : false
+                $this->option('query-time') ? true : false,
+                $this->option('allow-no-migration') ? true : false
             );
         }
 

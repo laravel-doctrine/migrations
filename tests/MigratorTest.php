@@ -41,6 +41,7 @@ class MigratorTest extends PHPUnit_Framework_TestCase
         $this->dbalMig->shouldReceive('migrate')->with('version1', false, false)->andReturn([
             'version1' => 'SQL'
         ]);
+        $this->dbalMig->shouldReceive('setNoMigrationException')->with(false);
 
         $migrator = (new Migrator);
         $migrator->migrate($this->migration);
