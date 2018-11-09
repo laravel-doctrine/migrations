@@ -39,7 +39,7 @@ class ResetCommand extends Command
         if (!$this->confirmToProceed()) {
             return;
         }
-        
+
         $configuration = $provider->getForConnection(
             $this->option('connection')
         );
@@ -68,7 +68,7 @@ class ResetCommand extends Command
     {
         $platformName = $this->connection->getDatabasePlatform()->getName();
 
-        if (!array_key_exists($platformName, $this->getCardinalityCheckInstructions())) {
+        if (!array_key_exists($platformName, $this->getPlatformInstructions())) {
             throw new Exception(sprintf('The platform %s is not supported', $platformName));
         }
     }
@@ -79,46 +79,50 @@ class ResetCommand extends Command
     private function safelyDropTable($table)
     {
         $platformName = $this->connection->getDatabasePlatform()->getName();
-        $instructions = $this->getCardinalityCheckInstructions()[$platformName];
+        $instructions = $this->getPlatformInstructions()[$platformName];
 
-        $queryDisablingCardinalityChecks = $instructions['needsTableIsolation'] ?
-                                                sprintf($instructions['disable'], $table) :
-                                                $instructions['disable'];
-        $this->connection->query($queryDisablingCardinalityChecks);
+        if (isset($instructions['isolation']['enable'])) {
+            $statement = sprintf($instructions['isolation']['enable'], $table);
+            $this->connection->exec($statement);
+        }
 
-        $schema = $this->connection->getSchemaManager();
-        $schema->dropTable($table);
+        $dropStatement = sprintf($instructions['dropStatement'], $table);
+        $this->connection->exec($dropStatement);
 
-        // When table is already dropped we cannot enable any cardinality checks on it
-        // See https://github.com/laravel-doctrine/migrations/issues/50
-        if (!$instructions['needsTableIsolation']) {
-            $this->connection->query($instructions['enable']);
+        if (isset($instructions['isolation']['disable'])) {
+            $statement = sprintf($instructions['isolation']['disable'], $table);
+            $this->connection->exec($statement);
         }
     }
 
     /**
      * @return array
      */
-    private function getCardinalityCheckInstructions()
+    private function getPlatformInstructions()
     {
         return [
             'mssql' => [
-                'needsTableIsolation'   => true,
-                'disable'               => 'ALTER TABLE %s CHECK CONSTRAINT ALL',
+                'tableIsolation' => [
+                    'disable' => 'ALTER TABLE %s CHECK CONSTRAINT ALL',
+                ],
+                'dropStatement' => 'DROP TABLE %s',
             ],
             'mysql' => [
-                'needsTableIsolation'   => false,
-                'enable'                => 'SET FOREIGN_KEY_CHECKS = 1',
-                'disable'               => 'SET FOREIGN_KEY_CHECKS = 0',
+                'tableIsolation' => [
+                    'enable' => 'SET FOREIGN_KEY_CHECKS = 1',
+                    'disable' => 'SET FOREIGN_KEY_CHECKS = 0',
+                ],
+                'dropStatement' => 'DROP TABLE %s',
             ],
             'postgresql' => [
-                'needsTableIsolation'   => true,
-                'disable'               => 'ALTER TABLE %s DISABLE TRIGGER ALL',
+                'dropStatement' => 'DROP TABLE IF EXISTS %s CASCADE',
             ],
             'sqlite' => [
-                'needsTableIsolation'   => false,
-                'enable'                => 'PRAGMA foreign_keys = ON',
-                'disable'               => 'PRAGMA foreign_keys = OFF',
+                'tableIsolation' => [
+                    'enable' => 'PRAGMA foreign_keys = ON',
+                    'disable' => 'PRAGMA foreign_keys = OFF',
+                ],
+                'dropStatement' => 'DROP TABLE %s',
             ],
         ];
     }
