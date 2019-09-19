@@ -19,10 +19,10 @@
   "require": {
     "php": "^7.1",
     "doctrine/migrations": "~1.8",
-    "illuminate/config": "~5.1",
-    "illuminate/contracts": "~5.1",
-    "illuminate/console": "~5.1",
-    "laravel-doctrine/orm": "~1.0"
+    "illuminate/config": "^6.0",
+    "illuminate/contracts": "^6.0",
+    "illuminate/console": "^6.0",
+    "laravel-doctrine/orm": "^1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.0",
