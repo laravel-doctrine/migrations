@@ -3,6 +3,7 @@
 namespace LaravelDoctrine\Migrations;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
 use LaravelDoctrine\Migrations\Console\DiffCommand;
 use LaravelDoctrine\Migrations\Console\ExecuteCommand;
@@ -65,7 +66,7 @@ class MigrationsServiceProvider extends ServiceProvider
         if ($this->isLumen()) {
             $this->app->configure('migrations');
         }
-           
+
         $this->mergeConfigFrom(
             $this->getConfigPath(), 'migrations'
         );
@@ -94,6 +95,6 @@ class MigrationsServiceProvider extends ServiceProvider
      */
     protected function isLumen()
     {
-        return str_contains($this->app->version(), 'Lumen');
+        return Str::contains($this->app->version(), 'Lumen');
     }
 }
