@@ -5,9 +5,13 @@ use Doctrine\DBAL\Connection;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationFactory;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class ConfigurationProviderTest extends PHPUnit_Framework_TestCase
+class ConfigurationProviderTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var ConfigurationProvider
      */
@@ -28,7 +32,7 @@ class ConfigurationProviderTest extends PHPUnit_Framework_TestCase
      */
     protected $connection;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->registry   = m::mock(ManagerRegistry::class);
         $this->factory    = m::mock(ConfigurationFactory::class);
@@ -64,10 +68,5 @@ class ConfigurationProviderTest extends PHPUnit_Framework_TestCase
                         ->andReturn('configuration');
 
         $this->assertEquals('configuration', $this->provider->getForConnection('connection'));
-    }
-
-    protected function tearDown()
-    {
-        m::close();
     }
 }

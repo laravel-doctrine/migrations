@@ -5,15 +5,19 @@ use LaravelDoctrine\Migrations\Exceptions\ExecutedUnavailableMigrationsException
 use LaravelDoctrine\Migrations\Exceptions\MigrationVersionException;
 use LaravelDoctrine\Migrations\Migration;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class MigrationTest extends PHPUnit_Framework_TestCase
+class MigrationTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var Mockery\Mock
      */
     protected $configuration;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configuration = m::mock(Configuration::class);
         $this->configuration->shouldReceive('getOutputWriter');
@@ -52,7 +56,7 @@ class MigrationTest extends PHPUnit_Framework_TestCase
 
         ]);
 
-        $this->setExpectedException(ExecutedUnavailableMigrationsException::class);
+        $this->expectException(ExecutedUnavailableMigrationsException::class);
 
         $migration = new Migration(
             $this->configuration,
@@ -73,16 +77,11 @@ class MigrationTest extends PHPUnit_Framework_TestCase
             'version1'
         ]);
 
-        $this->setExpectedException(MigrationVersionException::class);
+        $this->expectException(MigrationVersionException::class);
 
         $migration = new Migration(
             $this->configuration,
             'latest'
         );
-    }
-
-    protected function tearDown()
-    {
-        m::close();
     }
 }

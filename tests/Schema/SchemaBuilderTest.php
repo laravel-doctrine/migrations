@@ -4,9 +4,13 @@ use Doctrine\DBAL\Schema\Schema;
 use LaravelDoctrine\Migrations\Schema\Builder;
 use LaravelDoctrine\Migrations\Schema\Table;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class SchemaBuilderTest extends PHPUnit_Framework_TestCase
+class SchemaBuilderTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var Mockery\Mock
      */
@@ -17,7 +21,7 @@ class SchemaBuilderTest extends PHPUnit_Framework_TestCase
      */
     protected $builder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->schema  = m::mock(Schema::class);
         $this->builder = new Builder($this->schema);
@@ -135,10 +139,5 @@ class SchemaBuilderTest extends PHPUnit_Framework_TestCase
         $table->shouldReceive('getColumns')->once()->andReturn(['column' => 'instance']);
 
         $this->assertFalse($this->builder->hasColumns('table_name', ['column2']));
-    }
-
-    protected function tearDown()
-    {
-        m::close();
     }
 }

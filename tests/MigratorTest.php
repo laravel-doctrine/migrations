@@ -5,9 +5,13 @@ use LaravelDoctrine\Migrations\Configuration\Configuration;
 use LaravelDoctrine\Migrations\Migration;
 use LaravelDoctrine\Migrations\Migrator;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class MigratorTest extends PHPUnit_Framework_TestCase
+class MigratorTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var Mockery\Mock
      */
@@ -23,7 +27,7 @@ class MigratorTest extends PHPUnit_Framework_TestCase
      */
     protected $dbalMig;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configuration = m::mock(Configuration::class);
         $this->configuration->shouldReceive('getOutputWriter');
@@ -47,10 +51,5 @@ class MigratorTest extends PHPUnit_Framework_TestCase
         $migrator->migrate($this->migration);
 
         $this->assertContains('<info>Migrated:</info> version1', $migrator->getNotes());
-    }
-
-    protected function tearDown()
-    {
-        m::close();
     }
 }

@@ -1,17 +1,16 @@
 <?php
 
 use LaravelDoctrine\Migrations\Output\FileWriter;
+use PHPUnit\Framework\TestCase;
 
-class FileWriterTest extends PHPUnit_Framework_TestCase
+class FileWriterTest extends TestCase
 {
     public function test_can_write_to_non_existing_path()
     {
         $writer = new FileWriter;
 
-        $this->setExpectedException(
-            InvalidArgumentException::class,
-            'Migrations directory "doesntexist" does not exist.'
-        );
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectErrorMessage('Migrations directory "doesntexist" does not exist.');
 
         $writer->write('contents', 'filename.php', 'doesntexist');
     }

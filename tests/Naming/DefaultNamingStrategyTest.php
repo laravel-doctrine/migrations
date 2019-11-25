@@ -2,8 +2,9 @@
 
 use Doctrine\DBAL\Migrations\Finder\RecursiveRegexFinder;
 use LaravelDoctrine\Migrations\Naming\DefaultNamingStrategy;
+use PHPUnit\Framework\TestCase;
 
-class DefaultNamingStrategyTest extends PHPUnit_Framework_TestCase
+class DefaultNamingStrategyTest extends TestCase
 {
     public function test_can_get_class_name()
     {

@@ -6,9 +6,13 @@ use Doctrine\DBAL\Schema\Schema;
 use LaravelDoctrine\Migrations\Configuration\Configuration;
 use LaravelDoctrine\Migrations\Output\SqlBuilder;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class SqlBuilderTest extends PHPUnit_Framework_TestCase
+class SqlBuilderTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var Mockery\Mock
      */
@@ -39,7 +43,7 @@ class SqlBuilderTest extends PHPUnit_Framework_TestCase
      */
     protected $platform;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configuration = m::mock(Configuration::class);
         $this->connection    = m::mock(Connection::class);
@@ -82,10 +86,5 @@ class SqlBuilderTest extends PHPUnit_Framework_TestCase
         $sql = $this->builder->down($this->configuration, $this->from, $this->to);
 
         $this->assertEquals(trim(file_get_contents(__DIR__ . '/../stubs/down.stub')), $sql);
-    }
-
-    protected function tearDown()
-    {
-        m::close();
     }
 }

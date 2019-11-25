@@ -1,8 +1,9 @@
 <?php
 
 use LaravelDoctrine\Migrations\Output\StubLocator;
+use PHPUnit\Framework\TestCase;
 
-class StubLocatorTest extends PHPUnit_Framework_TestCase
+class StubLocatorTest extends TestCase
 {
     public function test_can_get_a_stub()
     {
