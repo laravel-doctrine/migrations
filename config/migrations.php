@@ -37,6 +37,23 @@ return [
         'directory' => database_path('migrations'),
         /*
         |--------------------------------------------------------------------------
+        | Migration Organize Directory
+        |--------------------------------------------------------------------------
+        |
+        | Organize migrations file by directory.
+        | Possible values: "year", "year_and_month" and false
+        |
+        | false:
+        |    directory/
+        | "year":
+        |    directory/2020/
+        | "year_and_month":
+        |    directory/2020/01/
+        |
+         */
+        'organize_migrations' => false,
+        /*
+        |--------------------------------------------------------------------------
         | Migration Namespace
         |--------------------------------------------------------------------------
         |

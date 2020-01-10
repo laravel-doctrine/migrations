@@ -63,6 +63,14 @@ class ConfigurationFactory
         $configuration->setMigrationsDirectory($directory);
         $configuration->registerMigrationsFromDirectory($directory);
 
+        if ($migrationOrganisation = $config->get('organize_migrations', false)) {
+            if (0 === strcasecmp($migrationOrganisation, Configuration::VERSIONS_ORGANIZATION_BY_YEAR)) {
+                $configuration->setMigrationsAreOrganizedByYear();
+            } elseif (0 === strcasecmp($migrationOrganisation, Configuration::VERSIONS_ORGANIZATION_BY_YEAR_AND_MONTH)) {
+                $configuration->setMigrationsAreOrganizedByYearAndMonth();
+            }
+        }
+
         return $configuration;
     }
 }
