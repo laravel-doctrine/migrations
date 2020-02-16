@@ -56,12 +56,13 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
             ->once()
             ->with('migrations.default', [])
             ->andReturn([
-                'name'            => 'Doctrine Migrations',
-                'namespace'       => 'Database\\Migrations',
-                'table'           => 'migrations',
-                'schema'          => ['filter' => '/^(?).*$/'],
-                'directory'       => database_path('migrations'),
-                'naming_strategy' => DefaultNamingStrategy::class,
+                'name'                => 'Doctrine Migrations',
+                'namespace'           => 'Database\\Migrations',
+                'table'               => 'migrations',
+                'schema'              => ['filter' => '/^(?).*$/'],
+                'directory'           => database_path('migrations'),
+                'organize_migrations' => Configuration::VERSIONS_ORGANIZATION_BY_YEAR_AND_MONTH,
+                'naming_strategy'     => DefaultNamingStrategy::class,
             ])
         ;
 
@@ -81,6 +82,8 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('migrations', $configuration->getMigrationsTableName());
         $this->assertInstanceOf(DefaultNamingStrategy::class, $configuration->getNamingStrategy());
         $this->assertEquals(database_path('migrations'), $configuration->getMigrationsDirectory());
+        $this->assertEquals(true, $configuration->areMigrationsOrganizedByYear());
+        $this->assertEquals(true, $configuration->areMigrationsOrganizedByYearAndMonth());
     }
 
     public function test_can_make_configuration_for_custom_entity_manager()
@@ -96,12 +99,13 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
             ->once()
             ->with('migrations.custom_entity_manager', [])
             ->andReturn([
-                'name'            => 'Migrations',
-                'namespace'       => 'Database\\Migrations\\Custom',
-                'table'           => 'migrations',
-                'schema'          => ['filter' => '/^(?!^(custom)$).*$/'],
-                'directory'       => database_path('migrations/custom'),
-                'naming_strategy' => DefaultNamingStrategy::class,
+                'name'                => 'Migrations',
+                'namespace'           => 'Database\\Migrations\\Custom',
+                'table'               => 'migrations',
+                'schema'              => ['filter' => '/^(?!^(custom)$).*$/'],
+                'directory'           => database_path('migrations/custom'),
+                'organize_migrations' => Configuration::VERSIONS_ORGANIZATION_BY_YEAR_AND_MONTH,
+                'naming_strategy'     => DefaultNamingStrategy::class,
             ])
         ;
 
@@ -123,6 +127,8 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('migrations', $configuration->getMigrationsTableName());
         $this->assertInstanceOf(DefaultNamingStrategy::class, $configuration->getNamingStrategy());
         $this->assertEquals(database_path('migrations/custom'), $configuration->getMigrationsDirectory());
+        $this->assertEquals(true, $configuration->areMigrationsOrganizedByYear());
+        $this->assertEquals(true, $configuration->areMigrationsOrganizedByYearAndMonth());
     }
 
     public function test_returns_default_configuration_if_not_defined()
@@ -138,12 +144,13 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
             ->once()
             ->with('migrations.default', [])
             ->andReturn([
-                'name'            => 'Doctrine Migrations',
-                'namespace'       => 'Database\\Migrations',
-                'table'           => 'migrations',
-                'schema'          => ['filter' => '/^(?).*$/'],
-                'directory'       => database_path('migrations'),
-                'naming_strategy' => DefaultNamingStrategy::class,
+                'name'                => 'Doctrine Migrations',
+                'namespace'           => 'Database\\Migrations',
+                'table'               => 'migrations',
+                'schema'              => ['filter' => '/^(?).*$/'],
+                'directory'           => database_path('migrations'),
+                'organize_migrations' => Configuration::VERSIONS_ORGANIZATION_BY_YEAR_AND_MONTH,
+                'naming_strategy'     => DefaultNamingStrategy::class,
             ])
         ;
 
@@ -162,6 +169,8 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('migrations', $configuration->getMigrationsTableName());
         $this->assertInstanceOf(DefaultNamingStrategy::class, $configuration->getNamingStrategy());
         $this->assertEquals(database_path('migrations'), $configuration->getMigrationsDirectory());
+        $this->assertEquals(true, $configuration->areMigrationsOrganizedByYear());
+        $this->assertEquals(true, $configuration->areMigrationsOrganizedByYearAndMonth());
     }
 
     protected function tearDown()
