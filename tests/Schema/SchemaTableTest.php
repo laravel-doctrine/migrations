@@ -3,9 +3,13 @@
 use Doctrine\DBAL\Schema\Column;
 use LaravelDoctrine\Migrations\Schema\Table;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class SchemaTableTest extends PHPUnit_Framework_TestCase
+class SchemaTableTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var Mockery\Mock
      */
@@ -16,7 +20,7 @@ class SchemaTableTest extends PHPUnit_Framework_TestCase
      */
     protected $table;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dbal  = m::mock(\Doctrine\DBAL\Schema\Table::class);
         $this->table = new Table($this->dbal);
@@ -304,10 +308,5 @@ class SchemaTableTest extends PHPUnit_Framework_TestCase
         $this->dbal->shouldReceive('dropColumn')->with('column');
 
         $this->table->dropColumn('column');
-    }
-
-    protected function tearDown()
-    {
-        m::close();
     }
 }

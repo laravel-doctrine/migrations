@@ -7,9 +7,13 @@ use LaravelDoctrine\Migrations\Output\MigrationFileGenerator;
 use LaravelDoctrine\Migrations\Output\StubLocator;
 use LaravelDoctrine\Migrations\Output\VariableReplacer;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class MigrationFileGeneratorTest extends PHPUnit_Framework_TestCase
+class MigrationFileGeneratorTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var MigrationFileGenerator
      */
@@ -20,7 +24,7 @@ class MigrationFileGeneratorTest extends PHPUnit_Framework_TestCase
      */
     protected $configuration;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->generator = new MigrationFileGenerator(
             new StubLocator(),
@@ -53,11 +57,6 @@ class MigrationFileGeneratorTest extends PHPUnit_Framework_TestCase
         $filename = $this->generator->generate($this->configuration, false, 'users');
 
         $this->assertFileWasCreated($filename);
-    }
-
-    protected function tearDown()
-    {
-        m::close();
     }
 
     /**

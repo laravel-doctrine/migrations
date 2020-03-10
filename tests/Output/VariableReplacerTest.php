@@ -1,8 +1,9 @@
 <?php
 
 use LaravelDoctrine\Migrations\Output\VariableReplacer;
+use PHPUnit\Framework\TestCase;
 
-class VariableReplacerTest extends PHPUnit_Framework_TestCase
+class VariableReplacerTest extends TestCase
 {
     public function test_can_replace_variables()
     {

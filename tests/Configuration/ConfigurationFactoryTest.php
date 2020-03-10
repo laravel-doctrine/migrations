@@ -7,9 +7,13 @@ use LaravelDoctrine\Migrations\Configuration\Configuration;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationFactory;
 use LaravelDoctrine\Migrations\Naming\DefaultNamingStrategy;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
+class ConfigurationFactoryTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var ConfigurationFactory
      */
@@ -35,7 +39,7 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
      */
     protected $configuration;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->container     = m::mock(Container::class);
         $this->config        = m::mock(Repository::class);
@@ -171,11 +175,6 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(database_path('migrations'), $configuration->getMigrationsDirectory());
         $this->assertEquals(true, $configuration->areMigrationsOrganizedByYear());
         $this->assertEquals(true, $configuration->areMigrationsOrganizedByYearAndMonth());
-    }
-
-    protected function tearDown()
-    {
-        m::close();
     }
 }
 
