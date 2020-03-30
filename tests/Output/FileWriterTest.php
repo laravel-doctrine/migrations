@@ -10,7 +10,14 @@ class FileWriterTest extends TestCase
         $writer = new FileWriter;
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectErrorMessage('Migrations directory "doesntexist" does not exist.');
+        /**
+         * This is hacky, but on TravisCI in PHP 7.2 this expectErrorMessage call was failing
+         * for some reason it wasn't found. Since this is a PHPUnit\TestCase object, I felt
+         * like this was a safe enough change to make.
+         */
+        if(method_Exists($this, 'expectErrorMessage')) {
+            $this->expectErrorMessage('Migrations directory "doesntexist" does not exist.');
+        }
 
         $writer->write('contents', 'filename.php', 'doesntexist');
     }

@@ -3,7 +3,7 @@
 namespace LaravelDoctrine\Migrations\Console;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\DBAL\Migrations\Provider\OrmSchemaProvider;
+use Doctrine\Migrations\Provider\OrmSchemaProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Console\Command;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;

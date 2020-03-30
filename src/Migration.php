@@ -2,7 +2,10 @@
 
 namespace LaravelDoctrine\Migrations;
 
-use Doctrine\DBAL\Migrations\Migration as DBALMigration;
+use Doctrine\Migrations\MigrationRepository;
+use Doctrine\Migrations\Migrator as DBALMigration;
+use Doctrine\Migrations\Version\Executor;
+use Doctrine\Migrations\Version\Factory;
 use LaravelDoctrine\Migrations\Configuration\Configuration;
 use LaravelDoctrine\Migrations\Exceptions\ExecutedUnavailableMigrationsException;
 use LaravelDoctrine\Migrations\Exceptions\MigrationVersionException;
@@ -44,7 +47,10 @@ class Migration
      */
     protected function makeMigration(Configuration $configuration)
     {
-        return $this->migration = new DBALMigration($configuration);
+        $repository = $configuration->getDependencyFactory()->getMigrationRepository();
+        $outputWriter = $configuration->getOutputWriter();
+        $stopwatch = $configuration->getDependencyFactory()->getStopwatch();
+        return $this->migration = new DBALMigration($configuration, $repository, $outputWriter, $stopwatch);
     }
 
     /**
