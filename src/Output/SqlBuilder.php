@@ -2,18 +2,20 @@
 
 namespace LaravelDoctrine\Migrations\Output;
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Schema\Schema;
 use LaravelDoctrine\Migrations\Configuration\Configuration;
 
 class SqlBuilder
 {
-    /**
-     * @param Configuration $configuration
-     * @param Schema        $from
-     * @param Schema        $to
-     *
-     * @return string
-     */
+	/**
+	 * @param Configuration $configuration
+	 * @param Schema $from
+	 * @param Schema $to
+	 *
+	 * @return string
+	 * @throws DBALException
+	 */
     public function up(Configuration $configuration, Schema $from, Schema $to)
     {
         return $this->build(
@@ -22,13 +24,14 @@ class SqlBuilder
         );
     }
 
-    /**
-     * @param Configuration $configuration
-     * @param Schema        $from
-     * @param Schema        $to
-     *
-     * @return string
-     */
+	/**
+	 * @param Configuration $configuration
+	 * @param Schema $from
+	 * @param Schema $to
+	 *
+	 * @return string
+	 * @throws DBALException
+	 */
     public function down(Configuration $configuration, Schema $from, Schema $to)
     {
         return $this->build(
@@ -37,12 +40,13 @@ class SqlBuilder
         );
     }
 
-    /**
-     * @param Configuration $configuration
-     * @param array         $queries
-     *
-     * @return string
-     */
+	/**
+	 * @param Configuration $configuration
+	 * @param array $queries
+	 *
+	 * @return string
+	 * @throws DBALException
+	 */
     public function build(Configuration $configuration, array $queries = [])
     {
         $platform = $configuration->getConnection()->getDatabasePlatform()->getName();

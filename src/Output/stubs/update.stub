@@ -3,7 +3,7 @@
 namespace <namespace>;
 
 use Doctrine\Migrations\AbstractMigration;
-use Doctrine\DBAL\Schema\Schema as Schema;
+use Doctrine\Schema\Schema as Schema;
 use LaravelDoctrine\Migrations\Schema\Table;
 use LaravelDoctrine\Migrations\Schema\Builder;
 

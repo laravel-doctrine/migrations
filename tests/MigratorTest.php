@@ -1,6 +1,8 @@
 <?php
 
-use Doctrine\DBAL\Migrations\Version;
+use Doctrine\Migrations\Exception\MigrationException;
+use Doctrine\Migrations\MigratorConfiguration;
+use Doctrine\Migrations\Version\Version;
 use LaravelDoctrine\Migrations\Configuration\Configuration;
 use LaravelDoctrine\Migrations\Migration;
 use LaravelDoctrine\Migrations\Migrator;
@@ -32,20 +34,29 @@ class MigratorTest extends TestCase
         $this->configuration = m::mock(Configuration::class);
         $this->configuration->shouldReceive('getOutputWriter');
 
-        $this->dbalMig   = m::mock(\Doctrine\DBAL\Migrations\Migration::class);
+        $this->dbalMig   = m::mock(\Doctrine\Migrations\Migrator::class);
         $this->migration = m::mock(Migration::class);
     }
 
-    public function test_migrate()
+	/**
+	 * @throws MigrationException
+	 */
+	public function test_migrate()
     {
+        $doctrineConfig = new MigratorConfiguration();
+        $doctrineConfig->setDryRun(false);
+        $doctrineConfig->setTimeAllQueries(false);
+        $doctrineConfig->setNoMigrationException(false);
+
         $this->migration->shouldReceive('getMigration')->andReturn($this->dbalMig);
         $this->migration->shouldReceive('getConfiguration')->andReturn($this->configuration);
         $this->configuration->shouldReceive('getVersion')->andReturn(m::mock(Version::class));
         $this->migration->shouldReceive('getVersion')->andReturn('version1');
-        $this->dbalMig->shouldReceive('migrate')->with('version1', false, false)->andReturn([
+        $this->dbalMig->shouldReceive('migrate')->with('version1', with(Mockery::on(function($arg) use ($doctrineConfig) {
+            return $arg == $doctrineConfig;
+        })))->andReturn([
             'version1' => 'SQL'
         ]);
-        $this->dbalMig->shouldReceive('setNoMigrationException')->with(false);
 
         $migrator = (new Migrator);
         $migrator->migrate($this->migration);

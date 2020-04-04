@@ -4,6 +4,7 @@ namespace LaravelDoctrine\Migrations\Schema;
 
 use Closure;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\SchemaException;
 
 class Builder
 {
@@ -43,7 +44,7 @@ class Builder
      * @param string   $table
      * @param \Closure $callback
      *
-     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws SchemaException
      * @return \Doctrine\DBAL\Schema\Table|string
      */
     public function table($table, Closure $callback)
@@ -106,27 +107,29 @@ class Builder
         return $this->schema->hasTable($table);
     }
 
-    /**
-     * Determine if the given table has a given column.
-     *
-     * @param string $table
-     * @param string $column
-     *
-     * @return bool
-     */
+	/**
+	 * Determine if the given table has a given column.
+	 *
+	 * @param string $table
+	 * @param string $column
+	 *
+	 * @return bool
+	 * @throws SchemaException
+	 */
     public function hasColumn($table, $column)
     {
         return $this->schema->getTable($table)->hasColumn($column);
     }
 
-    /**
-     * Determine if the given table has given columns.
-     *
-     * @param string $table
-     * @param array  $columns
-     *
-     * @return bool
-     */
+	/**
+	 * Determine if the given table has given columns.
+	 *
+	 * @param string $table
+	 * @param array $columns
+	 *
+	 * @return bool
+	 * @throws SchemaException
+	 */
     public function hasColumns($table, array $columns)
     {
         $tableColumns = array_map('strtolower', array_keys($this->getColumnListing($table)));
@@ -140,13 +143,14 @@ class Builder
         return true;
     }
 
-    /**
-     * Get the column listing for a given table.
-     *
-     * @param string $table
-     *
-     * @return array
-     */
+	/**
+	 * Get the column listing for a given table.
+	 *
+	 * @param string $table
+	 *
+	 * @return array
+	 * @throws SchemaException
+	 */
     public function getColumnListing($table)
     {
         return $this->schema->getTable($table)->getColumns();

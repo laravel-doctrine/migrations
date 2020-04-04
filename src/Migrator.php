@@ -2,7 +2,9 @@
 
 namespace LaravelDoctrine\Migrations;
 
-use Doctrine\DBAL\Migrations\Version;
+use Doctrine\Migrations\Exception\MigrationException;
+use Doctrine\Migrations\MigratorConfiguration;
+use Doctrine\Migrations\Version\Version;
 
 class Migrator
 {
@@ -11,20 +13,20 @@ class Migrator
      */
     protected $notes = [];
 
-    /**
-     * @param Migration  $migration
-     * @param bool|false $dryRun
-     * @param bool|false $timeQueries
-     * @param bool|false $allowNoMigration
-     */
+	/**
+	 * @param Migration $migration
+	 * @param bool|false $dryRun
+	 * @param bool|false $timeQueries
+	 * @param bool|false $allowNoMigration
+	 * @throws MigrationException
+	 */
     public function migrate(Migration $migration, $dryRun = false, $timeQueries = false, bool $allowNoMigration = false)
     {
-        $migration->getMigration()->setNoMigrationException($allowNoMigration);
+        $configuration = $this->setConfiguration($dryRun, $timeQueries, $allowNoMigration);
 
         $sql = $migration->getMigration()->migrate(
             $migration->getVersion(),
-            $dryRun,
-            $timeQueries
+            $configuration
         );
 
         $this->writeNotes($migration, $timeQueries, $sql);
@@ -38,7 +40,8 @@ class Migrator
      */
     public function execute(Version $version, $direction, $dryRun = false, $timeQueries = false)
     {
-        $version->execute($direction, $dryRun, $timeQueries);
+        $configuration = $this->setConfiguration($dryRun, $timeQueries);
+        $version->execute($direction, $configuration);
 
         $verb = $direction === 'down' ? 'Rolled back' : 'Migrated';
 
@@ -118,5 +121,20 @@ class Migrator
         }
 
         $this->notes[] = $msg;
+    }
+
+    /**
+     * @param bool $dryRun
+     * @param bool $timeQueries
+     * @param bool $allowNoMigrations
+     * @return MigratorConfiguration
+     */
+    private function setConfiguration(bool $dryRun = false, bool $timeQueries = false, bool $allowNoMigrations = false)
+    {
+        $configuration = new MigratorConfiguration();
+        $configuration->setDryRun($dryRun);
+        $configuration->setTimeAllQueries($timeQueries);
+        $configuration->setNoMigrationException($allowNoMigrations);
+        return $configuration;
     }
 }
