@@ -3,7 +3,7 @@
 namespace <namespace>;
 
 use Doctrine\Migrations\AbstractMigration;
-use Doctrine\Schema\Schema as Schema;
+use Doctrine\DBAL\Schema\Schema as Schema;
 use LaravelDoctrine\Migrations\Schema\Table;
 use LaravelDoctrine\Migrations\Schema\Builder;
 
@@ -12,7 +12,7 @@ class <class> extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         (new Builder($schema))->create('<table>', function (Table $table) {
             $table->increments('id');
@@ -23,7 +23,7 @@ class <class> extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         (new Builder($schema))->drop('<table>');
     }

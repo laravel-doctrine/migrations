@@ -3,14 +3,14 @@
 namespace <namespace>;
 
 use Doctrine\Migrations\AbstractMigration;
-use Doctrine\Schema\Schema as Schema;
+use Doctrine\DBAL\Schema\Schema as Schema;
 
 class <class> extends AbstractMigration
 {
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         <up>
     }
@@ -18,7 +18,7 @@ class <class> extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         <down>
     }
