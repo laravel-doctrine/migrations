@@ -15,9 +15,7 @@ class FileWriterTest extends TestCase
          * for some reason it wasn't found. Since this is a PHPUnit\TestCase object, I felt
          * like this was a safe enough change to make.
          */
-        if(method_Exists($this, 'expectErrorMessage')) {
-            $this->expectErrorMessage('Migrations directory "doesntexist" does not exist.');
-        }
+        $this->expectExceptionMessage('Migrations directory "doesntexist" does not exist.');
 
         $writer->write('contents', 'filename.php', 'doesntexist');
     }
