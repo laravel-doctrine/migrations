@@ -1,6 +1,6 @@
 <?php
 
-use Doctrine\DBAL\Migrations\Finder\RecursiveRegexFinder;
+use Doctrine\Migrations\Finder\RecursiveRegexFinder;
 use LaravelDoctrine\Migrations\Naming\DefaultNamingStrategy;
 use PHPUnit\Framework\TestCase;
 

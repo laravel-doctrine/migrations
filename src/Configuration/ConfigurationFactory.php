@@ -3,8 +3,10 @@
 namespace LaravelDoctrine\Migrations\Configuration;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\Migrations\Exception\MigrationException;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
 use LaravelDoctrine\Migrations\Naming\DefaultNamingStrategy;
 
@@ -32,9 +34,11 @@ class ConfigurationFactory
 
     /**
      * @param Connection $connection
-     * @param string     $name
+     * @param string $name
      *
      * @return Configuration
+     * @throws MigrationException
+     * @throws BindingResolutionException
      */
     public function make(Connection $connection, $name = null)
     {

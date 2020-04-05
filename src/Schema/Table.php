@@ -3,6 +3,7 @@
 namespace LaravelDoctrine\Migrations\Schema;
 
 use Closure;
+use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table as Blueprint;
 use Doctrine\DBAL\Types\Type;
 
@@ -32,7 +33,7 @@ class Table
      * @param string $column
      * @param int    $length
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function guid($column)
     {
@@ -117,7 +118,7 @@ class Table
      *
      * @param string $columnName
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function increments($columnName)
     {
@@ -132,7 +133,7 @@ class Table
      *
      * @param string $columnName
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function smallIncrements($columnName)
     {
@@ -147,7 +148,7 @@ class Table
      *
      * @param string $columnName
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function bigIncrements($columnName)
     {
@@ -163,7 +164,7 @@ class Table
      * @param string $column
      * @param int    $length
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function string($column, $length = 255)
     {
@@ -175,7 +176,7 @@ class Table
      *
      * @param string $column
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function text($column)
     {
@@ -189,7 +190,7 @@ class Table
      * @param bool   $autoIncrement
      * @param bool   $unsigned
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function integer($column, $autoIncrement = false, $unsigned = false)
     {
@@ -203,7 +204,7 @@ class Table
      * @param bool   $autoIncrement
      * @param bool   $unsigned
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function smallInteger($column, $autoIncrement = false, $unsigned = false)
     {
@@ -217,7 +218,7 @@ class Table
      * @param bool   $autoIncrement
      * @param bool   $unsigned
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function bigInteger($column, $autoIncrement = false, $unsigned = false)
     {
@@ -230,7 +231,7 @@ class Table
      * @param string $column
      * @param bool   $autoIncrement
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function unsignedSmallInteger($column, $autoIncrement = false)
     {
@@ -243,7 +244,7 @@ class Table
      * @param string $column
      * @param bool   $autoIncrement
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function unsignedInteger($column, $autoIncrement = false)
     {
@@ -256,7 +257,7 @@ class Table
      * @param string $column
      * @param bool   $autoIncrement
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function unsignedBigInteger($column, $autoIncrement = false)
     {
@@ -270,7 +271,7 @@ class Table
      * @param int    $precision
      * @param int    $scale
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function float($column, $precision = 8, $scale = 2)
     {
@@ -284,7 +285,7 @@ class Table
      * @param int    $precision
      * @param int    $scale
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function decimal($column, $precision = 8, $scale = 2)
     {
@@ -296,7 +297,7 @@ class Table
      *
      * @param string $column
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function boolean($column)
     {
@@ -308,7 +309,7 @@ class Table
      *
      * @param string $column
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function json($column)
     {
@@ -320,7 +321,7 @@ class Table
      *
      * @param string $column
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function date($column)
     {
@@ -332,7 +333,7 @@ class Table
      *
      * @param string $column
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function dateTime($column)
     {
@@ -344,7 +345,7 @@ class Table
      *
      * @param string $column
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function dateTimeTz($column)
     {
@@ -356,7 +357,7 @@ class Table
      *
      * @param string $column
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function time($column)
     {
@@ -368,7 +369,7 @@ class Table
      *
      * @param string $column
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function timestamp($column)
     {
@@ -380,7 +381,7 @@ class Table
      *
      * @param string $column
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function timestampTz($column)
     {
@@ -434,7 +435,7 @@ class Table
      *
      * @param string $column
      *
-     * @return \Doctrine\DBAL\Schema\Column
+     * @return Column
      */
     public function binary($column, $length = 255)
     {

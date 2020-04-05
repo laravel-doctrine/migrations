@@ -12,7 +12,7 @@ class <class> extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         (new Builder($schema))->table('<table>', function (Table $table) {
             //
@@ -22,7 +22,7 @@ class <class> extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         (new Builder($schema))->table('<table>', function (Table $table) {
             //

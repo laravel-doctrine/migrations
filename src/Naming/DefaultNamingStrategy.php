@@ -2,8 +2,9 @@
 
 namespace LaravelDoctrine\Migrations\Naming;
 
-use Doctrine\DBAL\Migrations\Finder\MigrationFinderInterface;
-use Doctrine\DBAL\Migrations\Finder\RecursiveRegexFinder;
+use Doctrine\Migrations\Finder\MigrationDeepFinder;
+use Doctrine\Migrations\Finder\MigrationFinder;
+use Doctrine\Migrations\Finder\RecursiveRegexFinder;
 
 class DefaultNamingStrategy implements NamingStrategy
 {
@@ -30,7 +31,7 @@ class DefaultNamingStrategy implements NamingStrategy
     }
 
     /**
-     * @return MigrationFinderInterface
+     * @return MigrationDeepFinder
      */
     public function getFinder()
     {

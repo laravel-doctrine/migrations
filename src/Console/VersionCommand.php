@@ -2,7 +2,7 @@
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Doctrine\DBAL\Migrations\MigrationException;
+use Doctrine\Migrations\Exception\MigrationException;
 use Illuminate\Console\Command;
 use InvalidArgumentException;
 use LaravelDoctrine\Migrations\Configuration\Configuration;

@@ -1,6 +1,8 @@
 <?php
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
 use LaravelDoctrine\Migrations\Configuration\Configuration;
@@ -39,12 +41,24 @@ class ConfigurationFactoryTest extends TestCase
      */
     protected $configuration;
 
+    /**
+     * @var Mockery\Mock
+     */
+    protected $schemaManager;
+
+    /**
+     * @var Mockery\Mock
+     */
+    protected $databasePlatform;
+
     protected function setUp(): void
     {
         $this->container     = m::mock(Container::class);
         $this->config        = m::mock(Repository::class);
         $this->connection    = m::mock(Connection::class);
         $this->configuration = m::mock(\Doctrine\DBAL\Configuration::class);
+        $this->schemaManager = m::mock(AbstractSchemaManager::class);
+        $this->databasePlatform = m::mock(AbstractPlatform::class);
 
         $this->factory = new ConfigurationFactory(
             $this->config,
@@ -55,6 +69,8 @@ class ConfigurationFactoryTest extends TestCase
     public function test_can_make_configuration()
     {
         $this->connection->shouldReceive('getConfiguration')->andReturn($this->configuration);
+        $this->connection->shouldReceive('getSchemaManager')->andReturn($this->schemaManager);
+        $this->connection->shouldReceive('getDatabasePlatform')->andReturn($this->databasePlatform);
 
         $this->config->shouldReceive('get')
             ->once()
@@ -93,6 +109,8 @@ class ConfigurationFactoryTest extends TestCase
     public function test_can_make_configuration_for_custom_entity_manager()
     {
         $this->connection->shouldReceive('getConfiguration')->andReturn($this->configuration);
+        $this->connection->shouldReceive('getSchemaManager')->andReturn($this->schemaManager);
+        $this->connection->shouldReceive('getDatabasePlatform')->andReturn($this->databasePlatform);
 
         $this->config->shouldReceive('has')
             ->once()
@@ -138,6 +156,8 @@ class ConfigurationFactoryTest extends TestCase
     public function test_returns_default_configuration_if_not_defined()
     {
         $this->connection->shouldReceive('getConfiguration')->andReturn($this->configuration);
+        $this->connection->shouldReceive('getSchemaManager')->andReturn($this->schemaManager);
+        $this->connection->shouldReceive('getDatabasePlatform')->andReturn($this->databasePlatform);
 
         $this->config->shouldReceive('has')
             ->once()

@@ -2,7 +2,7 @@
 
 namespace LaravelDoctrine\Migrations\Configuration;
 
-use Doctrine\DBAL\Migrations\Configuration\Configuration as MigrationsConfiguration;
+use Doctrine\Migrations\Configuration\Configuration as MigrationsConfiguration;
 use LaravelDoctrine\Migrations\Naming\NamingStrategy;
 
 class Configuration extends MigrationsConfiguration
