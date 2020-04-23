@@ -75,6 +75,8 @@ class ConfigurationFactory
             }
         }
 
+        $configuration->setMigrationsColumnLength($config->get('version_column_length', 14));
+
         return $configuration;
     }
 }
