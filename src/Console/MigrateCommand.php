@@ -101,7 +101,7 @@ class MigrateCommand extends Command
             ));
         }
 
-        if (!$this->confirm('Are you sure you wish to continue?')) {
+        if ($this->input->isInteractive() && !$this->confirm('Are you sure you wish to continue?')) {
             $this->error('Migration cancelled!');
             exit(1);
         }
