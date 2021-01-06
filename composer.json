@@ -1,5 +1,6 @@
 {
   "name": "laravel-doctrine/migrations",
+  "type": "library",
   "description": "Doctrine Migrations for Laravel",
   "license": "MIT",
   "keywords": [
@@ -17,7 +18,7 @@
     }
   ],
   "require": {
-    "php": "^7.3",
+    "php": "^7.3|^8.0",
     "doctrine/migrations": "~2.2",
     "illuminate/config": "^8.0",
     "illuminate/contracts": "^8.0",
