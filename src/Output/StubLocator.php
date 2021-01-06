@@ -10,11 +10,11 @@ class StubLocator
     protected $location;
 
     /**
-     * @param $stub
+     * @param string $stub
      *
      * @return StubLocator
      */
-    public function locate($stub)
+    public function locate(string $stub)
     {
         $this->location = $stub;
 

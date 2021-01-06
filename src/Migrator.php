@@ -34,7 +34,7 @@ class Migrator
 
     /**
      * @param Version    $version
-     * @param            $direction
+     * @param string     $direction
      * @param bool|false $dryRun
      * @param bool|false $timeQueries
      */
@@ -64,12 +64,12 @@ class Migrator
 
     /**
      * @param Version $version
-     * @param         $direction
-     * @param         $path
+     * @param string  $direction
+     * @param string  $path
      */
     public function executeToFile(Version $version, $direction, $path)
     {
-        $path = is_bool($path) ? getcwd() : $path;
+        $path = !is_string($path) ? getcwd() : $path;
 
         $version->writeSqlFile($path, $direction);
 
@@ -87,9 +87,9 @@ class Migrator
     }
 
     /**
-     * @param Migration $migration
-     * @param           $timeQueries
-     * @param           $sql
+     * @param Migration  $migration
+     * @param bool       $timeQueries
+     * @param string[][] $sql
      */
     protected function writeNotes(Migration $migration, $timeQueries, $sql)
     {
@@ -97,7 +97,7 @@ class Migrator
             $this->notes[] = '<info>Nothing to migrate.</info>';
         }
 
-        foreach ($sql as $versionName => $sql) {
+        foreach ($sql as $versionName => $innerSql) {
             $this->note(
                 $versionName,
                 $migration->getConfiguration()->getVersion($versionName),
@@ -107,7 +107,7 @@ class Migrator
     }
 
     /**
-     * @param         $versionName
+     * @param string  $versionName
      * @param Version $version
      * @param bool    $timeQueries
      * @param string  $verb
@@ -115,10 +115,6 @@ class Migrator
     protected function note($versionName, Version $version, $timeQueries = false, $verb = 'Migrated')
     {
         $msg = "<info>{$verb}:</info> $versionName";
-
-        if ($timeQueries) {
-            $msg .= " ({$version->getTime()}s)";
-        }
 
         $this->notes[] = $msg;
     }

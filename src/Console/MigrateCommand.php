@@ -2,6 +2,7 @@
 
 namespace LaravelDoctrine\Migrations\Console;
 
+use Doctrine\Migrations\Exception\MigrationException;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use LaravelDoctrine\Migrations\Configuration\Configuration;
@@ -39,13 +40,13 @@ class MigrateCommand extends Command
      * @param ConfigurationProvider $provider
      * @param Migrator              $migrator
      *
-     * @throws \Doctrine\DBAL\Migrations\MigrationException
+     * @throws MigrationException
      * @return int
      */
     public function handle(ConfigurationProvider $provider, Migrator $migrator)
     {
         if (!$this->confirmToProceed()) {
-            return;
+            return 0;
         }
 
         $configuration = $provider->getForConnection(
@@ -59,6 +60,8 @@ class MigrateCommand extends Command
             );
         } catch (MigrationVersionException $e) {
             $this->error($e->getMessage());
+
+            return 1;
         }
 
         try {
@@ -81,6 +84,8 @@ class MigrateCommand extends Command
         foreach ($migrator->getNotes() as $note) {
             $this->line($note);
         }
+
+        return 0;
     }
 
     /**

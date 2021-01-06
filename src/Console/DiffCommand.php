@@ -65,7 +65,9 @@ class DiffCommand extends Command
         $down = $builder->down($configuration, $fromSchema, $toSchema);
 
         if (!$up && !$down) {
-            return $this->error('No changes detected in your mapping information.');
+            $this->error('No changes detected in your mapping information.');
+
+            return 0;
         }
 
         $path = $generator->generate(

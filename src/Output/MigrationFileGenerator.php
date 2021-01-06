@@ -48,8 +48,8 @@ class MigrationFileGenerator
      * @param Configuration $configuration
      * @param bool          $create
      * @param bool          $update
-     * @param null          $up
-     * @param null          $down
+     * @param string|null     $up
+     * @param string|null     $down
      *
      * @return string
      */
@@ -107,7 +107,7 @@ class MigrationFileGenerator
      * @param bool|string $create
      * @param bool|string $update
      *
-     * @return null
+     * @return null|string|bool
      */
     protected function getTableName($create, $update)
     {
@@ -118,10 +118,12 @@ class MigrationFileGenerator
         if ($update) {
             return $update;
         }
+
+        return null;
     }
 
     /**
-     * @param $sql
+     * @param string $sql
      *
      * @return string
      */

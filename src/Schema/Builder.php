@@ -29,7 +29,7 @@ class Builder
      *
      * @return \Doctrine\DBAL\Schema\Table|string
      */
-    public function create($table, Closure $callback)
+    public function create(string $table, Closure $callback)
     {
         $table = $this->schema->createTable($table);
 
@@ -80,6 +80,8 @@ class Builder
         if ($this->schema->hasTable($table)) {
             return $this->drop($table);
         }
+
+        return $this->schema;
     }
 
     /**
@@ -157,7 +159,7 @@ class Builder
     }
 
     /**
-     * @param              $table
+     * @param \Doctrine\DBAL\Schema\Table    $table
      * @param Closure|null $callback
      *
      * @return Table

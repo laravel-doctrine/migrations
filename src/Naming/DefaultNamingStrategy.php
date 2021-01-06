@@ -9,7 +9,7 @@ use Doctrine\Migrations\Finder\RecursiveRegexFinder;
 class DefaultNamingStrategy implements NamingStrategy
 {
     /**
-     * @return string|string
+     * @return string
      */
     public function getFilename($version = null)
     {

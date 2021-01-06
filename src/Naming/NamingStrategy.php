@@ -7,7 +7,7 @@ use Doctrine\Migrations\Finder\MigrationFinder;
 interface NamingStrategy
 {
     /**
-     * @param int|null $version
+     * @param string|null $version
      *
      * @return string
      */

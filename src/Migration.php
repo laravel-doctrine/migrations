@@ -69,7 +69,7 @@ class Migration
     {
         $version = $configuration->resolveVersionAlias($versionAlias);
 
-        if ($version === null || $version === false) {
+        if ($version === null) {
             if ($versionAlias == 'prev') {
                 throw new MigrationVersionException('Already at first version');
             }

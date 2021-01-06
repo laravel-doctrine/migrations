@@ -6,6 +6,7 @@ use Closure;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table as Blueprint;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 class Table
 {
@@ -31,19 +32,18 @@ class Table
      * Create a new guid column on the table.
      *
      * @param string $column
-     * @param int    $length
      *
      * @return Column
      */
-    public function guid($column)
+    public function guid(string $column)
     {
-        return $this->table->addColumn($column, Type::GUID);
+        return $this->table->addColumn($column, Types::GUID);
     }
 
     /**
      * Specify the primary key(s) for the table.
      *
-     * @param string $columns
+     * @param string|string[] $columns
      * @param string $name
      *
      * @return Blueprint
@@ -168,7 +168,7 @@ class Table
      */
     public function string($column, $length = 255)
     {
-        return $this->table->addColumn($column, Type::STRING, compact('length'));
+        return $this->table->addColumn($column, Types::STRING, compact('length'));
     }
 
     /**
@@ -180,7 +180,7 @@ class Table
      */
     public function text($column)
     {
-        return $this->table->addColumn($column, Type::TEXT);
+        return $this->table->addColumn($column, Types::TEXT);
     }
 
     /**
@@ -194,7 +194,7 @@ class Table
      */
     public function integer($column, $autoIncrement = false, $unsigned = false)
     {
-        return $this->table->addColumn($column, Type::INTEGER, compact('autoIncrement', 'unsigned'));
+        return $this->table->addColumn($column, Types::INTEGER, compact('autoIncrement', 'unsigned'));
     }
 
     /**
@@ -208,7 +208,7 @@ class Table
      */
     public function smallInteger($column, $autoIncrement = false, $unsigned = false)
     {
-        return $this->table->addColumn($column, Type::SMALLINT, compact('autoIncrement', 'unsigned'));
+        return $this->table->addColumn($column, Types::SMALLINT, compact('autoIncrement', 'unsigned'));
     }
 
     /**
@@ -222,7 +222,7 @@ class Table
      */
     public function bigInteger($column, $autoIncrement = false, $unsigned = false)
     {
-        return $this->table->addColumn($column, Type::BIGINT, compact('autoIncrement', 'unsigned'));
+        return $this->table->addColumn($column, Types::BIGINT, compact('autoIncrement', 'unsigned'));
     }
 
     /**
@@ -275,7 +275,7 @@ class Table
      */
     public function float($column, $precision = 8, $scale = 2)
     {
-        return $this->table->addColumn($column, Type::FLOAT, compact('precision', 'scale'));
+        return $this->table->addColumn($column, Types::FLOAT, compact('precision', 'scale'));
     }
 
     /**
@@ -289,7 +289,7 @@ class Table
      */
     public function decimal($column, $precision = 8, $scale = 2)
     {
-        return $this->table->addColumn($column, Type::DECIMAL, compact('precision', 'scale'));
+        return $this->table->addColumn($column, Types::DECIMAL, compact('precision', 'scale'));
     }
 
     /**
@@ -301,7 +301,7 @@ class Table
      */
     public function boolean($column)
     {
-        return $this->table->addColumn($column, Type::BOOLEAN);
+        return $this->table->addColumn($column, Types::BOOLEAN);
     }
 
     /**
@@ -313,7 +313,7 @@ class Table
      */
     public function json($column)
     {
-        return $this->table->addColumn($column, Type::JSON_ARRAY);
+        return $this->table->addColumn($column, Types::JSON_ARRAY);
     }
 
     /**
@@ -325,7 +325,7 @@ class Table
      */
     public function date($column)
     {
-        return $this->table->addColumn($column, Type::DATE);
+        return $this->table->addColumn($column, Types::DATE_MUTABLE);
     }
 
     /**
@@ -337,7 +337,7 @@ class Table
      */
     public function dateTime($column)
     {
-        return $this->table->addColumn($column, Type::DATETIME);
+        return $this->table->addColumn($column, Types::DATETIME_MUTABLE);
     }
 
     /**
@@ -349,7 +349,7 @@ class Table
      */
     public function dateTimeTz($column)
     {
-        return $this->table->addColumn($column, Type::DATETIMETZ);
+        return $this->table->addColumn($column, Types::DATETIMETZ_MUTABLE);
     }
 
     /**
@@ -361,7 +361,7 @@ class Table
      */
     public function time($column)
     {
-        return $this->table->addColumn($column, Type::TIME);
+        return $this->table->addColumn($column, Types::TIME_MUTABLE);
     }
 
     /**
@@ -373,7 +373,7 @@ class Table
      */
     public function timestamp($column)
     {
-        return $this->table->addColumn($column, Type::DATETIME);
+        return $this->table->addColumn($column, Types::DATETIME_MUTABLE);
     }
 
     /**
@@ -385,7 +385,7 @@ class Table
      */
     public function timestampTz($column)
     {
-        return $this->table->addColumn($column, Type::DATETIMETZ);
+        return $this->table->addColumn($column, Types::DATETIMETZ_MUTABLE);
     }
 
     /**
@@ -439,7 +439,7 @@ class Table
      */
     public function binary($column, $length = 255)
     {
-        return $this->table->addColumn($column, Type::BINARY, compact('length'))->setNotnull(false);
+        return $this->table->addColumn($column, Types::BINARY, compact('length'))->setNotnull(false);
     }
 
     /**
@@ -460,11 +460,11 @@ class Table
     }
 
     /**
-     * @param $column
+     * @param string $column
      *
      * @return Blueprint
      */
-    public function dropColumn($column)
+    public function dropColumn(string $column)
     {
         return $this->table->dropColumn($column);
     }

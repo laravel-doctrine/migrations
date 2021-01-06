@@ -3,6 +3,7 @@
 namespace LaravelDoctrine\Migrations\Console;
 
 use Doctrine\Migrations\Exception\MigrationException;
+use Doctrine\Migrations\Exception\UnknownMigrationVersion;
 use Illuminate\Console\Command;
 use InvalidArgumentException;
 use LaravelDoctrine\Migrations\Configuration\Configuration;
@@ -49,7 +50,9 @@ class VersionCommand extends Command
         );
 
         if (!$this->option('add') && !$this->option('delete')) {
-            return $this->error('You must specify whether you want to --add or --delete the specified version.');
+            $this->error('You must specify whether you want to --add or --delete the specified version.');
+
+            return 1;
         }
 
         $this->markMigrated = (boolean) $this->option('add');
@@ -101,7 +104,7 @@ class VersionCommand extends Command
     }
 
     /**
-     * @param            $versionName
+     * @param string     $versionName
      * @param bool|false $all
      *
      * @throws MigrationException
@@ -109,7 +112,7 @@ class VersionCommand extends Command
     protected function mark($versionName, $all = false)
     {
         if (!$this->configuration->hasVersion($versionName)) {
-            throw MigrationException::unknownMigrationVersion($versionName);
+            throw UnknownMigrationVersion::new($versionName);
         }
 
         $version = $this->configuration->getVersion($versionName);
