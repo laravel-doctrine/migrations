@@ -2,12 +2,15 @@ name: CI
 on: [push, pull_request]
 jobs:
   tests:
-    name: Tests
-    runs-on: ${{ matrix.os }}
+    runs-on: 'ubuntu-latest'
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
         php: ['7.2', '7.3', '7.4']
+        laravel: ['6', '7', '8']
+        exclude:
+          - php: '7.2'
+            laravel: '8'
     steps:
       - uses: actions/checkout@v2
       - name: Setup PHP
@@ -15,22 +18,26 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           tools: phpunit, git
-          coverage: xdebug
+
       - name: Get composer cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
       - name: Cache composer dependencies
         uses: actions/cache@v1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          # Use composer.json for key, if composer.lock is not committed.
-          # key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: "php-${{ matrix.php }}-${{matrix.laravel}}-composer-locked-${{ hashFiles('composer.lock') }}"
+          restore-keys: "php-${{ matrix.php }}-${{matrix.laravel}}-composer-locked-"
+
       - name: Install Composer dependencies
-        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+        run: rm -f composer.lock
+
+      - name: Install dependencies for Laravel ${{ matrix.laravel}}
+        run: composer require --no-progress --no-scripts --no-plugins illuminate/config ^${{ matrix.laravel }} illuminate/contracts ^${{ matrix.laravel }} illuminate/console ^${{ matrix.laravel }} -v
+
+      - name: Update dependencies
+        run: composer update --no-interaction
+
       - name: PHPUnit
-        run: vendor/bin/phpunit --coverage-clover=coverage.xml --coverage-text
-      - uses: codecov/codecov-action@v1
-        with:
-          file: ./coverage.xml
+        run: vendor/bin/phpunit
