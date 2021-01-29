@@ -2,7 +2,7 @@
 
 namespace LaravelDoctrine\Migrations\Configuration;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ConfigurationProvider
 {
