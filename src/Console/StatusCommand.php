@@ -94,7 +94,7 @@ class StatusCommand extends Command
      * @param array         $migrations
      * @param Configuration $configuration
      */
-    protected function showVersions(array $migrations = [], Configuration $configuration)
+    protected function showVersions(array $migrations, Configuration $configuration)
     {
         $migratedVersions = $configuration->getMigratedVersions();
 
