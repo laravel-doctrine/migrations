@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelDoctrine\Migrations\Naming;
 
 use Doctrine\Migrations\Finder\MigrationDeepFinder;

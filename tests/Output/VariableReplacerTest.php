@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use LaravelDoctrine\Migrations\Output\VariableReplacer;
 use PHPUnit\Framework\TestCase;
 

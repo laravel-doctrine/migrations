@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelDoctrine\Migrations\Testing;
 
 use Illuminate\Contracts\Console\Kernel;
