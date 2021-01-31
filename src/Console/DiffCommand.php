@@ -2,7 +2,7 @@
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Migrations\Provider\OrmSchemaProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Console\Command;
