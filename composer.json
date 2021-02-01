@@ -1,5 +1,6 @@
 {
   "name": "laravel-doctrine/migrations",
+  "type": "library",
   "description": "Doctrine Migrations for Laravel",
   "license": "MIT",
   "keywords": [
