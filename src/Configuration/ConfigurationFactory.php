@@ -38,7 +38,7 @@ class ConfigurationFactory
      * @param Connection $connection
      * @param string $name
      *
-     * @return Configuration
+     * @return Configuration|string
      * @throws MigrationException
      * @throws BindingResolutionException
      */

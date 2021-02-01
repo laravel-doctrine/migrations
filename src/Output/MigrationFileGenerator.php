@@ -61,7 +61,8 @@ class MigrationFileGenerator
         $update = false,
         $up = null,
         $down = null
-    ) {
+    ): string
+    {
         $stub = $this->getStub($create, $update);
 
         $contents = $this->locator->locate($stub)->get();
@@ -91,7 +92,7 @@ class MigrationFileGenerator
      *
      * @return string
      */
-    protected function getStub($create, $update)
+    protected function getStub($create, $update): string
     {
         $stub = 'blank';
         if ($create) {
@@ -127,7 +128,7 @@ class MigrationFileGenerator
      *
      * @return string
      */
-    protected function tabbedNewLine($sql)
+    protected function tabbedNewLine($sql): string
     {
         return implode("\n        ", explode("\n", $sql));
     }

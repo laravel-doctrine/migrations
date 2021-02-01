@@ -78,7 +78,7 @@ class ResetCommand extends Command
     /**
      * @param string $table
      */
-    private function safelyDropTable($table)
+    private function safelyDropTable(string $table)
     {
         $platformName = $this->connection->getDatabasePlatform()->getName();
         $instructions = $this->getCardinalityCheckInstructions()[$platformName];
@@ -101,7 +101,7 @@ class ResetCommand extends Command
     /**
      * @return array
      */
-    private function getCardinalityCheckInstructions()
+    private function getCardinalityCheckInstructions(): array
     {
         return [
             'mssql' => [

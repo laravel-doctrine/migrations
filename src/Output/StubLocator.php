@@ -16,7 +16,7 @@ class StubLocator
      *
      * @return StubLocator
      */
-    public function locate($stub)
+    public function locate($stub): StubLocator
     {
         $this->location = $stub;
 
@@ -26,7 +26,7 @@ class StubLocator
     /**
      * @return string
      */
-    public function get()
+    public function get(): string
     {
         return file_get_contents($this->getLocation());
     }
@@ -34,7 +34,7 @@ class StubLocator
     /**
      * @return string
      */
-    public function getLocation()
+    public function getLocation(): string
     {
         return $this->location;
     }

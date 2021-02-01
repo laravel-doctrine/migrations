@@ -24,7 +24,7 @@ class ExecutedUnavailableMigrationsException extends Exception
     /**
      * @return array
      */
-    public function getMigrations()
+    public function getMigrations(): array
     {
         return $this->migrations;
     }

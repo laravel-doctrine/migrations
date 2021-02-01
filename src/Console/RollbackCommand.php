@@ -38,7 +38,8 @@ class RollbackCommand extends Command
         $version = $this->argument('version') ?: $configuration->getCurrentVersion();
 
         if ($version == 0) {
-            return $this->error('No migrations to be rollbacked');
+            $this->error('No migrations to be rollbacked');
+            return;
         }
 
         $this->call('doctrine:migrations:execute', [

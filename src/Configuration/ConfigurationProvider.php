@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Configuration;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ConfigurationProvider
@@ -31,10 +32,11 @@ class ConfigurationProvider
     /**
      * @param string|null $name
      *
-     * @return Configuration
+     * @return Configuration|string
      */
     public function getForConnection($name = null)
     {
+        /** @var Connection $connection */
         $connection = $this->registry->getConnection($name);
 
         return $this->factory->make($connection, $name);

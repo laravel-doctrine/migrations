@@ -15,7 +15,7 @@ class FileWriter
      *
      * @return int
      */
-    public function write($contents, $filename, $directory)
+    public function write(string $contents, string $filename, string $directory): int
     {
         $path = rtrim($directory, '/') . '/' . $filename . '.php';
 

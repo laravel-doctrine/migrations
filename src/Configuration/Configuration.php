@@ -17,7 +17,7 @@ class Configuration extends MigrationsConfiguration
     /**
      * @return NamingStrategy
      */
-    public function getNamingStrategy()
+    public function getNamingStrategy(): NamingStrategy
     {
         return $this->namingStrategy;
     }

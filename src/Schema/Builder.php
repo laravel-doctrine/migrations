@@ -26,12 +26,12 @@ class Builder
     /**
      * Modify a table on the schema.
      *
-     * @param string  $table
+     * @param string $table
      * @param Closure $callback
      *
      * @return \Doctrine\DBAL\Schema\Table|string
      */
-    public function create($table, Closure $callback)
+    public function create(string $table, Closure $callback)
     {
         $table = $this->schema->createTable($table);
 
@@ -43,13 +43,13 @@ class Builder
     /**
      * Create a new table on the schema.
      *
-     * @param string   $table
-     * @param \Closure $callback
+     * @param string $table
+     * @param Closure $callback
      *
-     * @throws SchemaException
      * @return \Doctrine\DBAL\Schema\Table|string
+     * @throws SchemaException
      */
-    public function table($table, Closure $callback)
+    public function table(string $table, Closure $callback)
     {
         $table = $this->schema->getTable($table);
 
@@ -63,9 +63,9 @@ class Builder
      *
      * @param string $table
      *
-     * @return Schema
+     * @return Schema|string
      */
-    public function drop($table)
+    public function drop(string $table)
     {
         return $this->schema->dropTable($table);
     }
@@ -75,9 +75,9 @@ class Builder
      *
      * @param string $table
      *
-     * @return Schema
+     * @return Schema|string
      */
-    public function dropIfExists($table)
+    public function dropIfExists(string $table)
     {
         if ($this->schema->hasTable($table)) {
             return $this->drop($table);
@@ -90,9 +90,9 @@ class Builder
      * @param string $from
      * @param string $to
      *
-     * @return Schema
+     * @return Schema|string
      */
-    public function rename($from, $to)
+    public function rename(string $from, string $to)
     {
         return $this->schema->renameTable($from, $to);
     }
@@ -104,35 +104,35 @@ class Builder
      *
      * @return bool
      */
-    public function hasTable($table)
+    public function hasTable(string $table): bool
     {
         return $this->schema->hasTable($table);
     }
 
-	/**
-	 * Determine if the given table has a given column.
-	 *
-	 * @param string $table
-	 * @param string $column
-	 *
-	 * @return bool
-	 * @throws SchemaException
-	 */
-    public function hasColumn($table, $column)
+    /**
+     * Determine if the given table has a given column.
+     *
+     * @param string $table
+     * @param string $column
+     *
+     * @return bool
+     * @throws SchemaException
+     */
+    public function hasColumn(string $table, string $column): bool
     {
         return $this->schema->getTable($table)->hasColumn($column);
     }
 
-	/**
-	 * Determine if the given table has given columns.
-	 *
-	 * @param string $table
-	 * @param array $columns
-	 *
-	 * @return bool
-	 * @throws SchemaException
-	 */
-    public function hasColumns($table, array $columns)
+    /**
+     * Determine if the given table has given columns.
+     *
+     * @param string $table
+     * @param array $columns
+     *
+     * @return bool
+     * @throws SchemaException
+     */
+    public function hasColumns(string $table, array $columns): bool
     {
         $tableColumns = array_map('strtolower', array_keys($this->getColumnListing($table)));
 
@@ -145,15 +145,15 @@ class Builder
         return true;
     }
 
-	/**
-	 * Get the column listing for a given table.
-	 *
-	 * @param string $table
-	 *
-	 * @return array
-	 * @throws SchemaException
-	 */
-    public function getColumnListing($table)
+    /**
+     * Get the column listing for a given table.
+     *
+     * @param string $table
+     *
+     * @return array
+     * @throws SchemaException
+     */
+    public function getColumnListing(string $table): array
     {
         return $this->schema->getTable($table)->getColumns();
     }
@@ -164,7 +164,7 @@ class Builder
      *
      * @return Table
      */
-    protected function build($table, Closure $callback = null)
+    protected function build($table, Closure $callback = null): Table
     {
         return new Table($table, $callback);
     }

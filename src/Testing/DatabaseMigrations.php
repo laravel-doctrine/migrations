@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LaravelDoctrine\Migrations\Testing;
 
 use Illuminate\Contracts\Console\Kernel;
+use function method_exists;
 
 trait DatabaseMigrations
 {
@@ -13,12 +14,12 @@ trait DatabaseMigrations
      *
      * @return void
      */
-    public function runDatabaseMigrations()
+    public function runDatabaseMigrations(): void
     {
         $this->artisan('doctrine:migrations:refresh');
 
         $kernel = $this->app[Kernel::class];
-        if (\method_exists($kernel, 'setArtisan')) {
+        if (method_exists($kernel, 'setArtisan')) {
             $kernel->setArtisan(null);
         }
 
