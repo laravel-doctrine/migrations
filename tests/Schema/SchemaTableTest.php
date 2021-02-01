@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Doctrine\DBAL\Schema\Column;
 use LaravelDoctrine\Migrations\Schema\Table;
 use Mockery as m;

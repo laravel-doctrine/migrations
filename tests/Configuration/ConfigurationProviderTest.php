@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationFactory;

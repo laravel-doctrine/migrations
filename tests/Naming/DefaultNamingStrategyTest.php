@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Doctrine\Migrations\Finder\RecursiveRegexFinder;
 use LaravelDoctrine\Migrations\Naming\DefaultNamingStrategy;
 use PHPUnit\Framework\TestCase;

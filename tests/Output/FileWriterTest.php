@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use LaravelDoctrine\Migrations\Output\FileWriter;
 use PHPUnit\Framework\TestCase;
 

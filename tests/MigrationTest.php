@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\MigrationRepository;
 use Doctrine\Migrations\OutputWriter;

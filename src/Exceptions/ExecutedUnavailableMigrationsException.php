@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelDoctrine\Migrations\Exceptions;
 
 use Exception;
@@ -22,7 +24,7 @@ class ExecutedUnavailableMigrationsException extends Exception
     /**
      * @return array
      */
-    public function getMigrations()
+    public function getMigrations(): array
     {
         return $this->migrations;
     }

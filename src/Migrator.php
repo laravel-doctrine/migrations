@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelDoctrine\Migrations;
 
 use Doctrine\Migrations\Exception\MigrationException;
@@ -81,7 +83,7 @@ class Migrator
     /**
      * @return array
      */
-    public function getNotes()
+    public function getNotes(): array
     {
         return $this->notes;
     }
@@ -129,7 +131,7 @@ class Migrator
      * @param bool $allowNoMigrations
      * @return MigratorConfiguration
      */
-    private function setConfiguration(bool $dryRun = false, bool $timeQueries = false, bool $allowNoMigrations = false)
+    private function setConfiguration(bool $dryRun = false, bool $timeQueries = false, bool $allowNoMigrations = false): MigratorConfiguration
     {
         $configuration = new MigratorConfiguration();
         $configuration->setDryRun($dryRun);

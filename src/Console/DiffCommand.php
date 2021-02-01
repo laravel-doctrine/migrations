@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelDoctrine\Migrations\Console;
 
 use Doctrine\Persistence\ManagerRegistry;
@@ -38,8 +40,9 @@ class DiffCommand extends Command
         ManagerRegistry $registry,
         SqlBuilder $builder,
         MigrationFileGenerator $generator
-    ) {
+    ): void {
         $configuration = $provider->getForConnection($this->option('connection'));
+        /** @var EntityManagerInterface $em */
         $em            = $registry->getManager($this->option('connection'));
         $connection    = $configuration->getConnection();
 
@@ -65,7 +68,8 @@ class DiffCommand extends Command
         $down = $builder->down($configuration, $fromSchema, $toSchema);
 
         if (!$up && !$down) {
-            return $this->error('No changes detected in your mapping information.');
+            $this->error('No changes detected in your mapping information.');
+            return;
         }
 
         $path = $generator->generate(
@@ -84,7 +88,7 @@ class DiffCommand extends Command
      *
      * @return OrmSchemaProvider
      */
-    protected function getSchemaProvider(EntityManagerInterface $em)
+    protected function getSchemaProvider(EntityManagerInterface $em): OrmSchemaProvider
     {
         return new OrmSchemaProvider($em);
     }
@@ -99,7 +103,7 @@ class DiffCommand extends Command
      *
      * @return string
      */
-    protected function resolveTableName($name)
+    protected function resolveTableName(string $name): string
     {
         $pos = strpos($name, '.');
 

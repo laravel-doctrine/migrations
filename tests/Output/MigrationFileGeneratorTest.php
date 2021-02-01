@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use LaravelDoctrine\Migrations\Configuration\Configuration;
 use LaravelDoctrine\Migrations\Naming\DefaultNamingStrategy;
 use LaravelDoctrine\Migrations\Output\FileWriter;

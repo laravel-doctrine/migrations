@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelDoctrine\Migrations\Output;
 
 use Doctrine\DBAL\DBALException;
@@ -16,7 +18,7 @@ class SqlBuilder
 	 * @return string
 	 * @throws DBALException
 	 */
-    public function up(Configuration $configuration, Schema $from, Schema $to)
+    public function up(Configuration $configuration, Schema $from, Schema $to): string
     {
         return $this->build(
             $configuration,
@@ -32,7 +34,7 @@ class SqlBuilder
 	 * @return string
 	 * @throws DBALException
 	 */
-    public function down(Configuration $configuration, Schema $from, Schema $to)
+    public function down(Configuration $configuration, Schema $from, Schema $to): string
     {
         return $this->build(
             $configuration,
@@ -47,7 +49,7 @@ class SqlBuilder
 	 * @return string
 	 * @throws DBALException
 	 */
-    public function build(Configuration $configuration, array $queries = [])
+    public function build(Configuration $configuration, array $queries = []): string
     {
         $platform = $configuration->getConnection()->getDatabasePlatform()->getName();
 

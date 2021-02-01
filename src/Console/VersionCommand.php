@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelDoctrine\Migrations\Console;
 
 use Doctrine\Migrations\Exception\MigrationException;
@@ -49,7 +51,8 @@ class VersionCommand extends Command
         );
 
         if (!$this->option('add') && !$this->option('delete')) {
-            return $this->error('You must specify whether you want to --add or --delete the specified version.');
+            $this->error('You must specify whether you want to --add or --delete the specified version.');
+            return;
         }
 
         $this->markMigrated = (boolean) $this->option('add');

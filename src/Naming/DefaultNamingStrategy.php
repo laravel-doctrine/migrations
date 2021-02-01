@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelDoctrine\Migrations\Naming;
 
 use Doctrine\Migrations\Finder\MigrationDeepFinder;
@@ -9,7 +11,9 @@ use Doctrine\Migrations\Finder\RecursiveRegexFinder;
 class DefaultNamingStrategy implements NamingStrategy
 {
     /**
-     * @return string|string
+     * @param string|null $version
+     *
+     * @return string
      */
     public function getFilename($version = null)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelDoctrine\Migrations\Schema;
 
 use Closure;
@@ -16,7 +18,7 @@ class Table
 
     /**
      * @param Blueprint $table
-     * @param Closure   $callback
+     * @param Closure|null $callback
      */
     public function __construct(Blueprint $table, Closure $callback = null)
     {
@@ -31,11 +33,10 @@ class Table
      * Create a new guid column on the table.
      *
      * @param string $column
-     * @param int    $length
      *
-     * @return Column
+     * @return Column|null
      */
-    public function guid($column)
+    public function guid(string $column): ?Column
     {
         return $this->table->addColumn($column, Type::GUID);
     }
@@ -44,11 +45,11 @@ class Table
      * Specify the primary key(s) for the table.
      *
      * @param string $columns
-     * @param string $name
+     * @param null $name
      *
-     * @return Blueprint
+     * @return Blueprint|null
      */
-    public function primary($columns, $name = null)
+    public function primary(string $columns, $name = null): ?Blueprint
     {
         $columns = is_array($columns) ? $columns : [$columns];
 
@@ -62,9 +63,9 @@ class Table
      * @param string       $name
      * @param array        $options
      *
-     * @return Blueprint
+     * @return Blueprint|null
      */
-    public function unique($columns, $name = null, $options = [])
+    public function unique($columns, $name = null, $options = []): ?Blueprint
     {
         $columns = is_array($columns) ? $columns : [$columns];
 
@@ -79,9 +80,9 @@ class Table
      * @param array        $flags
      * @param array        $options
      *
-     * @return Blueprint
+     * @return Blueprint|null
      */
-    public function index($columns, $name = null, $flags = [], $options = [])
+    public function index($columns, $name = null, $flags = [], $options = []): ?Blueprint
     {
         $columns = is_array($columns) ? $columns : [$columns];
 
@@ -91,21 +92,22 @@ class Table
     /**
      * Specify a foreign key for the table.
      *
-     * @param string       $table
+     * @param string $table
      * @param array|string $localColumnNames
      * @param array|string $foreignColumnNames
-     * @param array        $options
-     * @param null         $constraintName
+     * @param array $options
+     * @param null $constraintName
      *
-     * @return Blueprint
+     * @return Blueprint|null
      */
     public function foreign(
-        $table,
+        string $table,
         $localColumnNames,
         $foreignColumnNames = 'id',
         $options = [],
         $constraintName = null
-    ) {
+    ): ?Blueprint
+    {
         $localColumnNames   = is_array($localColumnNames) ? $localColumnNames : [$localColumnNames];
         $foreignColumnNames = is_array($foreignColumnNames) ? $foreignColumnNames : [$foreignColumnNames];
 
@@ -118,9 +120,9 @@ class Table
      *
      * @param string $columnName
      *
-     * @return Column
+     * @return Column|null
      */
-    public function increments($columnName)
+    public function increments(string $columnName): ?Column
     {
         $column = $this->integer($columnName, true, true);
         $this->primary($columnName);
@@ -133,9 +135,9 @@ class Table
      *
      * @param string $columnName
      *
-     * @return Column
+     * @return Column|null
      */
-    public function smallIncrements($columnName)
+    public function smallIncrements(string $columnName): ?Column
     {
         $column = $this->smallInteger($columnName, true, true);
         $this->primary($columnName);
@@ -148,9 +150,9 @@ class Table
      *
      * @param string $columnName
      *
-     * @return Column
+     * @return Column|null
      */
-    public function bigIncrements($columnName)
+    public function bigIncrements(string $columnName): ?Column
     {
         $column = $this->bigInteger($columnName, true, true);
         $this->primary($columnName);
@@ -162,11 +164,11 @@ class Table
      * Create a new string column on the table.
      *
      * @param string $column
-     * @param int    $length
+     * @param int $length
      *
-     * @return Column
+     * @return Column|null
      */
-    public function string($column, $length = 255)
+    public function string(string $column, $length = 255): ?Column
     {
         return $this->table->addColumn($column, Type::STRING, compact('length'));
     }
@@ -176,9 +178,9 @@ class Table
      *
      * @param string $column
      *
-     * @return Column
+     * @return Column|null
      */
-    public function text($column)
+    public function text(string $column): ?Column
     {
         return $this->table->addColumn($column, Type::TEXT);
     }
@@ -187,12 +189,12 @@ class Table
      * Create a new integer (4-byte) column on the table.
      *
      * @param string $column
-     * @param bool   $autoIncrement
-     * @param bool   $unsigned
+     * @param bool $autoIncrement
+     * @param bool $unsigned
      *
-     * @return Column
+     * @return Column|null
      */
-    public function integer($column, $autoIncrement = false, $unsigned = false)
+    public function integer(string $column, $autoIncrement = false, $unsigned = false): ?Column
     {
         return $this->table->addColumn($column, Type::INTEGER, compact('autoIncrement', 'unsigned'));
     }
@@ -201,12 +203,12 @@ class Table
      * Create a new small integer (2-byte) column on the table.
      *
      * @param string $column
-     * @param bool   $autoIncrement
-     * @param bool   $unsigned
+     * @param bool $autoIncrement
+     * @param bool $unsigned
      *
-     * @return Column
+     * @return Column|null
      */
-    public function smallInteger($column, $autoIncrement = false, $unsigned = false)
+    public function smallInteger(string $column, $autoIncrement = false, $unsigned = false): ?Column
     {
         return $this->table->addColumn($column, Type::SMALLINT, compact('autoIncrement', 'unsigned'));
     }
@@ -215,12 +217,12 @@ class Table
      * Create a new big integer (8-byte) column on the table.
      *
      * @param string $column
-     * @param bool   $autoIncrement
-     * @param bool   $unsigned
+     * @param bool $autoIncrement
+     * @param bool $unsigned
      *
-     * @return Column
+     * @return Column|null
      */
-    public function bigInteger($column, $autoIncrement = false, $unsigned = false)
+    public function bigInteger(string $column, $autoIncrement = false, $unsigned = false): ?Column
     {
         return $this->table->addColumn($column, Type::BIGINT, compact('autoIncrement', 'unsigned'));
     }
@@ -229,11 +231,11 @@ class Table
      * Create a new unsigned small integer (2-byte) column on the table.
      *
      * @param string $column
-     * @param bool   $autoIncrement
+     * @param bool $autoIncrement
      *
-     * @return Column
+     * @return Column|null
      */
-    public function unsignedSmallInteger($column, $autoIncrement = false)
+    public function unsignedSmallInteger(string $column, $autoIncrement = false): ?Column
     {
         return $this->smallInteger($column, $autoIncrement, true);
     }
@@ -242,11 +244,11 @@ class Table
      * Create a new unsigned integer (4-byte) column on the table.
      *
      * @param string $column
-     * @param bool   $autoIncrement
+     * @param bool $autoIncrement
      *
-     * @return Column
+     * @return Column|null
      */
-    public function unsignedInteger($column, $autoIncrement = false)
+    public function unsignedInteger(string $column, $autoIncrement = false): ?Column
     {
         return $this->integer($column, $autoIncrement, true);
     }
@@ -255,11 +257,11 @@ class Table
      * Create a new unsigned big integer (8-byte) column on the table.
      *
      * @param string $column
-     * @param bool   $autoIncrement
+     * @param bool $autoIncrement
      *
-     * @return Column
+     * @return Column|null
      */
-    public function unsignedBigInteger($column, $autoIncrement = false)
+    public function unsignedBigInteger(string $column, $autoIncrement = false): ?Column
     {
         return $this->bigInteger($column, $autoIncrement, true);
     }
@@ -268,12 +270,12 @@ class Table
      * Create a new float column on the table.
      *
      * @param string $column
-     * @param int    $precision
-     * @param int    $scale
+     * @param int $precision
+     * @param int $scale
      *
-     * @return Column
+     * @return Column|null
      */
-    public function float($column, $precision = 8, $scale = 2)
+    public function float(string $column, $precision = 8, $scale = 2): ?Column
     {
         return $this->table->addColumn($column, Type::FLOAT, compact('precision', 'scale'));
     }
@@ -282,12 +284,12 @@ class Table
      * Create a new decimal column on the table.
      *
      * @param string $column
-     * @param int    $precision
-     * @param int    $scale
+     * @param int $precision
+     * @param int $scale
      *
-     * @return Column
+     * @return Column|null
      */
-    public function decimal($column, $precision = 8, $scale = 2)
+    public function decimal(string $column, $precision = 8, $scale = 2): ?Column
     {
         return $this->table->addColumn($column, Type::DECIMAL, compact('precision', 'scale'));
     }
@@ -297,9 +299,9 @@ class Table
      *
      * @param string $column
      *
-     * @return Column
+     * @return Column|null
      */
-    public function boolean($column)
+    public function boolean(string $column): ?Column
     {
         return $this->table->addColumn($column, Type::BOOLEAN);
     }
@@ -309,9 +311,9 @@ class Table
      *
      * @param string $column
      *
-     * @return Column
+     * @return Column|null
      */
-    public function json($column)
+    public function json(string $column): ?Column
     {
         return $this->table->addColumn($column, Type::JSON_ARRAY);
     }
@@ -321,9 +323,9 @@ class Table
      *
      * @param string $column
      *
-     * @return Column
+     * @return Column|null
      */
-    public function date($column)
+    public function date(string $column): ?Column
     {
         return $this->table->addColumn($column, Type::DATE);
     }
@@ -333,9 +335,9 @@ class Table
      *
      * @param string $column
      *
-     * @return Column
+     * @return Column|null
      */
-    public function dateTime($column)
+    public function dateTime(string $column): ?Column
     {
         return $this->table->addColumn($column, Type::DATETIME);
     }
@@ -345,9 +347,9 @@ class Table
      *
      * @param string $column
      *
-     * @return Column
+     * @return Column|null
      */
-    public function dateTimeTz($column)
+    public function dateTimeTz(string $column): ?Column
     {
         return $this->table->addColumn($column, Type::DATETIMETZ);
     }
@@ -357,9 +359,9 @@ class Table
      *
      * @param string $column
      *
-     * @return Column
+     * @return Column|null
      */
-    public function time($column)
+    public function time(string $column): ?Column
     {
         return $this->table->addColumn($column, Type::TIME);
     }
@@ -369,9 +371,9 @@ class Table
      *
      * @param string $column
      *
-     * @return Column
+     * @return Column|null
      */
-    public function timestamp($column)
+    public function timestamp(string $column): ?Column
     {
         return $this->table->addColumn($column, Type::DATETIME);
     }
@@ -381,9 +383,9 @@ class Table
      *
      * @param string $column
      *
-     * @return Column
+     * @return Column|null
      */
-    public function timestampTz($column)
+    public function timestampTz(string $column): ?Column
     {
         return $this->table->addColumn($column, Type::DATETIMETZ);
     }
@@ -423,9 +425,10 @@ class Table
 
     /**
      * Add a "deleted at" timestamp for the table.
-     * @return Column
+     *
+     * @return Column|null
      */
-    public function softDeletes()
+    public function softDeletes(): ?Column
     {
         return $this->timestamp('deleted_at')->setNotnull(false);
     }
@@ -434,19 +437,20 @@ class Table
      * Create a new binary column on the table.
      *
      * @param string $column
-     *
-     * @return Column
+     * @param int $length
+     * @return Column|null
      */
-    public function binary($column, $length = 255)
+    public function binary(string $column, $length = 255): ?Column
     {
         return $this->table->addColumn($column, Type::BINARY, compact('length'))->setNotnull(false);
     }
 
     /**
      * Adds the `remember_token` column to the table.
-     * @return Column
+     *
+     * @return Column|null
      */
-    public function rememberToken()
+    public function rememberToken(): ?Column
     {
         return $this->string('remember_token', 100)->setNotnull(false);
     }
@@ -454,7 +458,7 @@ class Table
     /**
      * @return Blueprint
      */
-    public function getTable()
+    public function getTable(): Blueprint
     {
         return $this->table;
     }
@@ -462,9 +466,9 @@ class Table
     /**
      * @param $column
      *
-     * @return Blueprint
+     * @return Blueprint|null
      */
-    public function dropColumn($column)
+    public function dropColumn($column): ?Blueprint
     {
         return $this->table->dropColumn($column);
     }

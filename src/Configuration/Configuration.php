@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelDoctrine\Migrations\Configuration;
 
 use Doctrine\Migrations\Configuration\Configuration as MigrationsConfiguration;
@@ -15,7 +17,7 @@ class Configuration extends MigrationsConfiguration
     /**
      * @return NamingStrategy
      */
-    public function getNamingStrategy()
+    public function getNamingStrategy(): NamingStrategy
     {
         return $this->namingStrategy;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelDoctrine\Migrations;
 
 use Doctrine\Migrations\MigrationRepository;
@@ -45,7 +47,7 @@ class Migration
      *
      * @return DBALMigration
      */
-    protected function makeMigration(Configuration $configuration)
+    protected function makeMigration(Configuration $configuration): DBALMigration
     {
         $repository = $configuration->getDependencyFactory()->getMigrationRepository();
         $outputWriter = $configuration->getOutputWriter();
@@ -56,7 +58,7 @@ class Migration
     /**
      * @return DBALMigration
      */
-    public function getMigration()
+    public function getMigration(): DBALMigration
     {
         return $this->migration;
     }
@@ -103,7 +105,7 @@ class Migration
     /**
      * @return string|null
      */
-    public function getVersion()
+    public function getVersion(): ?string
     {
         return $this->version;
     }
@@ -111,7 +113,7 @@ class Migration
     /**
      * @return Configuration
      */
-    public function getConfiguration()
+    public function getConfiguration(): Configuration
     {
         return $this->configuration;
     }
