@@ -15,6 +15,7 @@ use LaravelDoctrine\Migrations\Console\MigrateCommand;
 use LaravelDoctrine\Migrations\Console\RefreshCommand;
 use LaravelDoctrine\Migrations\Console\ResetCommand;
 use LaravelDoctrine\Migrations\Console\RollbackCommand;
+use LaravelDoctrine\Migrations\Console\RollupCommand;
 use LaravelDoctrine\Migrations\Console\SchemaDumpCommand;
 use LaravelDoctrine\Migrations\Console\StatusCommand;
 use LaravelDoctrine\Migrations\Console\VersionCommand;
@@ -59,6 +60,7 @@ class MigrationsServiceProvider extends ServiceProvider
             RollbackCommand::class,
             GenerateCommand::class,
             SchemaDumpCommand::class,
+            RollupCommand::class,
         ]);
     }
 
