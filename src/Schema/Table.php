@@ -6,6 +6,7 @@ namespace LaravelDoctrine\Migrations\Schema;
 
 use Closure;
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table as Blueprint;
 use Doctrine\DBAL\Types\Type;
 
@@ -57,6 +58,49 @@ class Table
     }
 
     /**
+     * Dropping an index which satisfy the criteria
+     *
+     * @param string|array $name
+     * @param Closure $satisfy
+     */
+    protected function _dropIndex($name, $satisfy){
+        if (is_string($name)) {
+            $this->table->dropIndex($name);
+        } else {
+            $indexes = $this->table->getIndexes();
+
+            $matched = [];
+            foreach ($indexes as $key => $index) {
+                if ($satisfy($index)) {
+                    $columns = $index->getColumns();
+
+                    if (count(array_diff($columns, $name)) == 0 && count(array_diff($name, $columns)) == 0) {
+                        array_push($matched, $key);
+                    }
+                }
+            }
+
+            foreach ($matched as $indexName) {
+                $this->table->dropIndex($indexName);
+            }
+        }
+    }
+
+    /**
+     * Dropping a defined primary index from the table
+     *
+     * @param string|array $name Name of the primary index or column names associated with the index
+     *
+     * @return void
+     */
+    public function dropPrimary($name)
+    {
+        $this->_dropIndex($name, function(Index $index){
+            return $index->isPrimary();
+        });
+    }
+
+    /**
      * Specify a unique index for the table.
      *
      * @param string|array $columns
@@ -70,6 +114,20 @@ class Table
         $columns = is_array($columns) ? $columns : [$columns];
 
         return $this->table->addUniqueIndex($columns, $name, $options);
+    }
+
+    /**
+     * Dropping a defined unique index from the table
+     *
+     * @param string|array $name Name of the unique index or column names associated with the index
+     *
+     * @return void
+     */
+    public function dropUnique($name)
+    {
+        $this->_dropIndex($name, function(Index $index){
+            return $index->isUnique();
+        });
     }
 
     /**
@@ -90,6 +148,20 @@ class Table
     }
 
     /**
+     * Dropping a basic index from the table
+     *
+     * @param string|array $name Name of the primary index or column names associated with the index
+     *
+     * @return void
+     */
+    public function dropIndex($name)
+    {
+        $this->_dropIndex($name, function(Index $index){
+            return true;
+        });
+    }
+
+    /**
      * Specify a foreign key for the table.
      *
      * @param string $table
@@ -106,13 +178,29 @@ class Table
         $foreignColumnNames = 'id',
         $options = [],
         $constraintName = null
-    ): ?Blueprint
-    {
+    ): ?Blueprint {
         $localColumnNames   = is_array($localColumnNames) ? $localColumnNames : [$localColumnNames];
         $foreignColumnNames = is_array($foreignColumnNames) ? $foreignColumnNames : [$foreignColumnNames];
 
-        return $this->table->addForeignKeyConstraint($table, $localColumnNames, $foreignColumnNames, $options,
-            $constraintName);
+        return $this->table->addForeignKeyConstraint(
+            $table,
+            $localColumnNames,
+            $foreignColumnNames,
+            $options,
+            $constraintName
+        );
+    }
+
+    /**
+     * Dropping a foreign key from the table
+     *
+     * @param string|array $name Name of the foreign index or column names associated with the index
+     */
+    public function dropForeign($name)
+    {
+        $this->_dropIndex($name, function(Index $index){
+            return !$index->isUnique()&&!$index->isPrimary();
+        });
     }
 
     /**

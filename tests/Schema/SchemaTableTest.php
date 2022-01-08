@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\Index;
+use Doctrine\DBAL\Types\Type;
 use LaravelDoctrine\Migrations\Schema\Table;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -310,5 +312,109 @@ class SchemaTableTest extends TestCase
         $this->dbal->shouldReceive('dropColumn')->with('column');
 
         $this->table->dropColumn('column');
+    }
+
+    public function test_drop_unique()
+    {
+        $this->dbal->shouldReceive('dropIndex')->with('unique');
+
+        $this->table->dropForeign('unique');
+    }
+
+    public function test_drop_unique_with_exact_column_names()
+    {
+        $this->dbal->shouldReceive('getIndexes')->andReturn([
+            'index1'=> new Index('index1', ['column1', 'column2', 'column3']),
+            'index2'=> new Index('index2', ['column1', 'column2']),
+            'index3'=> new Index('index3', ['column1']),
+            'index4'=> new Index('index4', ['column1', 'column2', 'column3'], true),
+            'index5'=> new Index('index5', ['column1', 'column2'], true),
+            'index6'=> new Index('index6', ['column1'], true),
+            'index7'=> new Index('index7', ['column1', 'column2', 'column3'], true),
+            'index8'=> new Index('index8', ['column1', 'column2'], true),
+            'index9'=> new Index('index9', ['column1'], true),
+        ]);
+
+        $this->dbal->shouldReceive('dropIndex')->with('index5');
+        $this->dbal->shouldReceive('dropIndex')->with('index8');
+
+        $this->table->dropUnique(['column1', 'column2']);
+    }
+
+    public function test_drop_primary()
+    {
+        $this->dbal->shouldReceive('dropIndex')->with('primary');
+
+        $this->table->dropPrimary('primary');
+    }
+
+    public function test_drop_primary_with_exact_column_names()
+    {
+        $this->dbal->shouldReceive('getIndexes')->andReturn([
+            'index1'=> new Index('index1', ['column1', 'column2', 'column3']),
+            'index2'=> new Index('index2', ['column1', 'column2']),
+            'index3'=> new Index('index3', ['column1']),
+            'index4'=> new Index('index4', ['column1', 'column2', 'column3'], false, true),
+            'index5'=> new Index('index5', ['column1', 'column2'], false, true),
+            'index6'=> new Index('index6', ['column1'], false, true),
+        ]);
+
+        $this->dbal->shouldReceive('dropIndex')->with('index5');
+
+        $this->table->dropPrimary(['column1', 'column2']);
+    }
+
+    public function test_drop_foreign()
+    {
+        $this->dbal->shouldReceive('dropIndex')->with('foreign');
+
+        $this->table->dropForeign('foreign');
+    }
+
+    public function test_drop_foreign_with_exact_column_names()
+    {
+        $this->dbal->shouldReceive('getIndexes')->andReturn([
+            'index1'=> new Index('index1', ['column1', 'column2', 'column3'], true),
+            'index2'=> new Index('index2', ['column1', 'column2'], true),
+            'index3'=> new Index('index3', ['column1'], true),
+            'index4'=> new Index('index4', ['column1', 'column2', 'column3'], false, true),
+            'index5'=> new Index('index5', ['column1', 'column2'], false, true),
+            'index6'=> new Index('index6', ['column1'], false, true),
+            'index7'=> new Index('index7', ['column1', 'column2', 'column3']),
+            'index8'=> new Index('index8', ['column1', 'column2']),
+            'index9'=> new Index('index9', ['column1']),
+        ]);
+
+        $this->dbal->shouldReceive('dropIndex')->with('index8');
+
+        $this->table->dropForeign(['column1', 'column2']);
+    }
+
+    public function test_drop_index()
+    {
+        $this->dbal->shouldReceive('dropIndex')->with('index');
+
+        $this->table->dropIndex('index');
+    }
+
+    public function test_drop_index_with_exact_column_names()
+    {
+        $this->dbal->shouldReceive('getIndexes')->andReturn([
+            'index1'=> new Index('index1', ['column1', 'column2', 'column3'], true),
+            'index2'=> new Index('index2', ['column1', 'column2'], true),
+            'index3'=> new Index('index3', ['column1'], true),
+            'index4'=> new Index('index4', ['column1', 'column2', 'column3'], false, true),
+            'index5'=> new Index('index5', ['column1', 'column2'], false, true),
+            'index6'=> new Index('index6', ['column1'], false, true),
+            'index7'=> new Index('index7', ['column1', 'column2', 'column3']),
+            'index8'=> new Index('index8', ['column1', 'column2']),
+            'index9'=> new Index('index9', ['column1']),
+        ]);
+
+        $this->dbal->shouldReceive('dropIndex')->with('index2');
+        $this->dbal->shouldReceive('dropIndex')->with('index5');
+        $this->dbal->shouldReceive('dropIndex')->with('index8');
+
+        $this->table->dropIndex(['column1', 'column2']);
     }
 }
