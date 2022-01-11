@@ -58,35 +58,6 @@ class Table
     }
 
     /**
-     * Dropping an index which satisfy the criteria
-     *
-     * @param string|array $name
-     * @param Closure $satisfy
-     */
-    protected function _dropIndex($name, $satisfy){
-        if (is_string($name)) {
-            $this->table->dropIndex($name);
-        } else {
-            $indexes = $this->table->getIndexes();
-
-            $matched = [];
-            foreach ($indexes as $key => $index) {
-                if ($satisfy($index)) {
-                    $columns = $index->getColumns();
-
-                    if (count(array_diff($columns, $name)) == 0 && count(array_diff($name, $columns)) == 0) {
-                        array_push($matched, $key);
-                    }
-                }
-            }
-
-            foreach ($matched as $indexName) {
-                $this->table->dropIndex($indexName);
-            }
-        }
-    }
-
-    /**
      * Dropping a defined primary index from the table
      *
      * @param string|array $name Name of the primary index or column names associated with the index
@@ -95,9 +66,7 @@ class Table
      */
     public function dropPrimary($name)
     {
-        $this->_dropIndex($name, function(Index $index){
-            return $index->isPrimary();
-        });
+        $this->dropIndex($name);
     }
 
     /**
@@ -125,9 +94,7 @@ class Table
      */
     public function dropUnique($name)
     {
-        $this->_dropIndex($name, function(Index $index){
-            return $index->isUnique();
-        });
+        $this->dropIndex($name);
     }
 
     /**
@@ -150,15 +117,30 @@ class Table
     /**
      * Dropping a basic index from the table
      *
-     * @param string|array $name Name of the primary index or column names associated with the index
+     * @param string|array $name Name of the index or column names associated with the index
      *
      * @return void
      */
     public function dropIndex($name)
     {
-        $this->_dropIndex($name, function(Index $index){
-            return true;
-        });
+        if (is_string($name)) {
+            $this->table->dropIndex($name);
+        } else {
+            $indexes = $this->table->getIndexes();
+
+            $matched = [];
+            foreach ($indexes as $key => $index) {
+                $columns = $index->getColumns();
+
+                if (count(array_diff($columns, $name)) == 0 && count(array_diff($name, $columns)) == 0) {
+                    array_push($matched, $key);
+                }
+            }
+
+            foreach ($matched as $indexName) {
+                $this->table->dropIndex($indexName);
+            }
+        }
     }
 
     /**
@@ -198,9 +180,7 @@ class Table
      */
     public function dropForeign($name)
     {
-        $this->_dropIndex($name, function(Index $index){
-            return !$index->isUnique()&&!$index->isPrimary();
-        });
+        $this->dropIndex($name);
     }
 
     /**

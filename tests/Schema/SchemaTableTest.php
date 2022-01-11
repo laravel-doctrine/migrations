@@ -297,7 +297,7 @@ class SchemaTableTest extends TestCase
     {
         $column = m::mock(Column::class);
         $this->dbal->shouldReceive('addColumn')->with('remember_token', 'string', ['length' => 100])
-                   ->andReturn($column);
+            ->andReturn($column);
         $column->shouldReceive('setNotnull')->with(false)->once();
         $this->table->rememberToken('column');
     }
@@ -324,19 +324,16 @@ class SchemaTableTest extends TestCase
     public function test_drop_unique_with_exact_column_names()
     {
         $this->dbal->shouldReceive('getIndexes')->andReturn([
-            'index1'=> new Index('index1', ['column1', 'column2', 'column3']),
-            'index2'=> new Index('index2', ['column1', 'column2']),
-            'index3'=> new Index('index3', ['column1']),
-            'index4'=> new Index('index4', ['column1', 'column2', 'column3'], true),
-            'index5'=> new Index('index5', ['column1', 'column2'], true),
-            'index6'=> new Index('index6', ['column1'], true),
-            'index7'=> new Index('index7', ['column1', 'column2', 'column3'], true),
-            'index8'=> new Index('index8', ['column1', 'column2'], true),
-            'index9'=> new Index('index9', ['column1'], true),
+            'index1' => new Index('index1', ['column1', 'column2', 'column3'], true),
+            'index2' => new Index('index2', ['column1', 'column2'], true),
+            'index3' => new Index('index3', ['column1'], true),
+            'index4' => new Index('index4', ['column1', 'column2', 'column3'], true),
+            'index5' => new Index('index5', ['column1', 'column2'], true),
+            'index6' => new Index('index6', ['column1'], true),
         ]);
 
+        $this->dbal->shouldReceive('dropIndex')->with('index2');
         $this->dbal->shouldReceive('dropIndex')->with('index5');
-        $this->dbal->shouldReceive('dropIndex')->with('index8');
 
         $this->table->dropUnique(['column1', 'column2']);
     }
@@ -351,14 +348,15 @@ class SchemaTableTest extends TestCase
     public function test_drop_primary_with_exact_column_names()
     {
         $this->dbal->shouldReceive('getIndexes')->andReturn([
-            'index1'=> new Index('index1', ['column1', 'column2', 'column3']),
-            'index2'=> new Index('index2', ['column1', 'column2']),
-            'index3'=> new Index('index3', ['column1']),
-            'index4'=> new Index('index4', ['column1', 'column2', 'column3'], false, true),
-            'index5'=> new Index('index5', ['column1', 'column2'], false, true),
-            'index6'=> new Index('index6', ['column1'], false, true),
+            'index1' => new Index('index1', ['column1', 'column2', 'column3'], false, true),
+            'index2' => new Index('index2', ['column1', 'column2'], false, true),
+            'index3' => new Index('index3', ['column1'], false, true),
+            'index4' => new Index('index4', ['column1', 'column2', 'column3'], false, true),
+            'index5' => new Index('index5', ['column1', 'column2'], false, true),
+            'index6' => new Index('index6', ['column1'], false, true),
         ]);
 
+        $this->dbal->shouldReceive('dropIndex')->with('index2');
         $this->dbal->shouldReceive('dropIndex')->with('index5');
 
         $this->table->dropPrimary(['column1', 'column2']);
@@ -374,18 +372,12 @@ class SchemaTableTest extends TestCase
     public function test_drop_foreign_with_exact_column_names()
     {
         $this->dbal->shouldReceive('getIndexes')->andReturn([
-            'index1'=> new Index('index1', ['column1', 'column2', 'column3'], true),
-            'index2'=> new Index('index2', ['column1', 'column2'], true),
-            'index3'=> new Index('index3', ['column1'], true),
-            'index4'=> new Index('index4', ['column1', 'column2', 'column3'], false, true),
-            'index5'=> new Index('index5', ['column1', 'column2'], false, true),
-            'index6'=> new Index('index6', ['column1'], false, true),
-            'index7'=> new Index('index7', ['column1', 'column2', 'column3']),
-            'index8'=> new Index('index8', ['column1', 'column2']),
-            'index9'=> new Index('index9', ['column1']),
+            'index1' => new Index('index1', ['column1', 'column2', 'column3']),
+            'index2' => new Index('index2', ['column1', 'column2']),
+            'index3' => new Index('index3', ['column1']),
         ]);
 
-        $this->dbal->shouldReceive('dropIndex')->with('index8');
+        $this->dbal->shouldReceive('dropIndex')->with('index2');
 
         $this->table->dropForeign(['column1', 'column2']);
     }
@@ -400,15 +392,15 @@ class SchemaTableTest extends TestCase
     public function test_drop_index_with_exact_column_names()
     {
         $this->dbal->shouldReceive('getIndexes')->andReturn([
-            'index1'=> new Index('index1', ['column1', 'column2', 'column3'], true),
-            'index2'=> new Index('index2', ['column1', 'column2'], true),
-            'index3'=> new Index('index3', ['column1'], true),
-            'index4'=> new Index('index4', ['column1', 'column2', 'column3'], false, true),
-            'index5'=> new Index('index5', ['column1', 'column2'], false, true),
-            'index6'=> new Index('index6', ['column1'], false, true),
-            'index7'=> new Index('index7', ['column1', 'column2', 'column3']),
-            'index8'=> new Index('index8', ['column1', 'column2']),
-            'index9'=> new Index('index9', ['column1']),
+            'index1' => new Index('index1', ['column1', 'column2', 'column3'], true),
+            'index2' => new Index('index2', ['column1', 'column2'], true),
+            'index3' => new Index('index3', ['column1'], true),
+            'index4' => new Index('index4', ['column1', 'column2', 'column3'], false, true),
+            'index5' => new Index('index5', ['column1', 'column2'], false, true),
+            'index6' => new Index('index6', ['column1'], false, true),
+            'index7' => new Index('index7', ['column1', 'column2', 'column3']),
+            'index8' => new Index('index8', ['column1', 'column2']),
+            'index9' => new Index('index9', ['column1']),
         ]);
 
         $this->dbal->shouldReceive('dropIndex')->with('index2');
