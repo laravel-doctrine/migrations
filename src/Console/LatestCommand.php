@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace LaravelDoctrine\Migrations\Console;
 
 use Illuminate\Console\Command;
-use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
+use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
 class LatestCommand extends Command
 {
@@ -24,14 +24,13 @@ class LatestCommand extends Command
     /**
      * Execute the console command.
      *
-     * @param ConfigurationProvider $provider
+     * @param DependencyFactoryProvider $provider
      */
-    public function handle(ConfigurationProvider $provider)
+    public function handle(DependencyFactoryProvider $provider)
     {
-        $configuration = $provider->getForConnection(
-            $this->option('connection')
-        );
+        $dependencyFactory = $provider->getForConnection($this->option('connection'));
 
-        $this->line('<info>Latest version:</info> ' . $configuration->getLatestVersion());
+        $command = new \Doctrine\Migrations\Tools\Console\Command\LatestCommand($dependencyFactory);
+        return $command->run($this->input, $this->output->getOutput());
     }
 }

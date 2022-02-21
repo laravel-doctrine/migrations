@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Migrations\Provider\OrmSchemaProvider;
-use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Console\Command;
-use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
-use LaravelDoctrine\Migrations\Output\MigrationFileGenerator;
-use LaravelDoctrine\Migrations\Output\SqlBuilder;
+use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
 class DiffCommand extends Command
 {
@@ -30,83 +25,13 @@ class DiffCommand extends Command
     /**
      * Execute the console command.
      *
-     * @param ConfigurationProvider  $provider
-     * @param ManagerRegistry        $registry
-     * @param SqlBuilder             $builder
-     * @param MigrationFileGenerator $generator
+     * @param DependencyFactoryProvider $provider
      */
-    public function handle(
-        ConfigurationProvider $provider,
-        ManagerRegistry $registry,
-        SqlBuilder $builder,
-        MigrationFileGenerator $generator
-    ): void {
-        $configuration = $provider->getForConnection($this->option('connection'));
-        /** @var EntityManagerInterface $em */
-        $em            = $registry->getManager($this->option('connection'));
-        $connection    = $configuration->getConnection();
-
-        // Overrule the filter
-        if ($filterExpr = $this->option('filter-expression')) {
-            $connection->getConfiguration()->setFilterSchemaAssetsExpression($filterExpr);
-        }
-
-        $fromSchema = $connection->getSchemaManager()->createSchema();
-        $toSchema   = $this->getSchemaProvider($em)->createSchema();
-
-        // Drop tables which don't suffice to the filter regex
-        if ($filterExpr = $connection->getConfiguration()->getFilterSchemaAssetsExpression()) {
-            foreach ($toSchema->getTables() as $table) {
-                $tableName = $table->getName();
-                if (!preg_match($filterExpr, $this->resolveTableName($tableName))) {
-                    $toSchema->dropTable($tableName);
-                }
-            }
-        }
-
-        $up   = $builder->up($configuration, $fromSchema, $toSchema);
-        $down = $builder->down($configuration, $fromSchema, $toSchema);
-
-        if (!$up && !$down) {
-            $this->error('No changes detected in your mapping information.');
-            return;
-        }
-
-        $path = $generator->generate(
-            $configuration,
-            false,
-            false,
-            $up,
-            $down
-        );
-
-        $this->line(sprintf('Generated new migration class to "<info>%s</info>" from schema differences.', $path));
-    }
-
-    /**
-     * @param EntityManagerInterface $em
-     *
-     * @return OrmSchemaProvider
-     */
-    protected function getSchemaProvider(EntityManagerInterface $em): OrmSchemaProvider
+    public function handle(DependencyFactoryProvider $provider): int
     {
-        return new OrmSchemaProvider($em);
-    }
+        $dependencyFactory = $provider->getForConnection($this->option('connection'));
 
-    /**
-     * Resolve a table name from its fully qualified name. The `$name` argument
-     * comes from Doctrine\DBAL\Schema\Table#getName which can sometimes return
-     * a namespaced name with the form `{namespace}.{tableName}`. This extracts
-     * the table name from that.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function resolveTableName(string $name): string
-    {
-        $pos = strpos($name, '.');
-
-        return false === $pos ? $name : substr($name, $pos + 1);
+        $command = new \Doctrine\Migrations\Tools\Console\Command\DiffCommand($dependencyFactory);
+        return $command->run($this->input, $this->output->getOutput());
     }
 }

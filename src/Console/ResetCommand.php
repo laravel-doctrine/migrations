@@ -8,7 +8,7 @@ use Doctrine\DBAL\Connection;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
-use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
+use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
 class ResetCommand extends Command
 {
@@ -26,26 +26,23 @@ class ResetCommand extends Command
      */
     protected $description = 'Reset all migrations';
 
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     /**
      * Execute the console command.
      *
-     * @param ConfigurationProvider $provider
+     * @param DependencyFactoryProvider $provider
      */
-    public function handle(ConfigurationProvider $provider)
+    public function handle(DependencyFactoryProvider $provider)
     {
         if (!$this->confirmToProceed()) {
             return;
         }
         
-        $configuration = $provider->getForConnection(
+        $dependencyFactory = $provider->getForConnection(
             $this->option('connection')
         );
-        $this->connection = $configuration->getConnection();
+        $this->connection = $dependencyFactory->getConnection();
 
         $this->safelyDropTables();
 
@@ -77,6 +74,7 @@ class ResetCommand extends Command
 
     /**
      * @param string $table
+     * @throws \Doctrine\DBAL\Exception
      */
     private function safelyDropTable(string $table)
     {

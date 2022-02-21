@@ -6,7 +6,7 @@ namespace LaravelDoctrine\Migrations\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
-use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
+use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
 class RollbackCommand extends Command
 {
@@ -27,15 +27,16 @@ class RollbackCommand extends Command
     /**
      * Execute the console command.
      *
-     * @param ConfigurationProvider $provider
+     * @param DependencyFactoryProvider $provider
      */
-    public function handle(ConfigurationProvider $provider)
+    public function handle(DependencyFactoryProvider $provider)
     {
-        $configuration = $provider->getForConnection(
+        $dependencyFactory = $provider->getForConnection(
             $this->option('connection')
         );
 
-        $version = $this->argument('version') ?: $configuration->getCurrentVersion();
+        $version = $this->argument('version') ?:
+            $dependencyFactory->getVersionAliasResolver()->resolveVersionAlias(""); //TODO: get latest
 
         if ($version == 0) {
             $this->error('No migrations to be rollbacked');
