@@ -30,7 +30,7 @@ class VersionCommand extends BaseCommand
      *
      * @param DependencyFactoryProvider $provider
      */
-    public function handle(DependencyFactoryProvider $provider)
+    public function handle(DependencyFactoryProvider $provider): int
     {
         $dependencyFactory = $provider->getForConnection($this->option('connection'));
 
