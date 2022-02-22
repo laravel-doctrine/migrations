@@ -24,6 +24,11 @@ abstract class BaseCommand extends Command
 
         foreach ($definition->getArguments() as $argument) {
             $argName = $argument->getName();
+
+            if ($argName === 'command') {
+                continue;
+            }
+
             if ($this->hasArgument($argName)) {
                 $inputArgs[$argName] = $this->argument($argName);
             }
