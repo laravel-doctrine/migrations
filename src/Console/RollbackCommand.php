@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
-class RollbackCommand extends Command
+class RollbackCommand extends BaseCommand
 {
     use ConfirmableTrait;
 
@@ -29,7 +28,7 @@ class RollbackCommand extends Command
      *
      * @param DependencyFactoryProvider $provider
      */
-    public function handle(DependencyFactoryProvider $provider)
+    public function handle(DependencyFactoryProvider $provider): int
     {
         $dependencyFactory = $provider->getForConnection(
             $this->option('connection')
@@ -40,10 +39,10 @@ class RollbackCommand extends Command
 
         if ($version == 0) {
             $this->error('No migrations to be rollbacked');
-            return;
+            return 1;
         }
 
-        $this->call('doctrine:migrations:execute', [
+        return $this->call('doctrine:migrations:execute', [
             'version'      => $version,
             '--connection' => $this->option('connection'),
             '--down'       => true

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Illuminate\Console\Command;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
+use Symfony\Component\Console\Input\ArrayInput;
 
-class LatestCommand extends Command
+class LatestCommand extends BaseCommand
 {
     /**
      * The name and signature of the console command.
@@ -26,11 +26,12 @@ class LatestCommand extends Command
      *
      * @param DependencyFactoryProvider $provider
      */
-    public function handle(DependencyFactoryProvider $provider)
+    public function handle(DependencyFactoryProvider $provider): int
     {
         $dependencyFactory = $provider->getForConnection($this->option('connection'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\LatestCommand($dependencyFactory);
-        return $command->run($this->input, $this->output->getOutput());
+
+        return $command->run($this->getDoctrineInput(), $this->output->getOutput());
     }
 }

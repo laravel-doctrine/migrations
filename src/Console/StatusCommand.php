@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Illuminate\Console\Command;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
-class StatusCommand extends Command
+class StatusCommand extends BaseCommand
 {
     /**
      * The name and signature of the console command.
@@ -27,12 +26,13 @@ class StatusCommand extends Command
      *
      * @param DependencyFactoryProvider $provider
      */
-    public function handle(DependencyFactoryProvider $provider)
+    public function handle(DependencyFactoryProvider $provider): int
     {
         $dependencyFactory = $provider->getForConnection($this->option('connection'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\StatusCommand($dependencyFactory);
-        return $command->run($this->input, $this->output->getOutput());
+
+        return $command->run($this->getDoctrineInput(), $this->output->getOutput());
     }
 
 }

@@ -6,11 +6,10 @@ namespace LaravelDoctrine\Migrations\Console;
 
 use Doctrine\DBAL\Connection;
 use Exception;
-use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
-class ResetCommand extends Command
+class ResetCommand extends BaseCommand
 {
     use ConfirmableTrait;
 
@@ -33,10 +32,10 @@ class ResetCommand extends Command
      *
      * @param DependencyFactoryProvider $provider
      */
-    public function handle(DependencyFactoryProvider $provider)
+    public function handle(DependencyFactoryProvider $provider): int
     {
         if (!$this->confirmToProceed()) {
-            return;
+            return 1;
         }
         
         $dependencyFactory = $provider->getForConnection(
@@ -47,6 +46,7 @@ class ResetCommand extends Command
         $this->safelyDropTables();
 
         $this->info('Database was reset');
+        return 0;
     }
 
     private function safelyDropTables()

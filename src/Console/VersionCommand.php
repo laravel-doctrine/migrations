@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Illuminate\Console\Command;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
-class VersionCommand extends Command
+class VersionCommand extends BaseCommand
 {
     /**
      * The name and signature of the console command.
@@ -36,7 +35,7 @@ class VersionCommand extends Command
         $dependencyFactory = $provider->getForConnection($this->option('connection'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\VersionCommand($dependencyFactory);
-        return $command->run($this->input, $this->output->getOutput());
+        return $command->run($this->getDoctrineInput(), $this->output->getOutput());
     }
 
 }

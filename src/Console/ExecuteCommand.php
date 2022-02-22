@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
-class ExecuteCommand extends Command
+class ExecuteCommand extends BaseCommand
 {
     use ConfirmableTrait;
 
@@ -35,11 +34,12 @@ class ExecuteCommand extends Command
      *
      * @param DependencyFactoryProvider $provider
      */
-    public function handle(DependencyFactoryProvider $provider)
+    public function handle(DependencyFactoryProvider $provider): int
     {
         $dependencyFactory = $provider->getForConnection($this->option('connection'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\ExecuteCommand($dependencyFactory);
-        return $command->run($this->input, $this->output->getOutput());
+
+        return $command->run($this->getDoctrineInput(), $this->output->getOutput());
     }
 }
