@@ -13,9 +13,7 @@ class GenerateCommand extends BaseCommand
      * @var string
      */
     protected $signature = 'doctrine:migrations:generate
-    {--connection= : The entity manager connection to generate the migration for.}
-    {--create= : The table to be created.}
-    {--table= : The table to migrate.}';
+    {--connection= : The entity manager connection to generate the migration for.}';
 
     /**
      * @var string

@@ -15,14 +15,13 @@ class ExecuteCommand extends BaseCommand
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'doctrine:migrations:execute {version : The version to execute }
+    protected $signature = 'doctrine:migrations:execute {versions : The versions to execute }
     {--connection= : For a specific connection.}
     {--write-sql : The path to output the migration SQL file instead of executing it. }
     {--dry-run : Execute the migration as a dry run. }
     {--up : Execute the migration up. }
     {--down : Execute the migration down. }
-    {--query-time : Time all the queries individually.}
-    {--force : Force the operation to run when in production. }';
+    {--query-time : Time all the queries individually.}';
 
     /**
      * @var string

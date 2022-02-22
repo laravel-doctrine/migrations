@@ -13,8 +13,7 @@ class StatusCommand extends BaseCommand
      * @var string
      */
     protected $signature = 'doctrine:migrations:status
-    {--connection= : For a specific connection.}
-    {--show-versions : This will display a list of all available migrations and their status.}';
+    {--connection= : For a specific connection.}';
 
     /**
      * @var string

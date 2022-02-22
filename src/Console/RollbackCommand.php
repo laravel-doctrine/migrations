@@ -6,11 +6,10 @@ namespace LaravelDoctrine\Migrations\Console;
 
 use Illuminate\Console\ConfirmableTrait;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
+use LaravelDoctrine\ORM\Console\Command;
 
-class RollbackCommand extends BaseCommand
+class RollbackCommand extends Command
 {
-    use ConfirmableTrait;
-
     /**
      * The name and signature of the console command.
      * @var string
@@ -26,26 +25,13 @@ class RollbackCommand extends BaseCommand
     /**
      * Execute the console command.
      *
-     * @param DependencyFactoryProvider $provider
+     * @return int
      */
-    public function handle(DependencyFactoryProvider $provider): int
+    public function handle(): int
     {
-        $dependencyFactory = $provider->getForConnection(
-            $this->option('connection')
-        );
-
-        $version = $this->argument('version') ?:
-            $dependencyFactory->getVersionAliasResolver()->resolveVersionAlias(""); //TODO: get latest
-
-        if ($version == 0) {
-            $this->error('No migrations to be rollbacked');
-            return 1;
-        }
-
-        return $this->call('doctrine:migrations:execute', [
-            'version'      => $version,
-            '--connection' => $this->option('connection'),
-            '--down'       => true
+        return $this->call('doctrine:migrations:migrate', [
+            'version' => 'prev',
+            '--connection' => $this->option('connection')
         ]);
     }
 }
