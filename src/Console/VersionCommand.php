@@ -35,7 +35,7 @@ class VersionCommand extends BaseCommand
         $dependencyFactory = $provider->getForConnection($this->option('connection'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\VersionCommand($dependencyFactory);
-        return $command->run($this->getDoctrineInput(), $this->output->getOutput());
+        return $command->run($this->getDoctrineInput($command), $this->output->getOutput());
     }
 
 }

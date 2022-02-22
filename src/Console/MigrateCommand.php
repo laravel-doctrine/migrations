@@ -41,7 +41,7 @@ class MigrateCommand extends BaseCommand
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\MigrateCommand($dependencyFactory);
 
-        return $command->run($this->getDoctrineInput(), $this->output->getOutput());
+        return $command->run($this->getDoctrineInput($command), $this->output->getOutput());
     }
 
 }
