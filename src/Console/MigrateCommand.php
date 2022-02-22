@@ -21,7 +21,6 @@ class MigrateCommand extends BaseCommand
     {--write-sql= : The path to output the migration SQL file instead of executing it. }
     {--dry-run : Execute the migration as a dry run. }
     {--query-time : Time all the queries individually. }
-    {--force : Force the operation to run when in production. }
     {--allow-no-migration : Doesn\'t throw an exception if no migration is available. }';
 
     /**
