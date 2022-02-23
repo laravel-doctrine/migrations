@@ -38,7 +38,7 @@ class DiffCommand extends BaseCommand
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\DiffCommand($dependencyFactory);
 
-        if (!$this->input->hasOption('filter-expression')) {
+        if ($this->input->getOption('filter-expression') === null) {
             $this->input->setOption('filter-expression', $migrationConfig->get('schema.filter'));
         }
 
