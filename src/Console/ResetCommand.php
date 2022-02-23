@@ -38,7 +38,7 @@ class ResetCommand extends BaseCommand
             return 1;
         }
         
-        $dependencyFactory = $provider->getForConnection(
+        $dependencyFactory = $provider->getConnection(
             $this->option('connection')
         );
         $this->connection = $dependencyFactory->getConnection();

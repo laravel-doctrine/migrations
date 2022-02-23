@@ -21,17 +21,22 @@ class ConfigurationFactory
         $this->container = $container;
     }
 
-    public function getConfigForConnection(string $name = null)
+    public function getConfig(string $name = null): array
     {
         if ($name && $this->config->has('migrations.' . $name)) {
-            return new Repository($this->config->get('migrations.' . $name, []));
+            return $this->config->get('migrations.' . $name, []);
         }
-        return new Repository($this->config->get('migrations.default', []));
+        return $this->config->get('migrations.default', []);
+    }
+
+    public function getConfigAsRepository(string $name = null): Repository
+    {
+        return new Repository($this->getConfig($name));
     }
 
     public function make(string $name = null)
     {
-       $config = $this->getConfigForConnection($name);
+        $config = $this->getConfigAsRepository($name);
 
         return new ConfigurationArray([
             'table_storage' => [

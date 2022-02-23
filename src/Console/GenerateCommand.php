@@ -29,7 +29,7 @@ class GenerateCommand extends BaseCommand
      */
     public function handle(DependencyFactoryProvider $provider): int
     {
-        $dependencyFactory = $provider->getForConnection($this->option('connection'));
+        $dependencyFactory = $provider->getConnection($this->option('connection'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\GenerateCommand($dependencyFactory);
 
