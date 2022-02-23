@@ -30,7 +30,7 @@ class DiffCommand extends BaseCommand
      */
     public function handle(
         DependencyFactoryProvider               $provider,
-        ConfigurationFactory                    $configurationFactory,
+        ConfigurationFactory                    $configurationFactory
     ): int {
 
         $dependencyFactory = $provider->getEntityManager($this->option('connection'), $this->option("em"));
