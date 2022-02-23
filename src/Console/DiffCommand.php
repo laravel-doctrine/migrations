@@ -34,7 +34,7 @@ class DiffCommand extends BaseCommand
         $command = new \Doctrine\Migrations\Tools\Console\Command\DiffCommand($dependencyFactory);
 
         $config = $configurationFactory->getConfigForConnection($this->option('connection'));
-        $this->input->setOption('filter-expression', $config->get('migrations.schema.filter'));
+        $this->input->setOption('filter-expression', $config->get('schema.filter'));
 
         return $command->run($this->getDoctrineInput($command), $this->output->getOutput());
     }
