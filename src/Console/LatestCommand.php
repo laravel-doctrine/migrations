@@ -28,7 +28,7 @@ class LatestCommand extends BaseCommand
      */
     public function handle(DependencyFactoryProvider $provider): int
     {
-        $dependencyFactory = $provider->getConnection($this->option('connection'));
+        $dependencyFactory = $provider->fromConnectionName($this->option('connection'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\LatestCommand($dependencyFactory);
 

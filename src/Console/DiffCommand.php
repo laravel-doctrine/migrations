@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
+use Doctrine\Persistence\ManagerRegistry;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationFactory;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
@@ -14,7 +15,6 @@ class DiffCommand extends BaseCommand
      * @var string
      */
     protected $signature = 'doctrine:migrations:diff
-    {--em= : For a specific entity manager }
     {--connection= : For a specific connection }
     {--filter-expression= : Tables which are filtered by Regular Expression.}';
 
@@ -30,11 +30,10 @@ class DiffCommand extends BaseCommand
      */
     public function handle(
         DependencyFactoryProvider               $provider,
-        ConfigurationFactory                    $configurationFactory
+        ConfigurationFactory                    $configurationFactory,
+        ManagerRegistry $registry
     ): int {
-
-        $dependencyFactory = $provider->getEntityManager($this->option('connection'), $this->option("em"));
-
+        $dependencyFactory = $provider->fromConnectionName($this->option('connection'));
         $migrationConfig = $configurationFactory->getConfigAsRepository($this->option('connection'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\DiffCommand($dependencyFactory);
