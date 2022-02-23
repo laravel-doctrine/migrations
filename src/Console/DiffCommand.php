@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
+use LaravelDoctrine\Migrations\Configuration\ConfigurationFactory;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
 class DiffCommand extends BaseCommand
@@ -26,11 +27,14 @@ class DiffCommand extends BaseCommand
      *
      * @param DependencyFactoryProvider $provider
      */
-    public function handle(DependencyFactoryProvider $provider): int
+    public function handle(DependencyFactoryProvider $provider, ConfigurationFactory $configurationFactory): int
     {
         $dependencyFactory = $provider->getForConnection($this->option('connection'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\DiffCommand($dependencyFactory);
+
+        $config = $configurationFactory->getConfigForConnection($this->option('connection'));
+        $this->input->setOption('filter-expression', $config->get('migrations.schema.filter'));
 
         return $command->run($this->getDoctrineInput($command), $this->output->getOutput());
     }

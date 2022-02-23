@@ -12,8 +12,6 @@ use Symfony\Component\Console\Input\InputInterface;
 abstract class BaseCommand extends Command
 {
 
-    abstract public function handle(DependencyFactoryProvider $provider): int;
-
     /**
      * @param InputInterface $input
      * @param string[] $args
