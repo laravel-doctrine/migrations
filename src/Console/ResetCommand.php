@@ -54,7 +54,20 @@ class ResetCommand extends BaseCommand
         $this->throwExceptionIfPlatformIsNotSupported();
 
         $schema = $this->connection->getSchemaManager();
+
+        $sequences = $schema->listSequences();
+        foreach ($sequences as $s) {
+            $schema->dropSequence($s);
+        }
+
         $tables = $schema->listTableNames();
+        foreach ($tables as $table) {
+            $foreigns = $schema->listTableForeignKeys($table);
+            foreach ($foreigns as $f) {
+                $schema->dropForeignKey($f, $table);
+            }
+        }
+
         foreach ($tables as $table) {
             $this->safelyDropTable($table);
         }
