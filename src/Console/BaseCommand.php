@@ -49,7 +49,7 @@ abstract class BaseCommand extends Command
         $input = new ArrayInput($inputArgs);
         $input->setInteractive(!($this->input->getOption("no-interaction") ?? false));
 
-        return new ArrayInput($inputArgs);
+        return $input;
     }
 
     private function argumentExists(\Symfony\Component\Console\Command\Command $command, string $argName): bool
