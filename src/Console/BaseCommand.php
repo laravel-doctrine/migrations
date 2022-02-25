@@ -46,6 +46,9 @@ abstract class BaseCommand extends Command
             }
         }
 
+        $input = new ArrayInput($inputArgs);
+        $input->setInteractive(!($this->input->getOption("no-interaction") ?? false));
+
         return new ArrayInput($inputArgs);
     }
 
