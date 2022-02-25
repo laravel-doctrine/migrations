@@ -18,7 +18,7 @@ class MigrateCommand extends BaseCommand
     protected $signature = 'doctrine:migrations:migrate
     {version=latest : The version number (YYYYMMDDHHMMSS) or alias (first, prev, next, latest) to migrate to.}
     {--connection= : For a specific connection }
-    {--write-sql= : The path to output the migration SQL file instead of executing it. }
+    {--write-sql=/tmp : The path to output the migration SQL file instead of executing it. }
     {--dry-run : Execute the migration as a dry run. }
     {--query-time : Time all the queries individually. }
     {--allow-no-migration : Doesn\'t throw an exception if no migration is available. }';
