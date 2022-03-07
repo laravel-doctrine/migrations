@@ -11,10 +11,8 @@ use Symfony\Component\Console\Input\InputInterface;
 
 abstract class BaseCommand extends Command
 {
-
     /**
-     * @param InputInterface $input
-     * @param string[] $args
+     * @param DoctrineCommand $command
      * @return void
      */
     protected function getDoctrineInput(DoctrineCommand $command): ArrayInput

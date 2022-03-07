@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace LaravelDoctrine\Migrations\Console;
 
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
-use Symfony\Component\Console\Input\ArrayInput;
 
 class LatestCommand extends BaseCommand
 {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Doctrine\Persistence\ManagerRegistry;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationFactory;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
@@ -30,8 +29,7 @@ class DiffCommand extends BaseCommand
      */
     public function handle(
         DependencyFactoryProvider               $provider,
-        ConfigurationFactory                    $configurationFactory,
-        ManagerRegistry $registry
+        ConfigurationFactory                    $configurationFactory
     ): int {
         $dependencyFactory = $provider->fromConnectionName($this->option('connection'));
         $migrationConfig = $configurationFactory->getConfigAsRepository($this->option('connection'));

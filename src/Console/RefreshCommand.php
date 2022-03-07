@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace LaravelDoctrine\Migrations\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Console\ConfirmableTrait;
 
 class RefreshCommand extends Command
 {
-    use ConfirmableTrait;
-
     /**
      * The name and signature of the console command.
      * @var string

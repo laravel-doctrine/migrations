@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Illuminate\Console\ConfirmableTrait;
-use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 use LaravelDoctrine\ORM\Console\Command;
 
 class RollbackCommand extends Command

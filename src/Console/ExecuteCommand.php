@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Illuminate\Console\ConfirmableTrait;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
 class ExecuteCommand extends BaseCommand
 {
-    use ConfirmableTrait;
-
     /**
      * The name and signature of the console command.
      * @var string

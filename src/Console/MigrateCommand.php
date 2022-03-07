@@ -9,8 +9,6 @@ use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
 class MigrateCommand extends BaseCommand
 {
-    use ConfirmableTrait;
-
     /**
      * The name and signature of the console command.
      * @var string
