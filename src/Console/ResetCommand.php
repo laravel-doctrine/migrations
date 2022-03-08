@@ -55,9 +55,11 @@ class ResetCommand extends BaseCommand
 
         $schema = $this->connection->getSchemaManager();
 
-        $sequences = $schema->listSequences();
-        foreach ($sequences as $s) {
-            $schema->dropSequence($s);
+        if ($schema->getDatabasePlatform()->supportsSequences()) {
+            $sequences = $schema->listSequences();
+            foreach ($sequences as $s) {
+                $schema->dropSequence($s);
+            }
         }
 
         $tables = $schema->listTableNames();
