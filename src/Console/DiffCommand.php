@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
+use Doctrine\Migrations\Generator\Exception\NoChangesDetected;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationFactory;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
@@ -39,7 +40,11 @@ class DiffCommand extends BaseCommand
         if ($this->input->getOption('filter-expression') === null) {
             $this->input->setOption('filter-expression', $migrationConfig->get('schema.filter'));
         }
-
-        return $command->run($this->getDoctrineInput($command), $this->output->getOutput());
+        try {
+            return $command->run($this->getDoctrineInput($command), $this->output->getOutput());
+        } catch (NoChangesDetected $exception) {
+            $this->error($exception->getMessage());
+            return 0;
+        }
     }
 }
