@@ -41,7 +41,7 @@ class ConfigurationFactory
         return new ConfigurationArray([
             'table_storage' => [
                 'table_name' => $config->get('table', 'migrations'),
-                'version_column_length' => $config->get('version_column_length', 1024)
+                'version_column_length' => $config->get('version_column_length', 191)
             ],
             'migrations_paths' => [
                 $config->get('namespace', 'Database\\Migrations') => $config->get(
