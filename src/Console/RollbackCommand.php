@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Illuminate\Console\Command;
-use Illuminate\Console\ConfirmableTrait;
-use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
+use LaravelDoctrine\ORM\Console\Command;
 
 class RollbackCommand extends Command
 {
-    use ConfirmableTrait;
-
     /**
      * The name and signature of the console command.
      * @var string
@@ -27,25 +23,13 @@ class RollbackCommand extends Command
     /**
      * Execute the console command.
      *
-     * @param ConfigurationProvider $provider
+     * @return int
      */
-    public function handle(ConfigurationProvider $provider)
+    public function handle(): int
     {
-        $configuration = $provider->getForConnection(
-            $this->option('connection')
-        );
-
-        $version = $this->argument('version') ?: $configuration->getCurrentVersion();
-
-        if ($version == 0) {
-            $this->error('No migrations to be rollbacked');
-            return;
-        }
-
-        $this->call('doctrine:migrations:execute', [
-            'version'      => $version,
-            '--connection' => $this->option('connection'),
-            '--down'       => true
+        return $this->call('doctrine:migrations:migrate', [
+            'version' => 'prev',
+            '--connection' => $this->option('connection')
         ]);
     }
 }

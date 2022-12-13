@@ -4,20 +4,16 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Illuminate\Console\Command;
-use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
-use LaravelDoctrine\Migrations\Output\MigrationFileGenerator;
+use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
-class GenerateCommand extends Command
+class GenerateCommand extends BaseCommand
 {
     /**
      * The name and signature of the console command.
      * @var string
      */
     protected $signature = 'doctrine:migrations:generate
-    {--connection= : The entity manager connection to generate the migration for.}
-    {--create= : The table to be created.}
-    {--table= : The table to migrate.}';
+    {--connection= : The entity manager connection to generate the migration for.}';
 
     /**
      * @var string
@@ -27,19 +23,16 @@ class GenerateCommand extends Command
     /**
      * Execute the console command.
      *
-     * @param ConfigurationProvider  $provider
-     * @param MigrationFileGenerator $generator
+     * @param DependencyFactoryProvider $provider
+     * @return int
+     * @throws \Exception
      */
-    public function handle(ConfigurationProvider $provider, MigrationFileGenerator $generator)
+    public function handle(DependencyFactoryProvider $provider): int
     {
-        $configuration = $provider->getForConnection($this->option('connection'));
+        $dependencyFactory = $provider->fromConnectionName($this->option('connection'));
 
-        $filename = $generator->generate(
-            $configuration,
-            $this->option('create'),
-            $this->option('table')
-        );
+        $command = new \Doctrine\Migrations\Tools\Console\Command\GenerateCommand($dependencyFactory);
 
-        $this->line(sprintf('<info>Created Migration:</info> %s', $filename));
+        return $command->run($this->getDoctrineInput($command), $this->output->getOutput());
     }
 }

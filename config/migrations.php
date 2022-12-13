@@ -85,6 +85,6 @@ return [
         | The length for the version column in the migrations table.
         |
         */
-        'version_column_length' => 14
+        'version_column_length' => 1024
     ],
 ];

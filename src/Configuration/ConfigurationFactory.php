@@ -4,81 +4,51 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Configuration;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\Migrations\Exception\MigrationException;
+use Doctrine\Migrations\Configuration\Migration\ConfigurationArray;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
-use LaravelDoctrine\Migrations\Naming\DefaultNamingStrategy;
 
 class ConfigurationFactory
 {
-    /**
-     * @var ConfigRepository
-     */
-    protected $config;
+    protected ConfigRepository $config;
 
-    /**
-     * @var Container
-     */
-    protected $container;
+    protected Container $container;
 
-    /**
-     * @param ConfigRepository $config
-     * @param Container  $container
-     */
     public function __construct(ConfigRepository $config, Container $container)
     {
-        $this->config    = $config;
+        $this->config = $config;
         $this->container = $container;
     }
 
-    /**
-     * @param Connection $connection
-     * @param string $name
-     *
-     * @return Configuration|string
-     * @throws MigrationException
-     * @throws BindingResolutionException
-     */
-    public function make(Connection $connection, $name = null)
+    public function getConfig(string $name = null): array
     {
         if ($name && $this->config->has('migrations.' . $name)) {
-            $config = new Repository($this->config->get('migrations.' . $name, []));
-        } else {
-            $config = new Repository($this->config->get('migrations.default', []));
+            return $this->config->get('migrations.' . $name, []);
         }
+        return $this->config->get('migrations.default', []);
+    }
 
-        $configuration = new Configuration($connection);
-        $configuration->setName($config->get('name', 'Doctrine Migrations'));
-        $configuration->setMigrationsNamespace($config->get('namespace', 'Database\\Migrations'));
-        $configuration->setMigrationsTableName($config->get('table', 'migrations'));
+    public function getConfigAsRepository(string $name = null): Repository
+    {
+        return new Repository($this->getConfig($name));
+    }
 
-        $configuration->getConnection()->getConfiguration()->setFilterSchemaAssetsExpression(
-            $config->get('schema.filter', '/^(?).*$/')
-        );
+    public function make(string $name = null)
+    {
+        $config = $this->getConfigAsRepository($name);
 
-        $configuration->setNamingStrategy($this->container->make(
-            $config->get('naming_strategy', DefaultNamingStrategy::class)
-        ));
-
-        $configuration->setMigrationsFinder($configuration->getNamingStrategy()->getFinder());
-
-        $directory = $config->get('directory', database_path('migrations'));
-        $configuration->setMigrationsDirectory($directory);
-        $configuration->registerMigrationsFromDirectory($directory);
-
-        if ($migrationOrganisation = $config->get('organize_migrations', false)) {
-            if (0 === strcasecmp($migrationOrganisation, Configuration::VERSIONS_ORGANIZATION_BY_YEAR)) {
-                $configuration->setMigrationsAreOrganizedByYear();
-            } elseif (0 === strcasecmp($migrationOrganisation, Configuration::VERSIONS_ORGANIZATION_BY_YEAR_AND_MONTH)) {
-                $configuration->setMigrationsAreOrganizedByYearAndMonth();
-            }
-        }
-
-        $configuration->setMigrationsColumnLength($config->get('version_column_length', 14));
-
-        return $configuration;
+        return new ConfigurationArray([
+            'table_storage' => [
+                'table_name' => $config->get('table', 'migrations'),
+                'version_column_length' => $config->get('version_column_length', 1024)
+            ],
+            'migrations_paths' => [
+                $config->get('namespace', 'Database\\Migrations') => $config->get(
+                    'directory',
+                    database_path('migrations')
+                )
+            ]
+        ]);
     }
 }

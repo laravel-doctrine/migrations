@@ -6,11 +6,10 @@ namespace LaravelDoctrine\Migrations\Console;
 
 use Doctrine\DBAL\Connection;
 use Exception;
-use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
-use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
+use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
-class ResetCommand extends Command
+class ResetCommand extends BaseCommand
 {
     use ConfirmableTrait;
 
@@ -26,30 +25,28 @@ class ResetCommand extends Command
      */
     protected $description = 'Reset all migrations';
 
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     /**
      * Execute the console command.
      *
-     * @param ConfigurationProvider $provider
+     * @param DependencyFactoryProvider $provider
      */
-    public function handle(ConfigurationProvider $provider)
+    public function handle(DependencyFactoryProvider $provider): int
     {
         if (!$this->confirmToProceed()) {
-            return;
+            return 1;
         }
         
-        $configuration = $provider->getForConnection(
+        $dependencyFactory = $provider->fromConnectionName(
             $this->option('connection')
         );
-        $this->connection = $configuration->getConnection();
+        $this->connection = $dependencyFactory->getConnection();
 
         $this->safelyDropTables();
 
         $this->info('Database was reset');
+        return 0;
     }
 
     private function safelyDropTables()
@@ -57,7 +54,22 @@ class ResetCommand extends Command
         $this->throwExceptionIfPlatformIsNotSupported();
 
         $schema = $this->connection->getSchemaManager();
+
+        if ($schema->getDatabasePlatform()->supportsSequences()) {
+            $sequences = $schema->listSequences();
+            foreach ($sequences as $s) {
+                $schema->dropSequence($s);
+            }
+        }
+
         $tables = $schema->listTableNames();
+        foreach ($tables as $table) {
+            $foreigns = $schema->listTableForeignKeys($table);
+            foreach ($foreigns as $f) {
+                $schema->dropForeignKey($f, $table);
+            }
+        }
+
         foreach ($tables as $table) {
             $this->safelyDropTable($table);
         }
@@ -77,6 +89,7 @@ class ResetCommand extends Command
 
     /**
      * @param string $table
+     * @throws \Doctrine\DBAL\Exception
      */
     private function safelyDropTable(string $table)
     {

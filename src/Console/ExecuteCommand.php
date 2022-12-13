@@ -4,27 +4,21 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Illuminate\Console\Command;
-use Illuminate\Console\ConfirmableTrait;
-use LaravelDoctrine\Migrations\Configuration\ConfigurationProvider;
-use LaravelDoctrine\Migrations\Migrator;
+use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
-class ExecuteCommand extends Command
+class ExecuteCommand extends BaseCommand
 {
-    use ConfirmableTrait;
-
     /**
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'doctrine:migrations:execute {version : The version to execute }
+    protected $signature = 'doctrine:migrations:execute {versions : The versions to execute }
     {--connection= : For a specific connection.}
     {--write-sql : The path to output the migration SQL file instead of executing it. }
     {--dry-run : Execute the migration as a dry run. }
     {--up : Execute the migration up. }
     {--down : Execute the migration down. }
-    {--query-time : Time all the queries individually.}
-    {--force : Force the operation to run when in production. }';
+    {--query-time : Time all the queries individually.}';
 
     /**
      * @var string
@@ -34,32 +28,14 @@ class ExecuteCommand extends Command
     /**
      * Execute the console command.
      *
-     * @param ConfigurationProvider $provider
-     * @param Migrator              $migrator
+     * @param DependencyFactoryProvider $provider
      */
-    public function handle(ConfigurationProvider $provider, Migrator $migrator)
+    public function handle(DependencyFactoryProvider $provider): int
     {
-        if (!$this->confirmToProceed()) {
-            return;
-        }
+        $dependencyFactory = $provider->fromConnectionName($this->option('connection'));
 
-        $configuration = $provider->getForConnection(
-            $this->option('connection')
-        );
+        $command = new \Doctrine\Migrations\Tools\Console\Command\ExecuteCommand($dependencyFactory);
 
-        $version   = $this->argument('version');
-        $direction = $this->option('down') ? 'down' : 'up';
-
-        $version = $configuration->getVersion($version);
-
-        if ($path = $this->option('write-sql')) {
-            $migrator->executeToFile($version, $direction, $path);
-        } else {
-            $migrator->execute($version, $direction, $this->option('dry-run'), $this->option('query-time'));
-        }
-
-        foreach ($migrator->getNotes() as $note) {
-            $this->line($note);
-        }
+        return $command->run($this->getDoctrineInput($command), $this->output->getOutput());
     }
 }
