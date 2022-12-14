@@ -23,13 +23,17 @@ class RefreshCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
-        $this->call('doctrine:migrations:reset', [
+        $resetReturn = $this->call('doctrine:migrations:reset', [
             '--em' => $this->option('em')
         ]);
 
-        $this->call('doctrine:migrations:migrate', [
+        if ($resetReturn !== 0) {
+            return 1;
+        }
+
+        return $this->call('doctrine:migrations:migrate', [
             '--em' => $this->option('em')
         ]);
     }

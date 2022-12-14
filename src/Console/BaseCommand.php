@@ -13,7 +13,7 @@ abstract class BaseCommand extends Command
 {
     /**
      * @param DoctrineCommand $command
-     * @return void
+     * @return ArrayInput
      */
     protected function getDoctrineInput(DoctrineCommand $command): ArrayInput
     {

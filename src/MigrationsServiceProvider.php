@@ -65,7 +65,7 @@ class MigrationsServiceProvider extends ServiceProvider
     /**
      * Merge config
      */
-    protected function mergeConfig()
+    protected function mergeConfig(): void
     {
         if ($this->isLumen()) {
             $this->app->configure('migrations');
@@ -79,15 +79,15 @@ class MigrationsServiceProvider extends ServiceProvider
     /**
      * @return string
      */
-    protected function getConfigPath()
+    protected function getConfigPath(): string
     {
         return __DIR__ . '/../config/migrations.php';
     }
 
     /**
-     * @return array
+     * @return class-string[]
      */
-    public function provides()
+    public function provides(): array
     {
         return [
             DependencyFactoryProvider::class
@@ -97,7 +97,7 @@ class MigrationsServiceProvider extends ServiceProvider
     /**
      * @return bool
      */
-    protected function isLumen()
+    protected function isLumen(): bool
     {
         return Str::contains($this->app->version(), 'Lumen');
     }

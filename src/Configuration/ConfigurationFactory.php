@@ -9,6 +9,9 @@ use Illuminate\Config\Repository;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Container\Container;
 
+/**
+ * @internal
+ */
 class ConfigurationFactory
 {
     protected ConfigRepository $config;
@@ -21,6 +24,10 @@ class ConfigurationFactory
         $this->container = $container;
     }
 
+    /**
+     * @param string|null $name The EntityManager name
+     * @return array<string, mixed> The configuration (see config/migrations.php)
+     */
     public function getConfig(string $name = null): array
     {
         if ($name && $this->config->has('migrations.' . $name)) {
@@ -34,7 +41,7 @@ class ConfigurationFactory
         return new Repository($this->getConfig($name));
     }
 
-    public function make(string $name = null)
+    public function make(string $name = null): ConfigurationArray
     {
         $config = $this->getConfigAsRepository($name);
 

@@ -1,0 +1,23 @@
+parameters:
+    level: 7
+    paths:
+        - src
+
+    ignoreErrors:
+        -
+            message: '~^Function config_path not found.$~'
+        -
+            message: '~^Function database_path not found.$~'
+
+        -
+            path: src/Console
+            message: '~^Parameter #1 \$name of method LaravelDoctrine\\Migrations\\Configuration\\DependencyFactoryProvider::fromEntityManagerName\(\)~'
+        -
+            path: src/Console
+            message: '~^Parameter #1 \$name of method LaravelDoctrine\\Migrations\\Configuration\\ConfigurationFactory::getConfigAsRepository\(\)~'
+        -
+            path: src/MigrationsServiceProvider.php
+            message: '~^Call to an undefined method Illuminate\\Contracts\\Foundation\\Application::configure\(\).~'
+        -
+            path: src/Configuration/DependencyFactoryProvider.php
+            message: '~^Parameter #1 \$entityManager of class Doctrine\\Migrations\\Configuration\\EntityManager\\ExistingEntityManager constructor expects Doctrine\\ORM\\EntityManagerInterface, Doctrine\\Persistence\\ObjectManager given.~'
