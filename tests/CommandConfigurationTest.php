@@ -10,6 +10,7 @@ use LaravelDoctrine\Migrations\Console\GenerateCommand;
 use LaravelDoctrine\Migrations\Console\LatestCommand;
 use LaravelDoctrine\Migrations\Console\MigrateCommand;
 use LaravelDoctrine\Migrations\Console\StatusCommand;
+use LaravelDoctrine\Migrations\Console\SyncMetadataCommand;
 use LaravelDoctrine\Migrations\Console\VersionCommand;
 use function array_keys;
 use function implode;
@@ -28,7 +29,8 @@ class CommandConfigurationTest extends \PHPUnit\Framework\TestCase
             StatusCommand::class => \Doctrine\Migrations\Tools\Console\Command\StatusCommand::class,
             MigrateCommand::class => \Doctrine\Migrations\Tools\Console\Command\MigrateCommand::class,
             VersionCommand::class => \Doctrine\Migrations\Tools\Console\Command\VersionCommand::class,
-            GenerateCommand::class => \Doctrine\Migrations\Tools\Console\Command\GenerateCommand::class
+            GenerateCommand::class => \Doctrine\Migrations\Tools\Console\Command\GenerateCommand::class,
+            SyncMetadataCommand::class => \Doctrine\Migrations\Tools\Console\Command\SyncMetadataCommand::class,
         ];
 
         foreach ($commands as $ourCommandClass => $doctrineCommandClass) {
