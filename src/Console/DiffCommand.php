@@ -15,8 +15,14 @@ class DiffCommand extends BaseCommand
      * @var string
      */
     protected $signature = 'doctrine:migrations:diff
-    {--connection= : For a specific connection }
-    {--filter-expression= : Tables which are filtered by Regular Expression.}';
+    {--em= : For a specific EntityManager. }
+    {--filter-expression= : Tables which are filtered by Regular Expression.}
+    {--formatted : Format the generated SQL. }
+    {--line-length=120 : Max line length of unformatted lines.} 
+    {--check-database-platform= : Check Database Platform to the generated code.}
+    {--allow-empty-diff : Do not throw an exception when no changes are detected. }
+    {--from-empty-schema : Generate a full migration as if the current database was empty. }
+    ';
 
     /**
      * @var string
@@ -32,14 +38,15 @@ class DiffCommand extends BaseCommand
         DependencyFactoryProvider               $provider,
         ConfigurationFactory                    $configurationFactory
     ): int {
-        $dependencyFactory = $provider->fromConnectionName($this->option('connection'));
-        $migrationConfig = $configurationFactory->getConfigAsRepository($this->option('connection'));
+        $dependencyFactory = $provider->fromEntityManagerName($this->option('em'));
+        $migrationConfig = $configurationFactory->getConfigAsRepository($this->option('em'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\DiffCommand($dependencyFactory);
 
         if ($this->input->getOption('filter-expression') === null) {
             $this->input->setOption('filter-expression', $migrationConfig->get('schema.filter'));
         }
+
         try {
             return $command->run($this->getDoctrineInput($command), $this->output->getOutput());
         } catch (NoChangesDetected $exception) {

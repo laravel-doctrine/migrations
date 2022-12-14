@@ -13,7 +13,7 @@ class RefreshCommand extends Command
      * @var string
      */
     protected $signature = 'doctrine:migrations:refresh
-    {--connection= : For a specific connection.}';
+    {--em= : For a specific EntityManager. }';
 
     /**
      * @var string
@@ -26,11 +26,11 @@ class RefreshCommand extends Command
     public function handle()
     {
         $this->call('doctrine:migrations:reset', [
-            '--connection' => $this->option('connection')
+            '--em' => $this->option('em')
         ]);
 
         $this->call('doctrine:migrations:migrate', [
-            '--connection' => $this->option('connection')
+            '--em' => $this->option('em')
         ]);
     }
 }

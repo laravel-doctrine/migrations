@@ -13,7 +13,7 @@ class VersionCommand extends BaseCommand
      * @var string
      */
     protected $signature = 'doctrine:migrations:version {version?}
-    {--connection= : For a specific connection.}
+    {--em= : For a specific EntityManager. }
     {--add : Add the specified version }
     {--delete : Delete the specified version.}
     {--all : Apply to all the versions.}
@@ -32,7 +32,7 @@ class VersionCommand extends BaseCommand
      */
     public function handle(DependencyFactoryProvider $provider): int
     {
-        $dependencyFactory = $provider->fromConnectionName($this->option('connection'));
+        $dependencyFactory = $provider->fromEntityManagerName($this->option('em'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\VersionCommand($dependencyFactory);
         return $command->run($this->getDoctrineInput($command), $this->output->getOutput());

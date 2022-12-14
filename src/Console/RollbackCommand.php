@@ -13,7 +13,7 @@ class RollbackCommand extends Command
      * @var string
      */
     protected $signature = 'doctrine:migrations:rollback {version?}
-    {--connection= : For a specific connection.}';
+    {--em= : For a specific EntityManager. }';
 
     /**
      * @var string
@@ -29,7 +29,7 @@ class RollbackCommand extends Command
     {
         return $this->call('doctrine:migrations:migrate', [
             'version' => 'prev',
-            '--connection' => $this->option('connection')
+            '--em' => $this->option('em')
         ]);
     }
 }

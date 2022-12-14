@@ -22,16 +22,16 @@ class DependencyFactoryProvider
     }
 
     /**
-     * @param string|null $connectionName
+     * @param string|null $name
      *
      * @return DependencyFactory
      */
-    public function fromConnectionName(string $connectionName = null): DependencyFactory
+    public function fromEntityManagerName(string $name = null): DependencyFactory
     {
-        $configuration = $this->factory->make($connectionName);
+        $configuration = $this->factory->make($name);
         return DependencyFactory::fromEntityManager(
             $configuration,
-            new ExistingEntityManager($this->registry->getManager($connectionName))
+            new ExistingEntityManager($this->registry->getManager($name))
         );
     }
 }

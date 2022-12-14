@@ -37,8 +37,8 @@ class ResetCommand extends BaseCommand
         if (!$this->confirmToProceed()) {
             return 1;
         }
-        
-        $dependencyFactory = $provider->fromConnectionName(
+
+        $dependencyFactory = $provider->fromEntityManagerName(
             $this->option('connection')
         );
         $this->connection = $dependencyFactory->getConnection();

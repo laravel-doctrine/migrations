@@ -15,11 +15,13 @@ class MigrateCommand extends BaseCommand
      */
     protected $signature = 'doctrine:migrations:migrate
     {version=latest : The version number (YYYYMMDDHHMMSS) or alias (first, prev, next, latest) to migrate to.}
-    {--connection= : For a specific connection }
-    {--write-sql=/tmp : The path to output the migration SQL file instead of executing it. }
+    {--em= : For a specific EntityManager. }
+    {--write-sql= : The path to output the migration SQL file instead of executing it. }
     {--dry-run : Execute the migration as a dry run. }
     {--query-time : Time all the queries individually. }
-    {--allow-no-migration : Doesn\'t throw an exception if no migration is available. }';
+    {--allow-no-migration : Doesn\'t throw an exception if no migration is available. }
+    {--all-or-nothing= : Wrap the entire migration in a transaction. }
+    ';
 
     /**
      * @var string
@@ -35,7 +37,7 @@ class MigrateCommand extends BaseCommand
      */
     public function handle(DependencyFactoryProvider $provider): int
     {
-        $dependencyFactory = $provider->fromConnectionName($this->option('connection'));
+        $dependencyFactory = $provider->fromEntityManagerName($this->option('em'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\MigrateCommand($dependencyFactory);
 
