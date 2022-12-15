@@ -13,7 +13,7 @@ abstract class BaseCommand extends Command
 {
     /**
      * @param DoctrineCommand $command
-     * @return void
+     * @return ArrayInput
      */
     protected function getDoctrineInput(DoctrineCommand $command): ArrayInput
     {
@@ -35,7 +35,7 @@ abstract class BaseCommand extends Command
         foreach ($definition->getOptions() as $option) {
             $optionName = $option->getName();
 
-            if ($optionName === 'connection' || !$this->optionExists($command, $optionName)) {
+            if ($optionName === 'em' || !$this->optionExists($command, $optionName)) {
                 continue;
             }
 

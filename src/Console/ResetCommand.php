@@ -37,8 +37,8 @@ class ResetCommand extends BaseCommand
         if (!$this->confirmToProceed()) {
             return 1;
         }
-        
-        $dependencyFactory = $provider->fromConnectionName(
+
+        $dependencyFactory = $provider->fromEntityManagerName(
             $this->option('connection')
         );
         $this->connection = $dependencyFactory->getConnection();
@@ -49,24 +49,24 @@ class ResetCommand extends BaseCommand
         return 0;
     }
 
-    private function safelyDropTables()
+    private function safelyDropTables(): void
     {
         $this->throwExceptionIfPlatformIsNotSupported();
 
-        $schema = $this->connection->getSchemaManager();
+        $schemaManager = $this->connection->createSchemaManager();
 
-        if ($schema->getDatabasePlatform()->supportsSequences()) {
-            $sequences = $schema->listSequences();
+        if ($this->connection->getDatabasePlatform()->supportsSequences()) {
+            $sequences = $schemaManager->listSequences();
             foreach ($sequences as $s) {
-                $schema->dropSequence($s);
+                $schemaManager->dropSequence($s->getQuotedName($this->connection->getDatabasePlatform()));
             }
         }
 
-        $tables = $schema->listTableNames();
+        $tables = $schemaManager->listTableNames();
         foreach ($tables as $table) {
-            $foreigns = $schema->listTableForeignKeys($table);
+            $foreigns = $schemaManager->listTableForeignKeys($table);
             foreach ($foreigns as $f) {
-                $schema->dropForeignKey($f, $table);
+                $schemaManager->dropForeignKey($f, $table);
             }
         }
 
@@ -78,7 +78,7 @@ class ResetCommand extends BaseCommand
     /**
      * @throws Exception
      */
-    private function throwExceptionIfPlatformIsNotSupported()
+    private function throwExceptionIfPlatformIsNotSupported(): void
     {
         $platformName = $this->connection->getDatabasePlatform()->getName();
 
@@ -91,7 +91,7 @@ class ResetCommand extends BaseCommand
      * @param string $table
      * @throws \Doctrine\DBAL\Exception
      */
-    private function safelyDropTable(string $table)
+    private function safelyDropTable(string $table): void
     {
         $platformName = $this->connection->getDatabasePlatform()->getName();
         $instructions = $this->getCardinalityCheckInstructions()[$platformName];
@@ -112,7 +112,7 @@ class ResetCommand extends BaseCommand
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
     private function getCardinalityCheckInstructions(): array
     {

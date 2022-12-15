@@ -13,8 +13,8 @@ class ExecuteCommand extends BaseCommand
      * @var string
      */
     protected $signature = 'doctrine:migrations:execute {versions : The versions to execute }
-    {--connection= : For a specific connection.}
-    {--write-sql : The path to output the migration SQL file instead of executing it. }
+    {--em= : For a specific EntityManager. }
+    {--write-sql= : The path to output the migration SQL file instead of executing it. }
     {--dry-run : Execute the migration as a dry run. }
     {--up : Execute the migration up. }
     {--down : Execute the migration down. }
@@ -32,7 +32,7 @@ class ExecuteCommand extends BaseCommand
      */
     public function handle(DependencyFactoryProvider $provider): int
     {
-        $dependencyFactory = $provider->fromConnectionName($this->option('connection'));
+        $dependencyFactory = $provider->fromEntityManagerName($this->option('em'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\ExecuteCommand($dependencyFactory);
 

@@ -13,7 +13,7 @@ class StatusCommand extends BaseCommand
      * @var string
      */
     protected $signature = 'doctrine:migrations:status
-    {--connection= : For a specific connection.}';
+    {--em= : For a specific EntityManager. }';
 
     /**
      * @var string
@@ -27,7 +27,7 @@ class StatusCommand extends BaseCommand
      */
     public function handle(DependencyFactoryProvider $provider): int
     {
-        $dependencyFactory = $provider->fromConnectionName($this->option('connection'));
+        $dependencyFactory = $provider->fromEntityManagerName($this->option('em'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\StatusCommand($dependencyFactory);
 

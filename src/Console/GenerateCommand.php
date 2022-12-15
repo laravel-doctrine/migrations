@@ -13,7 +13,7 @@ class GenerateCommand extends BaseCommand
      * @var string
      */
     protected $signature = 'doctrine:migrations:generate
-    {--connection= : The entity manager connection to generate the migration for.}';
+    {--em= : For a specific EntityManager. }';
 
     /**
      * @var string
@@ -29,7 +29,7 @@ class GenerateCommand extends BaseCommand
      */
     public function handle(DependencyFactoryProvider $provider): int
     {
-        $dependencyFactory = $provider->fromConnectionName($this->option('connection'));
+        $dependencyFactory = $provider->fromEntityManagerName($this->option('em'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\GenerateCommand($dependencyFactory);
 

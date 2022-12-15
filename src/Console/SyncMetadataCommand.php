@@ -1,29 +1,23 @@
 <?php
 
-declare(strict_types=1);
-
 namespace LaravelDoctrine\Migrations\Console;
 
+use Illuminate\Console\Command;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
-class VersionCommand extends BaseCommand
+class SyncMetadataCommand extends BaseCommand
 {
     /**
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'doctrine:migrations:version {version?}
-    {--em= : For a specific EntityManager. }
-    {--add : Add the specified version }
-    {--delete : Delete the specified version.}
-    {--all : Apply to all the versions.}
-    {--range-from= : Apply from specified version. }
-    {--range-to= : Apply to specified version. }';
+    protected $signature = 'doctrine:migrations:sync-metadata-storage
+    {--em= : For a specific EntityManager. }';
 
     /**
      * @var string
      */
-    protected $description = 'Manually add and delete migration versions from the version table.';
+    protected $description = 'View the status of a set of migrations.';
 
     /**
      * Execute the console command.
@@ -34,7 +28,8 @@ class VersionCommand extends BaseCommand
     {
         $dependencyFactory = $provider->fromEntityManagerName($this->option('em'));
 
-        $command = new \Doctrine\Migrations\Tools\Console\Command\VersionCommand($dependencyFactory);
+        $command = new \Doctrine\Migrations\Tools\Console\Command\SyncMetadataCommand($dependencyFactory);
+
         return $command->run($this->getDoctrineInput($command), $this->output->getOutput());
     }
 

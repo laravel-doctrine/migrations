@@ -16,6 +16,7 @@ use LaravelDoctrine\Migrations\Console\RefreshCommand;
 use LaravelDoctrine\Migrations\Console\ResetCommand;
 use LaravelDoctrine\Migrations\Console\RollbackCommand;
 use LaravelDoctrine\Migrations\Console\StatusCommand;
+use LaravelDoctrine\Migrations\Console\SyncMetadataCommand;
 use LaravelDoctrine\Migrations\Console\VersionCommand;
 
 class MigrationsServiceProvider extends ServiceProvider
@@ -56,14 +57,15 @@ class MigrationsServiceProvider extends ServiceProvider
             VersionCommand::class,
             RefreshCommand::class,
             RollbackCommand::class,
-            GenerateCommand::class
+            GenerateCommand::class,
+            SyncMetadataCommand::class
         ]);
     }
 
     /**
      * Merge config
      */
-    protected function mergeConfig()
+    protected function mergeConfig(): void
     {
         if ($this->isLumen()) {
             $this->app->configure('migrations');
@@ -77,15 +79,15 @@ class MigrationsServiceProvider extends ServiceProvider
     /**
      * @return string
      */
-    protected function getConfigPath()
+    protected function getConfigPath(): string
     {
         return __DIR__ . '/../config/migrations.php';
     }
 
     /**
-     * @return array
+     * @return class-string[]
      */
-    public function provides()
+    public function provides(): array
     {
         return [
             DependencyFactoryProvider::class
@@ -95,7 +97,7 @@ class MigrationsServiceProvider extends ServiceProvider
     /**
      * @return bool
      */
-    protected function isLumen()
+    protected function isLumen(): bool
     {
         return Str::contains($this->app->version(), 'Lumen');
     }
