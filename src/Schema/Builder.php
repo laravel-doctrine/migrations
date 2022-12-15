@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LaravelDoctrine\Migrations\Schema;
 
 use Closure;
+use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 
@@ -75,13 +76,15 @@ class Builder
      *
      * @param string $table
      *
-     * @return Schema|string
+     * @return Schema|string|null
      */
     public function dropIfExists(string $table)
     {
         if ($this->schema->hasTable($table)) {
             return $this->drop($table);
         }
+
+        return null;
     }
 
     /**
@@ -127,7 +130,7 @@ class Builder
      * Determine if the given table has given columns.
      *
      * @param string $table
-     * @param array $columns
+     * @param string[] $columns
      *
      * @return bool
      * @throws SchemaException
@@ -150,7 +153,7 @@ class Builder
      *
      * @param string $table
      *
-     * @return array
+     * @return Column[]
      * @throws SchemaException
      */
     public function getColumnListing(string $table): array
@@ -159,7 +162,7 @@ class Builder
     }
 
     /**
-     * @param              $table
+     * @param \Doctrine\DBAL\Schema\Table $table
      * @param Closure|null $callback
      *
      * @return Table

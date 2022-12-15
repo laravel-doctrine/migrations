@@ -45,24 +45,24 @@ class Table
     /**
      * Specify the primary key(s) for the table.
      *
-     * @param string $columns
-     * @param null $name
+     * @param string|string[] $columns
+     * @param string|false $indexName
      *
      * @return Blueprint|null
      */
-    public function primary(string $columns, $name = null): ?Blueprint
+    public function primary($columns, $indexName = false): ?Blueprint
     {
         $columns = is_array($columns) ? $columns : [$columns];
 
-        return $this->table->setPrimaryKey($columns, $name);
+        return $this->table->setPrimaryKey($columns, $indexName);
     }
 
     /**
      * Specify a unique index for the table.
      *
-     * @param string|array $columns
+     * @param string|string[] $columns
      * @param string       $name
-     * @param array        $options
+     * @param mixed[]      $options
      *
      * @return Blueprint|null
      */
@@ -76,10 +76,10 @@ class Table
     /**
      * Specify an index for the table.
      *
-     * @param string|array $columns
+     * @param string|string[] $columns
      * @param string       $name
-     * @param array        $flags
-     * @param array        $options
+     * @param string[]     $flags
+     * @param mixed[]      $options
      *
      * @return Blueprint|null
      */
@@ -94,9 +94,9 @@ class Table
      * Specify a foreign key for the table.
      *
      * @param string $table
-     * @param array|string $localColumnNames
-     * @param array|string $foreignColumnNames
-     * @param array $options
+     * @param string[]|string $localColumnNames
+     * @param string[]|string $foreignColumnNames
+     * @param mixed[] $options
      * @param null $constraintName
      *
      * @return Blueprint|null
@@ -465,11 +465,9 @@ class Table
     }
 
     /**
-     * @param $column
-     *
      * @return Blueprint|null
      */
-    public function dropColumn($column): ?Blueprint
+    public function dropColumn(string $column): ?Blueprint
     {
         return $this->table->dropColumn($column);
     }
