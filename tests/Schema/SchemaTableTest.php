@@ -218,7 +218,7 @@ class SchemaTableTest extends TestCase
 
     public function test_json()
     {
-        $this->dbal->shouldReceive('addColumn')->with('column', 'json_array');
+        $this->dbal->shouldReceive('addColumn')->with('column', 'json');
         $this->table->json('column');
     }
 
