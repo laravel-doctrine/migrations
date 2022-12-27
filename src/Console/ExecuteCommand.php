@@ -36,6 +36,8 @@ class ExecuteCommand extends BaseCommand
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\ExecuteCommand($dependencyFactory);
 
+        $this->getDefinition()->getOption('write-sql')->setDefault(false);
+
         return $command->run($this->getDoctrineInput($command), $this->output->getOutput());
     }
 }
