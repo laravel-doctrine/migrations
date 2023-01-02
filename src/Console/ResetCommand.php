@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection;
 use Exception;
 use Illuminate\Console\ConfirmableTrait;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
+use function method_exists;
 
 class ResetCommand extends BaseCommand
 {
@@ -53,7 +54,11 @@ class ResetCommand extends BaseCommand
     {
         $this->throwExceptionIfPlatformIsNotSupported();
 
-        $schemaManager = $this->connection->createSchemaManager();
+        if (method_exists($this->connection, 'createSchemaManager')) {
+            $schemaManager = $this->connection->createSchemaManager();
+        } else {
+            $schemaManager = $this->connection->getSchemaManager();
+        }
 
         if ($this->connection->getDatabasePlatform()->supportsSequences()) {
             $sequences = $schemaManager->listSequences();
