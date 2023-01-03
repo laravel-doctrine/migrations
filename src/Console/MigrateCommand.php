@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Illuminate\Console\ConfirmableTrait;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
 class MigrateCommand extends BaseCommand
@@ -27,6 +26,13 @@ class MigrateCommand extends BaseCommand
      * @var string
      */
     protected $description = 'Execute a migration to a specified version or the latest available version.';
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->getDefinition()->getOption('write-sql')->setDefault(false);
+    }
 
     /**
      * Execute the console command.

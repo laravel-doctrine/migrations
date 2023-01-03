@@ -17,6 +17,7 @@ use function array_keys;
 use function implode;
 use function in_array;
 use function PHPUnit\Framework\assertSame;
+use function print_r;
 
 class CommandConfigurationTest extends \PHPUnit\Framework\TestCase
 {
@@ -67,9 +68,9 @@ class CommandConfigurationTest extends \PHPUnit\Framework\TestCase
 
 
                     // Assert default values matches
-                    if ($theirOption->getDefault() !== false) {
-                        self::assertEquals($ourOption->getDefault(), $theirOption->getDefault(), "Mismatch default value for {$ourCommand->getName()} {$ourOption->getName()}. Their: '{$theirOption->getDefault()}', our: '{$ourOption->getDefault()}'");
-                    }
+                    $theirDefaultValue = var_export($theirOption->getDefault(), true);
+                    $ourDefaultValue = var_export($ourOption->getDefault(), true);
+                    self::assertSame($ourOption->getDefault(), $theirOption->getDefault(), "Mismatch default value for {$ourCommand->getName()} {$ourOption->getName()}. Their: '{$theirDefaultValue}', our: '{$ourDefaultValue}'");
                 }
             }
         }
@@ -78,8 +79,8 @@ class CommandConfigurationTest extends \PHPUnit\Framework\TestCase
         foreach ($ourCommand->getDefinition()->getArguments() as $ourArgument) {
             foreach ($theirCommand->getDefinition()->getArguments() as $theirArgument) {
                 if ($ourArgument->getName() === $theirArgument->getName()) {
-                    $theirDefaultValue = print_r($theirArgument->getDefault(), true);
-                    $ourDefaultValue = print_r($ourArgument->getDefault(), true);
+                    $theirDefaultValue = var_export($theirArgument->getDefault(), true);
+                    $ourDefaultValue = var_export($ourArgument->getDefault(), true);
 
                     if (empty($ourArgument->getDefault()) && empty($theirArgument->getDefault())) {
                         continue;

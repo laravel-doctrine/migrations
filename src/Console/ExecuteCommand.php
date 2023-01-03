@@ -25,6 +25,13 @@ class ExecuteCommand extends BaseCommand
      */
     protected $description = 'Execute a single migration version up or down manually.';
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->getDefinition()->getOption('write-sql')->setDefault(false);
+    }
+
     /**
      * Execute the console command.
      *
@@ -35,6 +42,8 @@ class ExecuteCommand extends BaseCommand
         $dependencyFactory = $provider->fromEntityManagerName($this->option('em'));
 
         $command = new \Doctrine\Migrations\Tools\Console\Command\ExecuteCommand($dependencyFactory);
+
+        $this->getDefinition()->getOption('write-sql')->setDefault(false);
 
         return $command->run($this->getDoctrineInput($command), $this->output->getOutput());
     }
