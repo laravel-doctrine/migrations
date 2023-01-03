@@ -25,6 +25,13 @@ class ExecuteCommand extends BaseCommand
      */
     protected $description = 'Execute a single migration version up or down manually.';
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->getDefinition()->getOption('write-sql')->setDefault(false);
+    }
+
     /**
      * Execute the console command.
      *
