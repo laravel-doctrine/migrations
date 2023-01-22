@@ -55,7 +55,8 @@ class ConfigurationFactory
                     'directory',
                     database_path('migrations')
                 )
-            ]
+            ],
+            'organize_migrations' => $config->get('organize_migrations') ?: 'none'
         ]);
     }
 }
