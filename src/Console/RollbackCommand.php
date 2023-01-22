@@ -12,7 +12,7 @@ class RollbackCommand extends Command
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'doctrine:migrations:rollback {version?}
+    protected $signature = 'doctrine:migrations:rollback {version=prev}
     {--em= : For a specific EntityManager. }';
 
     /**
@@ -28,7 +28,7 @@ class RollbackCommand extends Command
     public function handle(): int
     {
         return $this->call('doctrine:migrations:migrate', [
-            'version' => 'prev',
+            'version' => $this->argument('version'),
             '--em' => $this->option('em')
         ]);
     }
