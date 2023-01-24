@@ -18,6 +18,7 @@ use function implode;
 use function in_array;
 use function PHPUnit\Framework\assertSame;
 use function print_r;
+use function var_export;
 
 class CommandConfigurationTest extends \PHPUnit\Framework\TestCase
 {
@@ -82,11 +83,15 @@ class CommandConfigurationTest extends \PHPUnit\Framework\TestCase
                     $theirDefaultValue = var_export($theirArgument->getDefault(), true);
                     $ourDefaultValue = var_export($ourArgument->getDefault(), true);
 
+                    self::assertEquals($ourArgument->isArray(), $theirArgument->isArray(), "Mismatch array support for {$ourCommand->getName()} on argument {$ourArgument->getName()}, should be " . var_export($theirArgument->isArray(), true));
+
+
                     if (empty($ourArgument->getDefault()) && empty($theirArgument->getDefault())) {
                         continue;
                     }
 
                     self::assertEquals($ourArgument->getDefault(), $theirArgument->getDefault(), "Mismatch default value for {$ourCommand->getName()} {$ourArgument->getName()}. Their: '{$theirDefaultValue}', our: '{$ourDefaultValue}'");
+
                 }
             }
         }
