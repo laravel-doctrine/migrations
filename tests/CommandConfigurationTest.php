@@ -84,6 +84,7 @@ class CommandConfigurationTest extends \PHPUnit\Framework\TestCase
                     $ourDefaultValue = var_export($ourArgument->getDefault(), true);
 
                     self::assertEquals($ourArgument->isArray(), $theirArgument->isArray(), "Mismatch array support for {$ourCommand->getName()} on argument {$ourArgument->getName()}, should be " . var_export($theirArgument->isArray(), true));
+                    self::assertEquals($ourArgument->isRequired(), $theirArgument->isRequired(), "Mismatch required state for {$ourCommand->getName()} on argument {$ourArgument->getName()}, should be " . var_export($theirArgument->isRequired(), true));
 
 
                     if (empty($ourArgument->getDefault()) && empty($theirArgument->getDefault())) {
