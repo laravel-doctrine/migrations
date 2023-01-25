@@ -5,6 +5,7 @@ namespace LaravelDoctrine\Migrations\Tests;
 use Doctrine\Migrations\Tools\Console\Command\DoctrineCommand;
 use Illuminate\Console\Command;
 use LaravelDoctrine\Migrations\Console\DiffCommand;
+use LaravelDoctrine\Migrations\Console\DumpSchemaCommand;
 use LaravelDoctrine\Migrations\Console\ExecuteCommand;
 use LaravelDoctrine\Migrations\Console\GenerateCommand;
 use LaravelDoctrine\Migrations\Console\LatestCommand;
@@ -36,7 +37,8 @@ class CommandConfigurationTest extends \PHPUnit\Framework\TestCase
             GenerateCommand::class => \Doctrine\Migrations\Tools\Console\Command\GenerateCommand::class,
             SyncMetadataCommand::class => \Doctrine\Migrations\Tools\Console\Command\SyncMetadataCommand::class,
             RollupCommand::class => \Doctrine\Migrations\Tools\Console\Command\RollupCommand::class,
-            ListCommand::class => \Doctrine\Migrations\Tools\Console\Command\ListCommand::class
+            ListCommand::class => \Doctrine\Migrations\Tools\Console\Command\ListCommand::class,
+            DumpSchemaCommand::class => \Doctrine\Migrations\Tools\Console\Command\DumpSchemaCommand::class,
         ];
 
         foreach ($commands as $ourCommandClass => $doctrineCommandClass) {
@@ -53,7 +55,7 @@ class CommandConfigurationTest extends \PHPUnit\Framework\TestCase
     private static function assertSameCommandConfiguration(Command $ourCommand, DoctrineCommand $theirCommand): void
     {
         // We set a default value for these options
-        $optionsIgnoredForRequired = ['em', 'filter-expression'];
+        $optionsIgnoredForRequired = ['em', 'filter-expression', 'filter-tables'];
 
         // Assert option configuration
         foreach ($ourCommand->getDefinition()->getOptions() as $ourOption) {

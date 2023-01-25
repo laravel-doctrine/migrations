@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 use LaravelDoctrine\Migrations\Console\DiffCommand;
+use LaravelDoctrine\Migrations\Console\DumpSchemaCommand;
 use LaravelDoctrine\Migrations\Console\ExecuteCommand;
 use LaravelDoctrine\Migrations\Console\GenerateCommand;
 use LaravelDoctrine\Migrations\Console\LatestCommand;
@@ -60,7 +61,8 @@ class MigrationsServiceProvider extends ServiceProvider
             RollbackCommand::class,
             GenerateCommand::class,
             SyncMetadataCommand::class,
-            ListCommand::class
+            ListCommand::class,
+            DumpSchemaCommand::class
         ]);
     }
 
