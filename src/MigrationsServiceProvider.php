@@ -11,6 +11,7 @@ use LaravelDoctrine\Migrations\Console\DiffCommand;
 use LaravelDoctrine\Migrations\Console\ExecuteCommand;
 use LaravelDoctrine\Migrations\Console\GenerateCommand;
 use LaravelDoctrine\Migrations\Console\LatestCommand;
+use LaravelDoctrine\Migrations\Console\ListCommand;
 use LaravelDoctrine\Migrations\Console\MigrateCommand;
 use LaravelDoctrine\Migrations\Console\RefreshCommand;
 use LaravelDoctrine\Migrations\Console\ResetCommand;
@@ -58,7 +59,8 @@ class MigrationsServiceProvider extends ServiceProvider
             RefreshCommand::class,
             RollbackCommand::class,
             GenerateCommand::class,
-            SyncMetadataCommand::class
+            SyncMetadataCommand::class,
+            ListCommand::class
         ]);
     }
 

@@ -8,6 +8,7 @@ use LaravelDoctrine\Migrations\Console\DiffCommand;
 use LaravelDoctrine\Migrations\Console\ExecuteCommand;
 use LaravelDoctrine\Migrations\Console\GenerateCommand;
 use LaravelDoctrine\Migrations\Console\LatestCommand;
+use LaravelDoctrine\Migrations\Console\ListCommand;
 use LaravelDoctrine\Migrations\Console\MigrateCommand;
 use LaravelDoctrine\Migrations\Console\RollupCommand;
 use LaravelDoctrine\Migrations\Console\StatusCommand;
@@ -35,6 +36,7 @@ class CommandConfigurationTest extends \PHPUnit\Framework\TestCase
             GenerateCommand::class => \Doctrine\Migrations\Tools\Console\Command\GenerateCommand::class,
             SyncMetadataCommand::class => \Doctrine\Migrations\Tools\Console\Command\SyncMetadataCommand::class,
             RollupCommand::class => \Doctrine\Migrations\Tools\Console\Command\RollupCommand::class,
+            ListCommand::class => \Doctrine\Migrations\Tools\Console\Command\ListCommand::class
         ];
 
         foreach ($commands as $ourCommandClass => $doctrineCommandClass) {
