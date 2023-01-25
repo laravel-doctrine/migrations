@@ -16,75 +16,62 @@ return [
     |
     */
     'default' => [
-        /*
-        |--------------------------------------------------------------------------
-        | Migration Repository Table
-        |--------------------------------------------------------------------------
-        |
-        | This table keeps track of all the migrations that have already run for
-        | your application. Using this information, we can determine which of
-        | the migrations on disk haven't actually been run in the database.
-        |
-        */
-        'table'     => 'migrations',
-        /*
-        |--------------------------------------------------------------------------
-        | Migration Directory
-        |--------------------------------------------------------------------------
-        |
-        | This directory is where all migrations will be stored for this entity
-        | manager. Use different directories for each entity manager.
-        |
-        */
-        'directory' => database_path('migrations'),
+        'table_storage' => [
+            /*
+            |--------------------------------------------------------------------------
+            | Migration Repository Table
+            |--------------------------------------------------------------------------
+            |
+            | This table keeps track of all the migrations that have already run for
+            | your application. Using this information, we can determine which of
+            | the migrations on disk haven't actually been run in the database.
+            |
+            */
+            'table_name'     => 'migrations',
+
+            /*
+            |--------------------------------------------------------------------------
+            | Migration Version Column Length
+            |--------------------------------------------------------------------------
+            |
+            | The length for the version column in the migrations table.
+            |
+            */
+            'version_column_length' => 191,
+
+            /*
+            |--------------------------------------------------------------------------
+            | Schema filter
+            |--------------------------------------------------------------------------
+            |
+            | Tables which are filtered by Regular Expression. You optionally
+            | exclude or limit to certain tables. The default will
+            | filter all tables.
+            |
+            */
+            'schema_filter'    => '/^(?!password_resets|failed_jobs).*$/'
+        ],
+
+        'migrations_paths' => [
+            'Database\\Migrations' => database_path('migrations')
+        ],
+
         /*
         |--------------------------------------------------------------------------
         | Migration Organize Directory
         |--------------------------------------------------------------------------
         |
         | Organize migrations file by directory.
-        | Possible values: "year", "year_and_month" and false
+        | Possible values: "year", "year_and_month" and "none"
         |
-        | false:
+        | none:
         |    directory/
         | "year":
         |    directory/2020/
         | "year_and_month":
         |    directory/2020/01/
         |
-         */
-        'organize_migrations' => false,
-        /*
-        |--------------------------------------------------------------------------
-        | Migration Namespace
-        |--------------------------------------------------------------------------
-        |
-        | This namespace will be used on all migrations. To prevent collisions, add
-        | the entity manager name (connection name).
-        |
         */
-        'namespace' => 'Database\\Migrations',
-        /*
-        |--------------------------------------------------------------------------
-        | Migration Repository Table
-        |--------------------------------------------------------------------------
-        |
-        | Tables which are filtered by Regular Expression. You optionally
-        | exclude or limit to certain tables. The default will
-        | filter all tables.
-        |
-        */
-        'schema'    => [
-            'filter' => '/^(?!password_resets|failed_jobs).*$/'
-        ],
-        /*
-        |--------------------------------------------------------------------------
-        | Migration Version Column Length
-        |--------------------------------------------------------------------------
-        |
-        | The length for the version column in the migrations table.
-        |
-        */
-        'version_column_length' => 191
+        'organize_migrations' => 'none',
     ],
 ];

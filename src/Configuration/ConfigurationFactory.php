@@ -8,6 +8,8 @@ use Doctrine\Migrations\Configuration\Migration\ConfigurationArray;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Container\Container;
+use function array_merge;
+use function database_path;
 
 /**
  * @internal
@@ -16,12 +18,9 @@ class ConfigurationFactory
 {
     protected ConfigRepository $config;
 
-    protected Container $container;
-
-    public function __construct(ConfigRepository $config, Container $container)
+    public function __construct(ConfigRepository $config)
     {
         $this->config = $config;
-        $this->container = $container;
     }
 
     /**
@@ -45,18 +44,30 @@ class ConfigurationFactory
     {
         $config = $this->getConfigAsRepository($name);
 
-        return new ConfigurationArray([
-            'table_storage' => [
+        $configAsArray = array_merge($config->all(), [
+            'table_storage' =>  $config->get('table_storage', [
                 'table_name' => $config->get('table', 'migrations'),
                 'version_column_length' => $config->get('version_column_length', 191)
-            ],
-            'migrations_paths' => [
+            ]),
+            'migrations_paths' => $config->get('migrations_paths', [
                 $config->get('namespace', 'Database\\Migrations') => $config->get(
                     'directory',
                     database_path('migrations')
                 )
-            ],
+            ]),
             'organize_migrations' => $config->get('organize_migrations') ?: 'none'
         ]);
+
+        // Unset previous laravel-doctrine configuration structure
+        unset(
+            $configAsArray['table_storage']['schema_filter'],
+            $configAsArray['table'],
+            $configAsArray['directory'],
+            $configAsArray['namespace'],
+            $configAsArray['schema'],
+            $configAsArray['version_column_length']
+        );
+
+        return new ConfigurationArray($configAsArray);
     }
 }
