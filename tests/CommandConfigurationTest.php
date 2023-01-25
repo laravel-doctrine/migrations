@@ -59,14 +59,14 @@ class CommandConfigurationTest extends \PHPUnit\Framework\TestCase
                 if ($ourOption->getName() === $theirOption->getName()) {
                     // Assert property is required in our and their configuration
                     if (in_array($ourOption->getName(), $optionsIgnoredForRequired) === false) {
-                        // Ignore those were we have specified value
+                        // Laravel do not mark CLI options as required when a value is specified..
                         if (empty($ourOption->getDefault())) {
-                            self::assertSame($ourOption->isValueRequired(), $theirOption->isValueRequired(), "Mismatch 'required' state on option value for {$ourCommand->getName()} {$ourOption->getName()}. Their '{$theirOption->isValueRequired()}', our: '{$ourOption->isValueRequired()}'");
+                            self::assertEquals($ourOption->isValueRequired(), $theirOption->isValueRequired(), "Mismatch 'required' state on option value for {$ourCommand->getName()} {$ourOption->getName()}. Their '{$theirOption->isValueRequired()}', our: '{$ourOption->isValueRequired()}'");
                         }
-
-                        self::assertSame($ourOption->acceptValue(), $theirOption->acceptValue(), "Mismatch 'acceptValue' state on option value for {$ourCommand->getName()} {$ourOption->getName()}. Their '{$theirOption->acceptValue()}', our: '{$ourOption->acceptValue()}'");
                     }
-
+                    self::assertEquals($ourOption->acceptValue(), $theirOption->acceptValue(), "Mismatch 'acceptValue' state on option value for {$ourCommand->getName()} {$ourOption->getName()}. Their '{$theirOption->acceptValue()}', our: '{$ourOption->acceptValue()}'");
+                    self::assertEquals($ourOption->isArray(), $theirOption->isArray(), "Mismatch array support for {$ourCommand->getName()} on argument {$ourOption->getName()}, should be " . var_export($theirOption->isArray(), true));
+                    self::assertEquals($ourOption->isNegatable(), $theirOption->isNegatable(), "Mismatch 'negatable' for {$ourCommand->getName()} on argument {$ourOption->getName()}, should be " . var_export($theirOption->isNegatable(), true));
 
                     // Assert default values matches
                     $theirDefaultValue = var_export($theirOption->getDefault(), true);
@@ -80,19 +80,12 @@ class CommandConfigurationTest extends \PHPUnit\Framework\TestCase
         foreach ($ourCommand->getDefinition()->getArguments() as $ourArgument) {
             foreach ($theirCommand->getDefinition()->getArguments() as $theirArgument) {
                 if ($ourArgument->getName() === $theirArgument->getName()) {
-                    $theirDefaultValue = var_export($theirArgument->getDefault(), true);
-                    $ourDefaultValue = var_export($ourArgument->getDefault(), true);
-
                     self::assertEquals($ourArgument->isArray(), $theirArgument->isArray(), "Mismatch array support for {$ourCommand->getName()} on argument {$ourArgument->getName()}, should be " . var_export($theirArgument->isArray(), true));
                     self::assertEquals($ourArgument->isRequired(), $theirArgument->isRequired(), "Mismatch required state for {$ourCommand->getName()} on argument {$ourArgument->getName()}, should be " . var_export($theirArgument->isRequired(), true));
 
-
-                    if (empty($ourArgument->getDefault()) && empty($theirArgument->getDefault())) {
-                        continue;
-                    }
-
+                    $theirDefaultValue = var_export($theirArgument->getDefault(), true);
+                    $ourDefaultValue = var_export($ourArgument->getDefault(), true);
                     self::assertEquals($ourArgument->getDefault(), $theirArgument->getDefault(), "Mismatch default value for {$ourCommand->getName()} {$ourArgument->getName()}. Their: '{$theirDefaultValue}', our: '{$ourDefaultValue}'");
-
                 }
             }
         }
