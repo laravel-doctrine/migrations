@@ -20,7 +20,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
         $doctrineConfig = $factory->make(null)->getConfiguration();
 
         self::assertSame($configRepository->get('migrations.default.table_storage.table_name'), $doctrineConfig->getMetadataStorageConfiguration()->getTableName());
-        self::assertSame($configRepository->get('migrations.default.table_storage.version_column_length'), $doctrineConfig->getMetadataStorageConfiguration()->getVersionColumnLength());
+        self::assertSame(191, $doctrineConfig->getMetadataStorageConfiguration()->getVersionColumnLength());
         self::assertSame($configRepository->get('migrations.default.migrations_paths'), $doctrineConfig->getMigrationDirectories());
         self::assertSame(false, $doctrineConfig->areMigrationsOrganizedByYear());
         self::assertSame(false, $doctrineConfig->areMigrationsOrganizedByYearAndMonth());
