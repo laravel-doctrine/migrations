@@ -8,7 +8,8 @@ parameters:
             message: '~^Function config_path not found.$~'
         -
             message: '~^Function database_path not found.$~'
-
+        -
+            message: '~^Used function database_path not found.$~'
         -
             path: src/Console
             message: '~^Parameter #1 \$name of method LaravelDoctrine\\Migrations\\Configuration\\DependencyFactoryProvider::fromEntityManagerName\(\)~'
