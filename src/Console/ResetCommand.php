@@ -19,7 +19,7 @@ class ResetCommand extends BaseCommand
      * @var string
      */
     protected $signature = 'doctrine:migrations:reset
-    {--connection= : For a specific connection.}';
+    {--em= : For a specific EntityManager. }';
 
     /**
      * @var string
@@ -40,7 +40,7 @@ class ResetCommand extends BaseCommand
         }
 
         $dependencyFactory = $provider->fromEntityManagerName(
-            $this->option('connection')
+            $this->option('em')
         );
         $this->connection = $dependencyFactory->getConnection();
 
