@@ -19,7 +19,7 @@ class MigrateCommand extends BaseCommand
     {--dry-run : Execute the migration as a dry run. }
     {--query-time : Time all the queries individually. }
     {--allow-no-migration : Doesn\'t throw an exception if no migration is available. }
-    {--all-or-nothing= : Wrap the entire migration in a transaction. }
+    {--all-or-nothing=notprovided : Wrap the entire migration in a transaction. }
     ';
 
     /**

@@ -27,9 +27,6 @@ jobs:
       - name: Install Composer dependencies
         run: rm -f composer.lock
 
-      - name: Downgrade doctrine/dbal
-        run: composer require --no-progress --no-scripts --no-plugins doctrine/dbal ^2 && rm composer.lock
-
       - name: Install dependencies for Laravel ${{ matrix.laravel}}
         run: composer require --no-progress --no-scripts --no-plugins illuminate/config ^${{ matrix.laravel }} illuminate/contracts ^${{ matrix.laravel }} illuminate/console ^${{ matrix.laravel }} -v
 
