@@ -20,6 +20,7 @@ use LaravelDoctrine\Migrations\Console\RollbackCommand;
 use LaravelDoctrine\Migrations\Console\StatusCommand;
 use LaravelDoctrine\Migrations\Console\SyncMetadataCommand;
 use LaravelDoctrine\Migrations\Console\VersionCommand;
+use LaravelDoctrine\Migrations\Console\QueueFailedTableCommand;
 
 class MigrationsServiceProvider extends ServiceProvider
 {
@@ -62,7 +63,8 @@ class MigrationsServiceProvider extends ServiceProvider
             GenerateCommand::class,
             SyncMetadataCommand::class,
             ListCommand::class,
-            DumpSchemaCommand::class
+            DumpSchemaCommand::class,
+            QueueFailedTableCommand::class,
         ]);
     }
 
