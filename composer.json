@@ -20,7 +20,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/laravel-shift/orm.git"
+      "url": "https://github.com/77web/laravel-doctrine-orm.git"
     }
   ],
   "require": {
