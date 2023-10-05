@@ -24,7 +24,7 @@
     "illuminate/config": "^6.0|^7.0|^8.0|^9.0|^10.0",
     "illuminate/contracts": "^6.0|^7.0|^8.0|^9.0|^10.0",
     "illuminate/console": "^6.0|^7.0|^8.0|^9.0|^10.0",
-    "laravel-doctrine/orm": "^1.0|^2.0@dev"
+    "laravel-doctrine/orm": "^1.0|^2.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^7.0 | ^8.3 | ^9.3",
