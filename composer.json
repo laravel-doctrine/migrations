@@ -1,46 +1,46 @@
 {
-  "name": "laravel-doctrine/migrations",
-  "type": "library",
-  "description": "Doctrine Migrations for Laravel",
-  "license": "MIT",
-  "keywords": [
-    "doctrine",
-    "laravel",
-    "orm",
-    "data mapper",
-    "database",
-    "migrations"
-  ],
-  "authors": [
-    {
-      "name": "Patrick Brouwers",
-      "email": "patrick@maatwebsite.nl"
+    "name": "laravel-doctrine/migrations",
+    "type": "library",
+    "description": "Doctrine Migrations for Laravel",
+    "license": "MIT",
+    "keywords": [
+        "doctrine",
+        "laravel",
+        "orm",
+        "data mapper",
+        "database",
+        "migrations"
+    ],
+    "authors": [
+        {
+            "name": "Patrick Brouwers",
+            "email": "patrick@maatwebsite.nl"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8",
+        "doctrine/migrations": "^3.4",
+        "doctrine/dbal": "^2.10.1|^3",
+        "illuminate/config": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+        "illuminate/contracts": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+        "illuminate/console": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+        "laravel-doctrine/orm": "^1.0|^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0 | ^8.3 | ^9.3|^10.5",
+        "phpstan/phpstan": "^1.9",
+        "mockery/mockery": "^1.3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "LaravelDoctrine\\Migrations\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelDoctrine\\Migrations\\MigrationsServiceProvider"
+            ]
+        }
     }
-  ],
-  "require": {
-    "php": "^7.4|^8",
-    "doctrine/migrations": "^3.4",
-    "doctrine/dbal": "^2.10.1|^3",
-    "illuminate/config": "^6.0|^7.0|^8.0|^9.0|^10.0",
-    "illuminate/contracts": "^6.0|^7.0|^8.0|^9.0|^10.0",
-    "illuminate/console": "^6.0|^7.0|^8.0|^9.0|^10.0",
-    "laravel-doctrine/orm": "^1.0|^2.0"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^7.0 | ^8.3 | ^9.3",
-    "phpstan/phpstan": "^1.9",
-    "mockery/mockery": "^1.3.1"
-  },
-  "autoload": {
-    "psr-4": {
-      "LaravelDoctrine\\Migrations\\": "src/"
-    }
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "LaravelDoctrine\\Migrations\\MigrationsServiceProvider"
-      ]
-    }
-  }
 }
