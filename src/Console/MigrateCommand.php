@@ -20,6 +20,7 @@ class MigrateCommand extends BaseCommand
     {--query-time : Time all the queries individually. }
     {--allow-no-migration : Doesn\'t throw an exception if no migration is available. }
     {--all-or-nothing=notprovided : Wrap the entire migration in a transaction. }
+    {--no-all-or-nothing : Do not wrap the entire migration in a transaction. }
     ';
 
     /**
