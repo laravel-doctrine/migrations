@@ -26,7 +26,7 @@ class DependencyFactoryProvider
      *
      * @return DependencyFactory
      */
-    public function fromEntityManagerName(string $name = null): DependencyFactory
+    public function fromEntityManagerName(?string $name = null): DependencyFactory
     {
         $configuration = $this->factory->make($name);
         return DependencyFactory::fromEntityManager(
