@@ -27,7 +27,7 @@ class ConfigurationFactory
      * @param string|null $name The EntityManager name
      * @return array<string, mixed> The configuration (see config/migrations.php)
      */
-    public function getConfig(string $name = null): array
+    public function getConfig(?string $name = null): array
     {
         if ($name && $this->config->has('migrations.' . $name)) {
             return $this->config->get('migrations.' . $name, []);
@@ -35,12 +35,12 @@ class ConfigurationFactory
         return $this->config->get('migrations.default', []);
     }
 
-    public function getConfigAsRepository(string $name = null): Repository
+    public function getConfigAsRepository(?string $name = null): Repository
     {
         return new Repository($this->getConfig($name));
     }
 
-    public function make(string $name = null): ConfigurationArray
+    public function make(?string $name = null): ConfigurationArray
     {
         $config = $this->getConfigAsRepository($name);
 

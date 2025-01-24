@@ -167,7 +167,7 @@ class Builder
      *
      * @return Table
      */
-    protected function build($table, Closure $callback = null): Table
+    protected function build($table, ?Closure $callback = null): Table
     {
         return new Table($table, $callback);
     }

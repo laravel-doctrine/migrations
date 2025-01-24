@@ -21,7 +21,7 @@ class Table
      * @param Blueprint $table
      * @param Closure|null $callback
      */
-    public function __construct(Blueprint $table, Closure $callback = null)
+    public function __construct(Blueprint $table, ?Closure $callback = null)
     {
         $this->table = $table;
 
