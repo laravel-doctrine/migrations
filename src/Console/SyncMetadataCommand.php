@@ -2,7 +2,6 @@
 
 namespace LaravelDoctrine\Migrations\Console;
 
-use Illuminate\Console\Command;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 
 class SyncMetadataCommand extends BaseCommand

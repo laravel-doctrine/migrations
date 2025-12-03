@@ -53,33 +53,73 @@ class SchemaBuilderTest extends TestCase
 
     public function test_drop()
     {
+        $tableExists = true;
+        $this->schema->shouldReceive('hasTable')
+            ->with('table_name')->twice()
+            ->andReturnUsing(function() use (&$tableExists) {
+                return $tableExists;
+            });
         $this->schema->shouldReceive('dropTable')
-                     ->with('table_name')->once()
-                     ->andReturn('dropped');
+            ->with('table_name')->once()
+            ->andReturnUsing(function() use (&$tableExists) {
+                $tableExists = false;
+                return $this->schema;
+            });
 
-        $this->assertEquals('dropped', $this->builder->drop('table_name'));
+        $this->assertTrue($this->builder->hasTable('table_name'));
+        $this->assertEquals($this->schema, $this->builder->drop('table_name'));
+        $this->assertFalse($this->builder->hasTable('table_name'));
     }
 
     public function test_dropIfExists()
     {
+        $tableExists = true;
+
         $this->schema->shouldReceive('hasTable')
-                     ->with('table_name')->once()
-                     ->andReturn(true);
+            ->with('table_name')->times(3)
+            ->andReturnUsing(function() use (&$tableExists) {
+                return $tableExists;
+            });
 
         $this->schema->shouldReceive('dropTable')
-                     ->with('table_name')->once()
-                     ->andReturn('dropped');
+            ->with('table_name')->once()
+            ->andReturnUsing(function() use (&$tableExists) {
+                $tableExists = false;
+                return $this->schema;
+            });
 
-        $this->assertEquals('dropped', $this->builder->dropIfExists('table_name'));
+        $this->assertTrue($this->builder->hasTable('table_name'));
+        $this->assertSame($this->schema, $this->builder->dropIfExists('table_name'));
+        $this->assertFalse($this->builder->hasTable('table_name'));
     }
 
     public function test_rename()
     {
+        $firstNameExists = true;
+        $secondNameExists = false;
+        $this->schema->shouldReceive('hasTable')
+            ->with('table_name')->twice()
+            ->andReturnUsing(function() use (&$firstNameExists) {
+                return $firstNameExists;
+            });
+        $this->schema->shouldReceive('hasTable')
+            ->with('tablename')->twice()
+            ->andReturnUsing(function() use (&$secondNameExists) {
+                return $secondNameExists;
+            });
         $this->schema->shouldReceive('renameTable')
-                     ->with('table_name', 'tablename')->once()
-                     ->andReturn('renamed');
+            ->with('table_name', 'tablename')->once()
+            ->andReturnUsing(function() use (&$firstNameExists, &$secondNameExists) {
+                $firstNameExists = false;
+                $secondNameExists = true;
+                return $this->schema;
+            });
 
-        $this->assertEquals('renamed', $this->builder->rename('table_name', 'tablename'));
+        $this->assertTrue($this->builder->hasTable('table_name'));
+        $this->assertFalse($this->builder->hasTable('tablename'));
+        $this->assertEquals($this->schema, $this->builder->rename('table_name', 'tablename'));
+        $this->assertFalse($this->builder->hasTable('table_name'));
+        $this->assertTrue($this->builder->hasTable('tablename'));
     }
 
     public function test_hasTable()

@@ -6,8 +6,9 @@ namespace LaravelDoctrine\Migrations\Schema;
 
 use Closure;
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\Name\UnqualifiedName;
+use Doctrine\DBAL\Schema\PrimaryKeyConstraint;
 use Doctrine\DBAL\Schema\Table as Blueprint;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 
 class Table
@@ -46,15 +47,83 @@ class Table
      * Specify the primary key(s) for the table.
      *
      * @param string|string[] $columns
-     * @param string|false $indexName
+     * @param ?string $indexName
      *
      * @return Blueprint|null
      */
-    public function primary($columns, $indexName = false): ?Blueprint
+    public function primary($columns, ?string $indexName = null, bool $isClustered = false): ?Blueprint
     {
         $columns = is_array($columns) ? $columns : [$columns];
 
-        return $this->table->setPrimaryKey($columns, $indexName);
+        $constraint = PrimaryKeyConstraint::editor()
+            ->setName($this->makeName($indexName))
+            ->setColumnNames(...$this->convertColumns($columns))
+            ->setIsClustered($isClustered)
+            ->create();
+        return $this->table->addPrimaryKeyConstraint($constraint);
+    }
+
+    private function isQuoted(?string $name): bool
+    {
+        return $name !== null && 
+            str_starts_with($name, '"') &&
+            str_ends_with($name, '"');
+    }
+
+    /**
+     * Creates an unqualified name.
+     *
+     * @param ?string $name
+     * @return ?UnqualifiedName
+     */
+    private function makeName(?string $name): ?UnqualifiedName
+    {
+        return $this->isQuoted($name) ? $this->makeQuotedName($name) : $this->makeUnquotedName($name);
+    }
+
+    /**
+     * Creates an unqualified quoted name.
+     *
+     * @param ?string $name
+     * @return ?UnqualifiedName
+     */
+    private function makeQuotedName(?string $name): ?UnqualifiedName
+    {
+        // UnqalifiedName identifier needs to be non-empty string
+        if ($name === null) return null;
+        if (!$this->isQuoted($name)) return null;
+
+        $inner = substr($name, 1, -1);
+        if ($inner === '') return null;
+
+        /** @var non-empty-string $name */
+        return UnqualifiedName::quoted($name);
+    }
+
+    /**
+     * Creates an unqualified unquoted name.
+     *
+     * @param ?string $name
+     * @return ?UnqualifiedName
+     */
+    private function makeUnquotedName(?string $name): ?UnqualifiedName
+    {
+        if ($name === null) return null;
+        return strlen($name) === 0 ? null : UnqualifiedName::unquoted($name);
+    }
+
+    /**
+     * Converts string[] of columns to UnqualifiedName[] of columns
+     *
+     * @param string[] $columns
+     * @return UnqualifiedName[]
+     */
+    private function convertColumns(array $columns): array
+    {
+        return array_map(
+            fn($col) => $this->makeName($col),
+            $columns
+        );
     }
 
     /**
@@ -69,6 +138,10 @@ class Table
     public function unique($columns, $name = null, $options = []): ?Blueprint
     {
         $columns = is_array($columns) ? $columns : [$columns];
+
+        if (count($columns) === 0) {
+            throw new \InvalidArgumentException('You must specify at least one column for a unique index.');
+        }
 
         return $this->table->addUniqueIndex($columns, $name, $options);
     }
@@ -86,6 +159,10 @@ class Table
     public function index($columns, $name = null, $flags = [], $options = []): ?Blueprint
     {
         $columns = is_array($columns) ? $columns : [$columns];
+
+        if (count($columns) === 0) {
+            throw new \InvalidArgumentException('You must specify at least one column for an index.');
+        }
 
         return $this->table->addIndex($columns, $name, $flags, $options);
     }
@@ -109,11 +186,22 @@ class Table
         $constraintName = null
     ): ?Blueprint
     {
-        $localColumnNames   = is_array($localColumnNames) ? $localColumnNames : [$localColumnNames];
-        $foreignColumnNames = is_array($foreignColumnNames) ? $foreignColumnNames : [$foreignColumnNames];
+        $local = is_array($localColumnNames) ? $localColumnNames : [$localColumnNames];
+        $foreign = is_array($foreignColumnNames) ? $foreignColumnNames : [$foreignColumnNames];
 
-        return $this->table->addForeignKeyConstraint($table, $localColumnNames, $foreignColumnNames, $options,
-            $constraintName);
+        // Enforce non-empty arrays
+        if ($local === [] || $foreign === []) {
+            throw new \InvalidArgumentException("Foreign key must reference at least one local and one foreign column.");
+        }
+
+        // Re-index to ensure list shape (not associative)
+        /** @var non-empty-list<string> $local */
+        $local = array_values($local);
+
+        /** @var non-empty-list<string> $foreign */
+        $foreign = array_values($foreign);
+
+        return $this->table->addForeignKeyConstraint($table, $local, $foreign, $options, $constraintName);
     }
 
     /**
