@@ -141,6 +141,9 @@ class ResetCommand extends BaseCommand
     }
 
     /**
+     * Returns the database platform name based on the platform map.
+     * This is used to for the Cardinality Check Instructions.
+     *
      * @throws RuntimeException
      */
     private function getDatabasePlatformName(): string
@@ -158,6 +161,9 @@ class ResetCommand extends BaseCommand
     }
 
     /**
+     * Returns the database platform from the connection. 
+     * If the platform is not supported or determined an exception will be thrown.
+     *
      * @throws RuntimeException
      */
     private function getDatabasePlatform(): AbstractPlatform

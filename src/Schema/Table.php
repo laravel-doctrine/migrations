@@ -22,7 +22,7 @@ class Table
      * @param Blueprint $table
      * @param Closure|null $callback
      */
-    public function __construct(Blueprint $table, ?Closure $callback = null)
+    public function __construct(Blueprint $table, Closure|null $callback = null)
     {
         $this->table = $table;
 
@@ -38,7 +38,7 @@ class Table
      *
      * @return Column|null
      */
-    public function guid(string $column): ?Column
+    public function guid(string $column): Column|null
     {
         return $this->table->addColumn($column, Types::GUID);
     }
@@ -47,11 +47,11 @@ class Table
      * Specify the primary key(s) for the table.
      *
      * @param string|string[] $columns
-     * @param ?string $indexName
+     * @param string|null $indexName
      *
      * @return Blueprint|null
      */
-    public function primary($columns, ?string $indexName = null, bool $isClustered = false): ?Blueprint
+    public function primary($columns, string|null $indexName = null, bool $isClustered = false): Blueprint|null
     {
         $columns = is_array($columns) ? $columns : [$columns];
 
@@ -63,7 +63,14 @@ class Table
         return $this->table->addPrimaryKeyConstraint($constraint);
     }
 
-    private function isQuoted(?string $name): bool
+    /**
+     * Checks if a name is surrounded by quotes.
+     *
+     * @param string|null $name
+     *
+     * @return bool
+     */
+    private function isQuoted(string|null $name): bool
     {
         return $name !== null && 
             str_starts_with($name, '"') &&
@@ -73,10 +80,10 @@ class Table
     /**
      * Creates an unqualified name.
      *
-     * @param ?string $name
-     * @return ?UnqualifiedName
+     * @param string|null $name
+     * @return UnqualifiedName|null
      */
-    private function makeName(?string $name): ?UnqualifiedName
+    private function makeName(string|null $name): UnqualifiedName|null
     {
         return $this->isQuoted($name) ? $this->makeQuotedName($name) : $this->makeUnquotedName($name);
     }
@@ -84,10 +91,10 @@ class Table
     /**
      * Creates an unqualified quoted name.
      *
-     * @param ?string $name
-     * @return ?UnqualifiedName
+     * @param string|null $name
+     * @return UnqualifiedName|null
      */
-    private function makeQuotedName(?string $name): ?UnqualifiedName
+    private function makeQuotedName(string|null $name): UnqualifiedName|null
     {
         // UnqalifiedName identifier needs to be non-empty string
         if ($name === null) return null;
@@ -103,10 +110,10 @@ class Table
     /**
      * Creates an unqualified unquoted name.
      *
-     * @param ?string $name
-     * @return ?UnqualifiedName
+     * @param string|null $name
+     * @return UnqualifiedName|null
      */
-    private function makeUnquotedName(?string $name): ?UnqualifiedName
+    private function makeUnquotedName(string|null $name): UnqualifiedName|null
     {
         if ($name === null) return null;
         return strlen($name) === 0 ? null : UnqualifiedName::unquoted($name);
@@ -135,11 +142,11 @@ class Table
      *
      * @return Blueprint|null
      */
-    public function unique($columns, $name = null, $options = []): ?Blueprint
+    public function unique($columns, $name = null, $options = []): Blueprint|null
     {
         $columns = is_array($columns) ? $columns : [$columns];
 
-        if (count($columns) === 0) {
+        if (! $columns) {
             throw new \InvalidArgumentException('You must specify at least one column for a unique index.');
         }
 
@@ -156,11 +163,11 @@ class Table
      *
      * @return Blueprint|null
      */
-    public function index($columns, $name = null, $flags = [], $options = []): ?Blueprint
+    public function index($columns, $name = null, $flags = [], $options = []): Blueprint|null
     {
         $columns = is_array($columns) ? $columns : [$columns];
 
-        if (count($columns) === 0) {
+        if (! $columns) {
             throw new \InvalidArgumentException('You must specify at least one column for an index.');
         }
 
@@ -184,7 +191,7 @@ class Table
         $foreignColumnNames = 'id',
         $options = [],
         $constraintName = null
-    ): ?Blueprint
+    ): Blueprint|null
     {
         $local = is_array($localColumnNames) ? $localColumnNames : [$localColumnNames];
         $foreign = is_array($foreignColumnNames) ? $foreignColumnNames : [$foreignColumnNames];
@@ -211,7 +218,7 @@ class Table
      *
      * @return Column|null
      */
-    public function increments(string $columnName): ?Column
+    public function increments(string $columnName): Column|null
     {
         $column = $this->integer($columnName, true, true);
         $this->primary($columnName);
@@ -226,7 +233,7 @@ class Table
      *
      * @return Column|null
      */
-    public function smallIncrements(string $columnName): ?Column
+    public function smallIncrements(string $columnName): Column|null
     {
         $column = $this->smallInteger($columnName, true, true);
         $this->primary($columnName);
@@ -241,7 +248,7 @@ class Table
      *
      * @return Column|null
      */
-    public function bigIncrements(string $columnName): ?Column
+    public function bigIncrements(string $columnName): Column|null
     {
         $column = $this->bigInteger($columnName, true, true);
         $this->primary($columnName);
@@ -257,7 +264,7 @@ class Table
      *
      * @return Column|null
      */
-    public function string(string $column, $length = 255): ?Column
+    public function string(string $column, $length = 255): Column|null
     {
         return $this->table->addColumn($column, Types::STRING, compact('length'));
     }
@@ -283,7 +290,7 @@ class Table
      *
      * @return Column|null
      */
-    public function integer(string $column, $autoIncrement = false, $unsigned = false): ?Column
+    public function integer(string $column, $autoIncrement = false, $unsigned = false): Column|null
     {
         return $this->table->addColumn($column, Types::INTEGER, compact('autoIncrement', 'unsigned'));
     }
@@ -297,7 +304,7 @@ class Table
      *
      * @return Column|null
      */
-    public function smallInteger(string $column, $autoIncrement = false, $unsigned = false): ?Column
+    public function smallInteger(string $column, $autoIncrement = false, $unsigned = false): Column|null
     {
         return $this->table->addColumn($column, Types::SMALLINT, compact('autoIncrement', 'unsigned'));
     }
@@ -311,7 +318,7 @@ class Table
      *
      * @return Column|null
      */
-    public function bigInteger(string $column, $autoIncrement = false, $unsigned = false): ?Column
+    public function bigInteger(string $column, $autoIncrement = false, $unsigned = false): Column|null
     {
         return $this->table->addColumn($column, Types::BIGINT, compact('autoIncrement', 'unsigned'));
     }
@@ -324,7 +331,7 @@ class Table
      *
      * @return Column|null
      */
-    public function unsignedSmallInteger(string $column, $autoIncrement = false): ?Column
+    public function unsignedSmallInteger(string $column, $autoIncrement = false): Column|null
     {
         return $this->smallInteger($column, $autoIncrement, true);
     }
@@ -337,7 +344,7 @@ class Table
      *
      * @return Column|null
      */
-    public function unsignedInteger(string $column, $autoIncrement = false): ?Column
+    public function unsignedInteger(string $column, $autoIncrement = false): Column|null
     {
         return $this->integer($column, $autoIncrement, true);
     }
@@ -350,7 +357,7 @@ class Table
      *
      * @return Column|null
      */
-    public function unsignedBigInteger(string $column, $autoIncrement = false): ?Column
+    public function unsignedBigInteger(string $column, $autoIncrement = false): Column|null
     {
         return $this->bigInteger($column, $autoIncrement, true);
     }
@@ -364,7 +371,7 @@ class Table
      *
      * @return Column|null
      */
-    public function float(string $column, $precision = 8, $scale = 2): ?Column
+    public function float(string $column, $precision = 8, $scale = 2): Column|null
     {
         return $this->table->addColumn($column, Types::FLOAT, compact('precision', 'scale'));
     }
@@ -378,7 +385,7 @@ class Table
      *
      * @return Column|null
      */
-    public function decimal(string $column, $precision = 8, $scale = 2): ?Column
+    public function decimal(string $column, $precision = 8, $scale = 2): Column|null
     {
         return $this->table->addColumn($column, Types::DECIMAL, compact('precision', 'scale'));
     }
@@ -390,7 +397,7 @@ class Table
      *
      * @return Column|null
      */
-    public function boolean(string $column): ?Column
+    public function boolean(string $column): Column|null
     {
         return $this->table->addColumn($column, Types::BOOLEAN);
     }
@@ -402,7 +409,7 @@ class Table
      *
      * @return Column|null
      */
-    public function json(string $column): ?Column
+    public function json(string $column): Column|null
     {
         return $this->table->addColumn($column, Types::JSON);
     }
@@ -414,7 +421,7 @@ class Table
      *
      * @return Column|null
      */
-    public function date(string $column): ?Column
+    public function date(string $column): Column|null
     {
         return $this->table->addColumn($column, Types::DATE_MUTABLE);
     }
@@ -426,7 +433,7 @@ class Table
      *
      * @return Column|null
      */
-    public function dateTime(string $column): ?Column
+    public function dateTime(string $column): Column|null
     {
         return $this->table->addColumn($column, Types::DATETIME_MUTABLE);
     }
@@ -438,7 +445,7 @@ class Table
      *
      * @return Column|null
      */
-    public function dateTimeTz(string $column): ?Column
+    public function dateTimeTz(string $column): Column|null
     {
         return $this->table->addColumn($column, Types::DATETIMETZ_MUTABLE);
     }
@@ -450,7 +457,7 @@ class Table
      *
      * @return Column|null
      */
-    public function time(string $column): ?Column
+    public function time(string $column): Column|null
     {
         return $this->table->addColumn($column, Types::TIME_MUTABLE);
     }
@@ -462,7 +469,7 @@ class Table
      *
      * @return Column|null
      */
-    public function timestamp(string $column): ?Column
+    public function timestamp(string $column): Column|null
     {
         return $this->table->addColumn($column, Types::DATETIME_MUTABLE);
     }
@@ -474,7 +481,7 @@ class Table
      *
      * @return Column|null
      */
-    public function timestampTz(string $column): ?Column
+    public function timestampTz(string $column): Column|null
     {
         return $this->table->addColumn($column, Types::DATETIMETZ_MUTABLE);
     }
@@ -529,7 +536,7 @@ class Table
      * @param int $length
      * @return Column|null
      */
-    public function binary(string $column, $length = 255): ?Column
+    public function binary(string $column, $length = 255): Column|null
     {
         return $this->table->addColumn($column, Types::BINARY, compact('length'))->setNotnull(false);
     }
@@ -539,7 +546,7 @@ class Table
      *
      * @return Column|null
      */
-    public function rememberToken(): ?Column
+    public function rememberToken(): Column|null
     {
         return $this->string('remember_token', 100)->setNotnull(false);
     }
@@ -555,7 +562,7 @@ class Table
     /**
      * @return Blueprint|null
      */
-    public function dropColumn(string $column): ?Blueprint
+    public function dropColumn(string $column): Blueprint|null
     {
         return $this->table->dropColumn($column);
     }
