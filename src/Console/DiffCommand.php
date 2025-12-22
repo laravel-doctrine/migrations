@@ -7,6 +7,7 @@ namespace LaravelDoctrine\Migrations\Console;
 use Doctrine\Migrations\Generator\Exception\NoChangesDetected;
 use LaravelDoctrine\Migrations\Configuration\ConfigurationFactory;
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
+use Symfony\Component\Console\Input\InputOption;
 
 class DiffCommand extends BaseCommand
 {
@@ -54,11 +55,38 @@ class DiffCommand extends BaseCommand
             $this->input->setOption('filter-expression', $migrationConfig->get('table_storage.schema_filter', $migrationConfig->get('schema.filter')));
         }
 
+        $paths = $migrationConfig->get('migrations_paths');
+        if (!$this->input->getOption('namespace') && count($paths) === 1) {
+            $namespace = array_key_first($paths);
+            $this->input->setOption('namespace', $namespace);
+        }
+
         try {
             return $command->run($this->getDoctrineInput($command), $this->output->getOutput());
         } catch (NoChangesDetected $exception) {
             $this->error($exception->getMessage());
             return 0;
         }
+    }
+
+    protected function configureUsingFluentDefinition(): void
+    {
+        parent::configureUsingFluentDefinition();
+        $this->getDefinition()->addOption(
+            new InputOption(
+                'nowdoc',
+                null,
+                InputOption::VALUE_NEGATABLE,
+                'Output the generated SQL as a nowdoc string (negatable).'
+            )
+        );
+        $this->getDefinition()->addOption(
+            new InputOption(
+                'namespace',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The namespace to use for the migration (must be in the list of configured namespaces)',
+            )
+        );
     }
 }

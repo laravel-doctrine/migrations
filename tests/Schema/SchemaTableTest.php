@@ -37,7 +37,12 @@ class SchemaTableTest extends TestCase
 
     public function test_primary()
     {
-        $this->dbal->shouldReceive('setPrimaryKey')->with(['id'], null)->once();
+        $this->dbal->shouldReceive('addPrimaryKeyConstraint')->withArgs(function ($primaryKeyConstraint) {
+            $this->assertEquals(['id'], array_map(fn($column) => $column->toString(), $primaryKeyConstraint->getColumnNames()));
+            $this->assertNull($primaryKeyConstraint->getObjectName());
+
+            return true;
+        })->once();
 
         $this->table->primary('id');
     }
@@ -73,7 +78,12 @@ class SchemaTableTest extends TestCase
                 'unsigned'      => true
             ]
         )->once();
-        $this->dbal->shouldReceive('setPrimaryKey')->with(['id'], null)->once();
+        $this->dbal->shouldReceive('addPrimaryKeyConstraint')->withArgs(function ($primaryKeyConstraint) {
+            $this->assertEquals(['id'], array_map(fn($column) => $column->toString(), $primaryKeyConstraint->getColumnNames()));
+            $this->assertNull($primaryKeyConstraint->getObjectName());
+
+            return true;
+        })->once();
 
         $this->table->increments('id');
     }
@@ -88,7 +98,12 @@ class SchemaTableTest extends TestCase
                 'unsigned'      => true
             ]
         )->once();
-        $this->dbal->shouldReceive('setPrimaryKey')->with(['id'], null)->once();
+        $this->dbal->shouldReceive('addPrimaryKeyConstraint')->withArgs(function ($primaryKeyConstraint) {
+            $this->assertEquals(['id'], array_map(fn($column) => $column->toString(), $primaryKeyConstraint->getColumnNames()));
+            $this->assertNull($primaryKeyConstraint->getObjectName());
+
+            return true;
+        })->once();
 
         $this->table->smallIncrements('id');
     }
@@ -103,7 +118,12 @@ class SchemaTableTest extends TestCase
                 'unsigned'      => true
             ]
         )->once();
-        $this->dbal->shouldReceive('setPrimaryKey')->with(['id'], null)->once();
+        $this->dbal->shouldReceive('addPrimaryKeyConstraint')->withArgs(function ($primaryKeyConstraint) {
+            $this->assertEquals(['id'], array_map(fn($column) => $column->toString(), $primaryKeyConstraint->getColumnNames()));
+            $this->assertNull($primaryKeyConstraint->getObjectName());
+
+            return true;
+        })->once();
 
         $this->table->bigIncrements('id');
     }

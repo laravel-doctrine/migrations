@@ -3,6 +3,7 @@
 namespace LaravelDoctrine\Migrations\Console;
 
 use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
+use Symfony\Component\Console\Input\InputOption;
 
 class DumpSchemaCommand extends BaseCommand
 {
@@ -27,5 +28,18 @@ class DumpSchemaCommand extends BaseCommand
         $command = new \Doctrine\Migrations\Tools\Console\Command\DumpSchemaCommand($dependencyFactory);
 
         return $command->run($this->getDoctrineInput($command), $this->output->getOutput());
+    }
+
+    protected function configureUsingFluentDefinition(): void
+    {
+        parent::configureUsingFluentDefinition();
+        $this->getDefinition()->addOption(
+            new InputOption(
+                'nowdoc',
+                null,
+                InputOption::VALUE_NEGATABLE,
+                'Output the generated SQL as a nowdoc string (negatable).'
+            )
+        );
     }
 }

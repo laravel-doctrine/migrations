@@ -5,9 +5,7 @@ namespace LaravelDoctrine\Migrations\Console;
 
 use Doctrine\Migrations\Tools\Console\Command\DoctrineCommand;
 use Illuminate\Console\Command;
-use LaravelDoctrine\Migrations\Configuration\DependencyFactoryProvider;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputInterface;
 
 abstract class BaseCommand extends Command
 {

@@ -64,9 +64,9 @@ class Builder
      *
      * @param string $table
      *
-     * @return Schema|string
+     * @return Schema
      */
-    public function drop(string $table)
+    public function drop(string $table): Schema
     {
         return $this->schema->dropTable($table);
     }
@@ -76,15 +76,15 @@ class Builder
      *
      * @param string $table
      *
-     * @return Schema|string|null
+     * @return Schema
      */
-    public function dropIfExists(string $table)
+    public function dropIfExists(string $table): Schema
     {
         if ($this->schema->hasTable($table)) {
             return $this->drop($table);
         }
 
-        return null;
+        return $this->schema;
     }
 
     /**
@@ -93,9 +93,9 @@ class Builder
      * @param string $from
      * @param string $to
      *
-     * @return Schema|string
+     * @return Schema
      */
-    public function rename(string $from, string $to)
+    public function rename(string $from, string $to): Schema
     {
         return $this->schema->renameTable($from, $to);
     }
