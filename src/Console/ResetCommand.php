@@ -7,6 +7,7 @@ namespace LaravelDoctrine\Migrations\Console;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
@@ -35,9 +36,10 @@ class ResetCommand extends BaseCommand
 
     /** @var array<class-string<AbstractPlatform>, string> */
     private const PLATFORM_MAP = [
-        SQLServerPlatform::class => 'mssql',
+        MariaDBPlatform::class => 'mysql',
         MySQLPlatform::class => 'mysql',
         PostgreSQLPlatform::class => 'postgresql',
+        SQLServerPlatform::class => 'mssql',
         SQLitePlatform::class => 'sqlite',
     ];
 
