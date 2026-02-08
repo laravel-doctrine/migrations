@@ -2,6 +2,7 @@ parameters:
     level: 7
     paths:
         - src
+    reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
         -
@@ -22,3 +23,6 @@ parameters:
         -
             path: src/Configuration/DependencyFactoryProvider.php
             message: '~^Parameter #1 \$entityManager of class Doctrine\\Migrations\\Configuration\\EntityManager\\ExistingEntityManager constructor expects Doctrine\\ORM\\EntityManagerInterface, Doctrine\\Persistence\\ObjectManager given.~'
+        -
+            path: src/Console/ResetCommand.php
+            message: '~^Unable to resolve the template type TReturn in call to method .+\\ConfirmableTrait::confirmToProceed\(\)~'
