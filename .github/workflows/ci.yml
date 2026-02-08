@@ -1,8 +1,6 @@
-name: CI
+name: Continuous Integration
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
   push:
   pull_request:
 
@@ -22,7 +20,7 @@ jobs:
 
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
