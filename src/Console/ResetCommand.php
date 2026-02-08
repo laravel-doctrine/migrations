@@ -50,8 +50,9 @@ class ResetCommand extends BaseCommand
      */
     public function handle(DependencyFactoryProvider $provider): int
     {
+        // @phpstan-ignore-next-line Unable to resolve template type TReturn
         $confirmed = $this->confirmToProceed();
-        assert(is_bool($confirmed));
+
         if (!$confirmed) {
             return 1;
         }
@@ -165,7 +166,7 @@ class ResetCommand extends BaseCommand
     }
 
     /**
-     * Returns the database platform from the connection. 
+     * Returns the database platform from the connection.
      * If the platform is not supported or determined an exception will be thrown.
      *
      * @throws RuntimeException
