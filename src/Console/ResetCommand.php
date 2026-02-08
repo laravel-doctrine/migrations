@@ -50,7 +50,9 @@ class ResetCommand extends BaseCommand
      */
     public function handle(DependencyFactoryProvider $provider): int
     {
-        if (!$this->confirmToProceed()) {
+        $confirmed = $this->confirmToProceed();
+        assert(is_bool($confirmed));
+        if (!$confirmed) {
             return 1;
         }
 
