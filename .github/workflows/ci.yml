@@ -1,8 +1,6 @@
-name: CI
+name: Continuous Integration
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
   push:
   pull_request:
 
@@ -14,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        php: ['8.2', '8.3', '8.4']
+        php: ['8.2', '8.3', '8.4', '8.5']
         laravel: ['10', '11', '12']
         exclude:
           - php: '8.4'
@@ -22,7 +20,7 @@ jobs:
 
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
