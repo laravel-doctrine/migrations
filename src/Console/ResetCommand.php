@@ -77,7 +77,7 @@ class ResetCommand extends BaseCommand
         if ($platform->supportsSequences()) {
             $sequences = $schemaManager->introspectSequences();
             foreach ($sequences as $s) {
-                $schemaManager->dropSequence($s->getObjectName()->toString());
+                $schemaManager->dropSequence($s->getObjectName()->toSQL($platform));
             }
         }
 
@@ -85,12 +85,15 @@ class ResetCommand extends BaseCommand
         foreach ($tables as $table) {
             $foreigns = $schemaManager->introspectTableForeignKeyConstraints($table);
             foreach ($foreigns as $f) {
-                $schemaManager->dropForeignKey($f->getObjectName()->toString(), $table->toString());
+                $schemaManager->dropForeignKey(
+                    $f->getObjectName()->toSQL($platform),
+                    $table->toSQL($platform)
+                );
             }
         }
 
         foreach ($tables as $table) {
-            $this->safelyDropTable($table->toString());
+            $this->safelyDropTable($table->toSQL($platform));
         }
     }
 
